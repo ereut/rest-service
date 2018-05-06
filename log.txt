@@ -1,0 +1,3 @@
+2018-05-06 20:05:43,142 ERROR [main] r.i.c.d.Operations [Operations.java:27] Yauheni Reut already register
+2018-05-06 20:05:43,151 ERROR [main] r.i.c.d.Operations [Operations.java:27] Ludmila Aniscovich already register
+2018-05-06 20:33:38,403 ERROR [main] r.i.c.d.Operations [Operations.java:58] Customer with name - Yauheni, surname - Reut, telephone - 297336763,country - Belarus, city - Gomel, street - Kosmonavtov avenue, homeNumber - 67, flatNumber - 262 was not found

@@ -5,15 +5,15 @@ import java.sql.Date;
 public class Card {
 
     private final int id;
-    private final int clientId;
+    private final Customer customer;
     private final String panCard;
     private final Date expiryCardTime;
     private final Date registerCardTime;
 
-    public Card(int id, int clientId, String panCard, Date expiryCardTime,
+    public Card(int id, Customer customer, String panCard, Date expiryCardTime,
                 Date registerCardTime) {
         this.id = id;
-        this.clientId = clientId;
+        this.customer = customer;
         this.panCard = panCard;
         this.expiryCardTime = expiryCardTime;
         this.registerCardTime = registerCardTime;
@@ -23,8 +23,8 @@ public class Card {
         return id;
     }
 
-    public int getClientId() {
-        return clientId;
+    public Customer getCustomer() {
+        return customer;
     }
 
     public String getPanCard() {

@@ -4,7 +4,7 @@ import java.sql.Date;
 
 public class PaymentTrx {
 
-    public enum MoneyUnits {
+    public enum MoneyCurrencies {
         BYN, USD, EURO;
 
         public String getName() {
@@ -13,28 +13,28 @@ public class PaymentTrx {
     }
 
     private final int id;
-    private final String dataCard;
+    private final Card card;
     private final Date startTrxTime;
     private final Date finishTrxTime;
     private final int value;
-    private final MoneyUnits moneyUnit;
+    private final MoneyCurrencies moneyCurrency;
 
-    public PaymentTrx(int id, String dataCard, Date startTrxTime, Date finishTrxTime,
-                      int value, MoneyUnits moneyUnit) {
+    public PaymentTrx(int id, Card card, Date startTrxTime, Date finishTrxTime,
+                      int value, MoneyCurrencies moneyCurrency) {
         this.id = id;
-        this.dataCard = dataCard;
+        this.card = card;
         this.startTrxTime = startTrxTime;
         this.finishTrxTime = finishTrxTime;
         this.value = value;
-        this.moneyUnit = moneyUnit;
+        this.moneyCurrency = moneyCurrency;
     }
 
     public int getId() {
         return id;
     }
 
-    public String getDataCard() {
-        return dataCard;
+    public Card getDataCard() {
+        return card;
     }
 
     public Date getStartTrxTime() {
@@ -49,8 +49,8 @@ public class PaymentTrx {
         return value;
     }
 
-    public MoneyUnits getMoneyUnit() {
-        return moneyUnit;
+    public MoneyCurrencies getMoneyUnit() {
+        return moneyCurrency;
     }
 
 }
