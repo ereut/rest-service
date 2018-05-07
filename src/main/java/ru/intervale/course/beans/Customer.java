@@ -1,15 +1,14 @@
 package ru.intervale.course.beans;
 
-public class Customer {
+public class Customer extends AbstractEntity {
 
-    private final int id;
     private String name;
     private String surname;
     private String telephoneNumber;
     private Address address;
 
     public Customer(int id, String name, String surname, String telephoneNumber) {
-        this.id = id;
+        super(id);
         this.name = name;
         this.surname = surname;
         this.telephoneNumber = telephoneNumber;
@@ -21,7 +20,7 @@ public class Customer {
         this.address = address;
     }
 
-    private class Address {
+    public static class Address {
 
         private String country;
         private String city;
@@ -81,9 +80,6 @@ public class Customer {
         }
     }
 
-    public int getId() {
-        return id;
-    }
 
     public String getName() {
         return name;

@@ -31,9 +31,8 @@ public class Constants {
                     "  PRIMARY KEY (`id`),\n" +
                     "  UNIQUE INDEX `id_UNIQUE` (`id` ASC));";
 
-    public final static String CREATE_CUSTOMERS_TABLE_QUERY =
-            ApplicationContext.getPropertyValue("QcreateCustomersTable");
-    public final static String INSERT_CUSTOMER_QUERY =
+
+
             ApplicationContext.getPropertyValue("QinsertCustomer");
     public final static String SELECT_CUSTOMER_ID_QUERY =
             ApplicationContext.getPropertyValue("QselectCustomerId");

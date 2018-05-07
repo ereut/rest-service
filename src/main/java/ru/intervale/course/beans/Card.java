@@ -2,29 +2,24 @@ package ru.intervale.course.beans;
 
 import java.sql.Date;
 
-public class Card {
+public class Card extends AbstractEntity {
 
-    private final int id;
-    private final Customer customer;
+    private final int customerId;
     private final String panCard;
     private final Date expiryCardTime;
     private final Date registerCardTime;
 
-    public Card(int id, Customer customer, String panCard, Date expiryCardTime,
+    public Card(int id, int customerId, String panCard, Date expiryCardTime,
                 Date registerCardTime) {
-        this.id = id;
-        this.customer = customer;
+        super(id);
+        this.customerId = customerId;
         this.panCard = panCard;
         this.expiryCardTime = expiryCardTime;
         this.registerCardTime = registerCardTime;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public Customer getCustomer() {
-        return customer;
+    public int getCustomerId() {
+        return customerId;
     }
 
     public String getPanCard() {
