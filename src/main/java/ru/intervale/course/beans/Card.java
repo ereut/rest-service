@@ -1,16 +1,17 @@
 package ru.intervale.course.beans;
 
 import java.sql.Date;
+import java.sql.Time;
 
 public class Card extends AbstractEntity {
 
     private final int customerId;
     private final String panCard;
     private final Date expiryCardTime;
-    private final Date registerCardTime;
+    private final Time registerCardTime;
 
     public Card(int id, int customerId, String panCard, Date expiryCardTime,
-                Date registerCardTime) {
+                Time registerCardTime) {
         super(id);
         this.customerId = customerId;
         this.panCard = panCard;
@@ -30,7 +31,7 @@ public class Card extends AbstractEntity {
         return expiryCardTime;
     }
 
-    public Date getRegisterCardTime() {
+    public Time getRegisterCardTime() {
         return registerCardTime;
     }
 

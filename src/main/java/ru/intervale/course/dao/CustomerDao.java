@@ -11,7 +11,7 @@ import java.util.List;
 
 public class CustomerDao extends AbstractDao<Customer> {
 
-    CustomerDao(Connection connection) {
+    public CustomerDao(Connection connection) {
         super(connection);
     }
 
@@ -22,8 +22,8 @@ public class CustomerDao extends AbstractDao<Customer> {
 
     @Override
     public List<Customer> parseResultSet(ResultSet rs) throws DaoException {
-        List<Customer> customersList = new ArrayList<>();
         try {
+            List<Customer> customersList = new ArrayList<>();
             while (rs.next()) {
                 int id = rs.getInt(1);
                 String name = rs.getString(2);
@@ -35,8 +35,8 @@ public class CustomerDao extends AbstractDao<Customer> {
                 String street = rs.getString(7);
                 String homeNumber = rs.getString(8);
                 String flatNumber = rs.getString(9);
-                customer.setAddress(new Customer.Address(country, city, street,
-                        homeNumber, flatNumber));
+                customer.setAddress(country, city, street,
+                        homeNumber, flatNumber);
                 customersList.add(customer);
             }
             return customersList;

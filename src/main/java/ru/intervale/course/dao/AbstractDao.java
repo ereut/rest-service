@@ -1,5 +1,6 @@
 package ru.intervale.course.dao;
 
+import org.slf4j.LoggerFactory;
 import ru.intervale.course.beans.AbstractEntity;
 
 import java.sql.Connection;
@@ -21,13 +22,17 @@ public abstract class AbstractDao <T extends AbstractEntity> implements IDao<T> 
 
     @Override
     public T getEntityById(int id) throws DaoException {
-        String sqlQuery = getSelectQuery() + "WHERE id = ?";
+        String sqlQuery = getSelectQuery() + " WHERE id = ?";
         try (PreparedStatement pst = connection.prepareStatement(sqlQuery)) {
             List<T> list;
             pst.setInt(1, id);
             ResultSet rs = pst.executeQuery();
             list = parseResultSet(rs);
-            return list.isEmpty() ? null : list.iterator().next();
+            if (list.isEmpty()) {
+                LoggerFactory.getLogger(AbstractDao.class).info("No search such entity with id = {}", id);
+                return null;
+            }
+            return list.iterator().next();
         } catch (SQLException e) {
             throw new DaoException(e);
         }

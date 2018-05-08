@@ -1,5 +1,7 @@
 package ru.intervale.course.beans;
 
+import java.util.Locale;
+
 public class Customer extends AbstractEntity {
 
     private String name;
@@ -20,7 +22,7 @@ public class Customer extends AbstractEntity {
         this.address = address;
     }
 
-    public static class Address {
+    private class Address {
 
         private String country;
         private String city;
@@ -78,8 +80,12 @@ public class Customer extends AbstractEntity {
         public void setHomeNumber(String homeNumber) {
             this.homeNumber = homeNumber;
         }
-    }
 
+        @Override
+        public String toString() {
+            return String.format(Locale.ENGLISH, "%s;%s;%s;%s", country, street, homeNumber,flatNumber);
+        }
+    }
 
     public String getName() {
         return name;
@@ -109,8 +115,18 @@ public class Customer extends AbstractEntity {
         this.telephoneNumber = telephoneNumber;
     }
 
+    public void setAddress(String country, String city, String street,
+                           String homeNumber, String flatNumber) {
+        this.address = new Address(country, city, street, homeNumber, flatNumber);
+    }
+
     public void setAddress(Address address) {
         this.address = address;
     }
 
+    @Override
+    public String toString() {
+        return String.format(Locale.ENGLISH, "%d;%s;%s;%s;%s",
+                getId(), name, surname, telephoneNumber,address);
+    }
 }

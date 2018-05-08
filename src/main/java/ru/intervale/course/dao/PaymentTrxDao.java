@@ -8,7 +8,7 @@ import java.util.List;
 
 public class PaymentTrxDao extends AbstractDao<PaymentTrx> {
 
-    PaymentTrxDao(Connection connection) {
+    public PaymentTrxDao(Connection connection) {
         super(connection);
     }
 

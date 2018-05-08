@@ -1,7 +1,13 @@
 package ru.intervale.course;
 
+import java.text.SimpleDateFormat;
+
 public class Constants {
 
+    public static final SimpleDateFormat CARD_EXPIRY_DATE_FORMAT = new SimpleDateFormat("MMyy");
+
+}
+/*
     public static final String DATA_BASE_DAO =
             ApplicationContext.getPropertyValue("Ddatabase");
     public final static String DBURL =
@@ -38,3 +44,4 @@ public class Constants {
             ApplicationContext.getPropertyValue("QselectCustomerId");
 
 }
+*/
