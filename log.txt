@@ -1,13 +1,8 @@
-2018-05-08 19:33:14,826 ERROR [main] r.i.c.Runner [Runner.java:31] com.mysql.cj.jdbc.exceptions.MysqlDataTruncation: Data truncation: Incorrect datetime value: 'currentTime' for column 'registerTime' at row 1
-2018-05-08 19:33:55,343 INFO [main] r.i.c.d.AbstractDao [AbstractDao.java:32] No search such entity with id = 44
-2018-05-08 19:36:08,968 ERROR [main] r.i.c.Runner [Runner.java:31] java.sql.SQLIntegrityConstraintViolationException: Duplicate entry '1111 1234 1111 1111' for key 'pan_UNIQUE'
-2018-05-08 19:36:33,427 INFO [main] r.i.c.d.AbstractDao [AbstractDao.java:32] No search such entity with id = 10
-2018-05-08 19:36:33,436 INFO [main] r.i.c.d.CardDao [CardDao.java:66] Customer with id 10 is no found. Card with pan 1111 1234 1111 1111 is not registed
-2018-05-08 19:53:13,462 INFO [main] r.i.c.d.AbstractDao [AbstractDao.java:32] No search such entity with id = 10
-2018-05-08 19:53:13,471 INFO [main] r.i.c.d.CardDao [CardDao.java:69] Card with pan 1111 1234 1111 1111 is not registed
-2018-05-08 19:55:23,504 INFO [main] r.i.c.d.AbstractDao [AbstractDao.java:32] No search such entity with id = 10
-2018-05-08 19:55:23,513 INFO [main] r.i.c.d.CardDao [CardDao.java:69] Card with pan 1111 1234 1111 1111 is not registed
-2018-05-08 19:56:36,655 ERROR [main] r.i.c.Runner [Runner.java:31] java.sql.SQLIntegrityConstraintViolationException: Duplicate entry '1111 1234 1111 1111' for key 'pan_UNIQUE'
-2018-05-08 20:13:16,024 ERROR [main] r.i.c.Runner [Runner.java:31] java.sql.SQLIntegrityConstraintViolationException: Duplicate entry '1111 1555 1111 1111' for key 'pan_UNIQUE'
-2018-05-08 20:14:40,235 ERROR [main] r.i.c.Runner [Runner.java:31] java.sql.SQLIntegrityConstraintViolationException: Duplicate entry '1111 1578 1111 1111' for key 'pan_UNIQUE'
-2018-05-08 20:33:10,213 ERROR [main] r.i.c.Runner [Runner.java:31] java.sql.SQLIntegrityConstraintViolationException: Duplicate entry '1111 9999 1111 1111' for key 'pan_UNIQUE'
+2018-05-09 10:16:50,801 ERROR [main] r.i.c.Runner [Runner.java:41] Problems with connection to MySQL database
+2018-05-09 10:17:10,753 ERROR [main] r.i.c.Runner [Runner.java:41] java.sql.SQLIntegrityConstraintViolationException: Duplicate entry '1101 9899 2220 1661' for key 'pan_UNIQUE'
+2018-05-09 12:06:32,771 ERROR [main] r.i.c.Runner [Runner.java:41] java.sql.SQLException: Field 'id' doesn't have a default value
+2018-05-09 12:22:33,652 ERROR [main] r.i.c.Runner [Runner.java:41] java.sql.SQLException: No value specified for parameter 1
+2018-05-09 12:23:42,375 ERROR [main] r.i.c.Runner [Runner.java:41] java.sql.SQLException: No value specified for parameter 1
+2018-05-09 12:25:57,966 ERROR [main] r.i.c.Runner [Runner.java:41] ru.intervale.course.dao.DaoException: java.sql.SQLException: No value specified for parameter 1
+2018-05-09 12:27:16,818 ERROR [main] r.i.c.Runner [Runner.java:41] com.mysql.cj.jdbc.exceptions.MysqlDataTruncation: Data truncation: Incorrect time value: 'CURRENT_TIME()' for column 'startTime' at row 1
+2018-05-09 15:44:08,956 ERROR [main] r.i.c.d.AbstractJDBCDao [AbstractJDBCDao.java:60] Entity with id 10 was not found

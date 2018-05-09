@@ -1,6 +1,8 @@
 package ru.intervale.course.beans;
 
-import java.sql.Date;
+import ru.intervale.course.utils.CurrencyUtils;
+
+import java.util.Locale;
 
 public class PaymentTrx extends AbstractEntity {
 
@@ -13,12 +15,12 @@ public class PaymentTrx extends AbstractEntity {
     }
 
     private final int cardId;
-    private final Date startTrxTime;
-    private final Date finishTrxTime;
+    private final String startTrxTime;
+    private final String finishTrxTime;
     private final int value;
     private final MoneyCurrencies moneyCurrency;
 
-    public PaymentTrx(int id, int cardId, Date startTrxTime, Date finishTrxTime,
+    public PaymentTrx(int id, int cardId, String startTrxTime, String finishTrxTime,
                       int value, MoneyCurrencies moneyCurrency) {
         super(id);
         this.cardId = cardId;
@@ -28,15 +30,22 @@ public class PaymentTrx extends AbstractEntity {
         this.moneyCurrency = moneyCurrency;
     }
 
+    public PaymentTrx(int id, int cardId, String startTrxTime, String finishTrxTime,
+                      int value, String currency) {
+        this(id, cardId, startTrxTime, finishTrxTime,
+                value, MoneyCurrencies.valueOf(currency.toUpperCase()));
+
+    }
+
     public int getCardId() {
         return cardId;
     }
 
-    public Date getStartTrxTime() {
+    public String getStartTrxTime() {
         return startTrxTime;
     }
 
-    public Date getFinishTrxTime() {
+    public String getFinishTrxTime() {
         return finishTrxTime;
     }
 
@@ -48,4 +57,9 @@ public class PaymentTrx extends AbstractEntity {
         return moneyCurrency;
     }
 
+    @Override
+    public String toString() {
+        return String.format(Locale.ENGLISH, "%d;%d;%s;%s;%s;%s", getId(), cardId, startTrxTime,
+                finishTrxTime, CurrencyUtils.getStringCurrencyValue(value), moneyCurrency.getName() );
+    }
 }

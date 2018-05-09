@@ -4,7 +4,7 @@ import java.text.SimpleDateFormat;
 
 public class Constants {
 
-    public static final SimpleDateFormat CARD_EXPIRY_DATE_FORMAT = new SimpleDateFormat("MMyy");
+
 
 }
 /*
@@ -18,24 +18,26 @@ public class Constants {
             ApplicationContext.getPropertyValue("Ddbpassword");
 
     public final static String CREATE_CARDS_TABLE_QUERY =
-            "CREATE TABLE `customers`.`cards` (\n" +
-                    "  `id` INT NOT NULL AUTO_INCREMENT,\n" +
-                    "  `customerId` INT NOT NULL,\n" +
-                    "  `pan` VARCHAR(45) NOT NULL,\n" +
-                    "  `expiry` DATE NOT NULL,\n" +
-                    "  `registerTime` DATETIME NOT NULL,\n" +
-                    "  PRIMARY KEY (`id`));\n";
+            CREATE TABLE `customers`.`cards` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `customerId` INT NOT NULL,
+  `pan` VARCHAR(45) NOT NULL,
+  `expiry` VARCHAR(45) NOT NULL,
+  `registerTime` TIMESTAMP NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC),
+  UNIQUE INDEX `pan_UNIQUE` (`pan` ASC));
 
     public final static String CREATE_PAYMENTS_TABLE_QUERY =
-            "CREATE TABLE `customers`.`payments` (\n" +
-                    "  `id` INT NOT NULL,\n" +
-                    "  `cardId` INT NOT NULL,\n" +
-                    "  `startTime` DATETIME NOT NULL,\n" +
-                    "  `pfinishTime` DATETIME NOT NULL,\n" +
-                    "  `value` INT NOT NULL,\n" +
-                    "  `currency` VARCHAR(45) NOT NULL,\n" +
-                    "  PRIMARY KEY (`id`),\n" +
-                    "  UNIQUE INDEX `id_UNIQUE` (`id` ASC));";
+            CREATE TABLE `customers`.`payments` (
+                    `id` INT NOT NULL AUTO_INCREMENT,
+                    `cardId` INT NOT NULL,
+                    `startTime` TIME NOT NULL,
+                    `finishTime` TIME NOT NULL,
+                    `value` INT NOT NULL,
+                    `currency` VARCHAR(45) NOT NULL,
+                    PRIMARY KEY (`id`),
+                    UNIQUE INDEX `id_UNIQUE` (`id` ASC));
 
 
 

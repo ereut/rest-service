@@ -1,7 +1,8 @@
-package ru.intervale.course.dao;
+package ru.intervale.course.dao.interfaces;
 
 
 import ru.intervale.course.beans.AbstractEntity;
+import ru.intervale.course.dao.DaoException;
 
 import java.io.Serializable;
 import java.sql.SQLException;
@@ -11,9 +12,7 @@ public interface IDao<T extends AbstractEntity> extends Serializable {
 
     List<T> getAll() throws DaoException;
     T getEntityById(int id) throws DaoException;
-    boolean delete(T entity);
-    boolean delete(int id);
-    boolean create(T entity);
-    T update(T entity);
+    boolean delete(int id) throws DaoException;
+
 
 }
