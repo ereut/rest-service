@@ -8,7 +8,7 @@ import java.util.MissingResourceException;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
-public class DBConnector {
+public class JDBCConnector {
 
     private static Connection connection;
 
@@ -54,7 +54,7 @@ public class DBConnector {
         try {
             dao = ResourceBundle.getBundle("database").getString("Ddatabase");
         } catch (MissingResourceException e) {
-            LoggerFactory.getLogger(DBConnector.class).debug("Key Ddatabase was not found, " +
+            LoggerFactory.getLogger(JDBCConnector.class).debug("Key Ddatabase was not found, " +
                             "set default value {}", DEFAULT_DATABASE_VALUE);
         }
         return DaoEnum.valueOf(dao.toUpperCase()).getConnection();

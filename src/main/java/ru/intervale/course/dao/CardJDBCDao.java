@@ -22,14 +22,14 @@ public class CardJDBCDao extends AbstractJDBCDao<Card> implements ICardDao {
     private static final String UPDATE_CARD_QUERY =
             "UPDATE customers.cards SET customerId = ?, pan = ?, expiry = ? WHERE id = ?";
 
-    private static boolean isExpiryCardDateValid(String date) {
+    private static boolean isExpiryCardDateInvalid(String date) {
         final SimpleDateFormat CARD_EXPIRY_DATE_FORMAT =
                 new SimpleDateFormat("MMyy");
         CARD_EXPIRY_DATE_FORMAT.setLenient(true);
         try {
-            return CARD_EXPIRY_DATE_FORMAT.format(CARD_EXPIRY_DATE_FORMAT.parse(date)).equals(date);
+            return !CARD_EXPIRY_DATE_FORMAT.format(CARD_EXPIRY_DATE_FORMAT.parse(date)).equals(date);
         } catch (ParseException e) {
-            return false;
+            return true;
         }
     }
 
@@ -74,7 +74,7 @@ public class CardJDBCDao extends AbstractJDBCDao<Card> implements ICardDao {
                     "Card with pan {} is not registed", customerId, pan);
             return false;
         }
-        if (!isExpiryCardDateValid(expiry)) {
+        if (isExpiryCardDateInvalid(expiry)) {
             log.error("Illegal date or input format of expiry card date {}", expiry);
             return false;
         }
@@ -100,7 +100,7 @@ public class CardJDBCDao extends AbstractJDBCDao<Card> implements ICardDao {
             log.error("Customer with id {} was not found", customerId);
             return false;
         }
-        if (!isExpiryCardDateValid(expiry)) {
+        if (isExpiryCardDateInvalid(expiry)) {
             log.error("Illegal date or input format of expiry card date {}", expiry);
             return false;
         }

@@ -30,7 +30,7 @@ public class Runner {
 
 
 
-        try (Connection cn = DBConnector.getConnection()) {
+        try (Connection cn = JDBCConnector.getConnection()) {
             DatabaseUtils.createSchemaAndTables(cn);
             ICustomerDao customerJDBCDao = new CustomerJDBCDao(cn);
             ICardDao cardJDBCDao = new CardJDBCDao(cn);

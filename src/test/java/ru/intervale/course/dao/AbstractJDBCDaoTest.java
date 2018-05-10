@@ -8,8 +8,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-import static org.junit.Assert.*;
-
 public class AbstractJDBCDaoTest {
     @Test
     public void getEntityById() throws Exception {

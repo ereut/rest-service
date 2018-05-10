@@ -80,7 +80,7 @@ public class PaymentTrxJDBCDao extends AbstractJDBCDao<PaymentTrx> implements IP
             log.error("Payment with id {} was not found", id);
             return false;
         }
-        if (new PaymentTrxJDBCDao(connection) == null) {
+        if (new PaymentTrxJDBCDao(connection).getEntityById(cardId) == null) {
             log.error("Card with id {} was not found", cardId);
             return false;
         }
