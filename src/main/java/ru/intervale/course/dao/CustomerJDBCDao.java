@@ -14,11 +14,11 @@ import java.util.List;
 public class CustomerJDBCDao extends AbstractJDBCDao<Customer> implements ICustomerDao {
 
     private static final String CREATE_CUSTOMER_QUERY =
-            "INSERT INTO customers (name, surname, telephoneNumber, country, city, " +
+            "INSERT INTO customers.customers (name, surname, telephoneNumber, country, city, " +
             "street, homeNumber, flatNumber) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
     private static final String UPDATE_CUSTOMER_QUERY =
-            "UPDATE customers SET name = ?, surname = ?, telephoneNumber = ?, country = ?," +
+            "UPDATE customers.customers SET name = ?, surname = ?, telephoneNumber = ?, country = ?," +
             "city = ?, street = ?, homeNumber = ?, flatNumber = ? WHERE id = ?";
 
     public CustomerJDBCDao(Connection connection) {
@@ -27,12 +27,12 @@ public class CustomerJDBCDao extends AbstractJDBCDao<Customer> implements ICusto
 
     @Override
     public String getSelectQuery() {
-        return "SELECT * FROM customers";
+        return "SELECT * FROM customers.customers";
     }
 
     @Override
     public String getDeleteQuery() {
-        return "DELETE FROM customers WHERE id = ?";
+        return "DELETE FROM customers.customers WHERE id = ?";
     }
 
     @Override
@@ -84,11 +84,11 @@ public class CustomerJDBCDao extends AbstractJDBCDao<Customer> implements ICusto
     public boolean update(int id, String name, String surname, String telephoneNumber,
                           String country, String city, String street, String homeNumber,
                           String flatNumber) throws DaoException {
+        if (getEntityById(id) == null) {
+            LoggerFactory.getLogger(CustomerJDBCDao.class).error("Customer with id {} not found", id);
+            return false;
+        }
         try (PreparedStatement pst = connection.prepareStatement(UPDATE_CUSTOMER_QUERY)) {
-            if (getEntityById(id) == null) {
-                LoggerFactory.getLogger(CustomerJDBCDao.class).error("Customer with id {} not found", id);
-                return false;
-            }
             pst.setString(1, name);
             pst.setString(2, surname);
             pst.setString(3, telephoneNumber);

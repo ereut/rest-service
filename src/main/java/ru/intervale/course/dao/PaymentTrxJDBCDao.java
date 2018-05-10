@@ -12,10 +12,10 @@ import java.util.List;
 public class PaymentTrxJDBCDao extends AbstractJDBCDao<PaymentTrx> implements IPaymentTrxDao {
 
     private static final String CREATE_PAYMENT_QUERY =
-            "INSERT INTO payments (cardId, startTime, finishTime, value, currency) " +
+            "INSERT INTO customers.payments (cardId, startTime, finishTime, value, currency) " +
                     "VALUES (?, ?, CURRENT_TIME(), ?, ?)";
     private static final String UPDATE_PAYMENT_QUERY =
-            "UPDATE payments SET cardId = ?, value = ?, currency = ? WHERE id = ?";
+            "UPDATE customers.payments SET cardId = ?, value = ?, currency = ? WHERE id = ?";
 
     private final Logger log = LoggerFactory.getLogger(PaymentTrx.class);
 
@@ -25,12 +25,12 @@ public class PaymentTrxJDBCDao extends AbstractJDBCDao<PaymentTrx> implements IP
 
     @Override
     public String getSelectQuery() {
-        return "SELECT * FROM payments";
+        return "SELECT * FROM customers.payments";
     }
 
     @Override
     public String getDeleteQuery() {
-        return "DELETE FROM payments WHERE id = ?";
+        return "DELETE FROM customers.payments WHERE id = ?";
     }
 
     @Override
@@ -62,7 +62,6 @@ public class PaymentTrxJDBCDao extends AbstractJDBCDao<PaymentTrx> implements IP
             return false;
         }
         try (PreparedStatement pst = connection.prepareStatement(CREATE_PAYMENT_QUERY)) {
-            System.out.println(new java.util.Date());
             pst.setInt(1, cardId);
             pst.setTime(2, new Time(new java.util.Date().getTime()));
             pst.setInt(3, value);

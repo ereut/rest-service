@@ -3,19 +3,19 @@ package ru.intervale.course.dao;
 
 public class DaoException extends Exception {
 
-    DaoException() {
+    public DaoException() {
         super();
     }
 
-    DaoException(String message) {
+    public DaoException(String message) {
         super(message);
     }
 
-    DaoException(Throwable course) {
+    public DaoException(Throwable course) {
         super(course);
     }
 
-    DaoException(String message, Throwable course) {
+    public DaoException(String message, Throwable course) {
         super(message, course);
     }
 

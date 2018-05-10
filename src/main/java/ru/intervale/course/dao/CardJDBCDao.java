@@ -17,10 +17,10 @@ public class CardJDBCDao extends AbstractJDBCDao<Card> implements ICardDao {
 
     private static final Logger log = LoggerFactory.getLogger(CardJDBCDao.class);
     private static final String CREATE_CARD_QUERY =
-            "INSERT INTO cards (customerId, pan, expiry, registerTime) VALUES " +
+            "INSERT INTO customers.cards (customerId, pan, expiry, registerTime) VALUES " +
                     "(?, ?, ?, CURRENT_TIME())";
     private static final String UPDATE_CARD_QUERY =
-            "UPDATE cards SET customerId = ?, pan = ?, expiry = ? WHERE id = ?";
+            "UPDATE customers.cards SET customerId = ?, pan = ?, expiry = ? WHERE id = ?";
 
     private static boolean isExpiryCardDateValid(String date) {
         final SimpleDateFormat CARD_EXPIRY_DATE_FORMAT =
@@ -39,12 +39,12 @@ public class CardJDBCDao extends AbstractJDBCDao<Card> implements ICardDao {
 
     @Override
     public String getSelectQuery() {
-        return "SELECT * FROM cards";
+        return "SELECT * FROM customers.cards";
     }
 
     @Override
     public String getDeleteQuery() {
-        return "DELETE FROM cards WHERE id = ?";
+        return "DELETE FROM customers.cards WHERE id = ?";
     }
 
     @Override
@@ -98,6 +98,10 @@ public class CardJDBCDao extends AbstractJDBCDao<Card> implements ICardDao {
         }
         if (new CustomerJDBCDao(connection).getEntityById(customerId) == null) {
             log.error("Customer with id {} was not found", customerId);
+            return false;
+        }
+        if (!isExpiryCardDateValid(expiry)) {
+            log.error("Illegal date or input format of expiry card date {}", expiry);
             return false;
         }
         try (PreparedStatement pst =

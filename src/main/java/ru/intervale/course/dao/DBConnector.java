@@ -8,7 +8,7 @@ import java.util.MissingResourceException;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
-public class ConnectionFactory {
+public class DBConnector {
 
     private static Connection connection;
 
@@ -20,24 +20,32 @@ public class ConnectionFactory {
                     Properties properties = new Properties();
                     properties.put("user", "root");
                     properties.put("password", "1111");
-                    final String MY_SQL_DB_URL = "jdbc:mysql://localhost/customers?" +
+                    final String MY_SQL_DB_URL = "jdbc:mysql://localhost?" +
                             "autoReconnect=true&useSSL=false&useUnicode=true&useJDBCCompliantTimezoneShift=true" +
                             "&useLegacyDatetimeCode=false&serverTimezone=UTC";
                     connection = DriverManager.getConnection(MY_SQL_DB_URL, properties);
+                    return connection;
                 } catch (SQLException e) {
                     throw new DaoException("Problems with connection to MySQL database", e) ;
                 }
-                return connection;
             }
         }, H2 {
             @Override
-            Connection getConnection() {
+            Connection getConnection() throws DaoException {
+                try {
+                    Properties properties = new Properties();
+                    properties.put("user", "sa");
+                    connection =
+                            DriverManager.getConnection("jdbc:h2:tcp://localhost/~/customers", properties);
+                    return connection;
+                } catch (SQLException e) {
+                    throw new DaoException(e);
+                }
 
-                return null;
             }
         };
 
-       abstract Connection getConnection() throws DaoException;
+        abstract Connection getConnection() throws DaoException;
     }
 
     public static Connection getConnection() throws DaoException {
@@ -46,7 +54,7 @@ public class ConnectionFactory {
         try {
             dao = ResourceBundle.getBundle("database").getString("Ddatabase");
         } catch (MissingResourceException e) {
-            LoggerFactory.getLogger(ConnectionFactory.class).debug("Key Ddatabase was not found, " +
+            LoggerFactory.getLogger(DBConnector.class).debug("Key Ddatabase was not found, " +
                             "set default value {}", DEFAULT_DATABASE_VALUE);
         }
         return DaoEnum.valueOf(dao.toUpperCase()).getConnection();

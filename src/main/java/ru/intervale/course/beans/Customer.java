@@ -83,7 +83,8 @@ public class Customer extends AbstractEntity {
 
         @Override
         public String toString() {
-            return String.format(Locale.ENGLISH, "%s;%s;%s;%s", country, street, homeNumber,flatNumber);
+            return String.format(Locale.ENGLISH, "%s;%s;%s;%s;%s", country, city,street,
+                    homeNumber,flatNumber);
         }
     }
 
@@ -126,7 +127,7 @@ public class Customer extends AbstractEntity {
 
     @Override
     public String toString() {
-        return String.format(Locale.ENGLISH, "%d;%s;%s;%s;%s",
+        return String.format(Locale.ENGLISH, "|%-5d|%-10s|%-15s|%-12s|%-45s|",
                 getId(), name, surname, telephoneNumber,address);
     }
 }

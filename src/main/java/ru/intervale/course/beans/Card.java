@@ -36,7 +36,8 @@ public class Card extends AbstractEntity {
 
     @Override
     public String toString() {
-        return String.format(Locale.ENGLISH,"%d;%d;%s;%s;%s", getId(),
-                customerId, panCard, expiryCardDate, registerCardTime);
+        return String.format(Locale.ENGLISH,"|%-5d|%-5d|%-22s|%-5s|%-10s|",
+                getId(), customerId, panCard, expiryCardDate, registerCardTime);
     }
+
 }

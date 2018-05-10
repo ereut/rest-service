@@ -59,7 +59,8 @@ public class PaymentTrx extends AbstractEntity {
 
     @Override
     public String toString() {
-        return String.format(Locale.ENGLISH, "%d;%d;%s;%s;%s;%s", getId(), cardId, startTrxTime,
-                finishTrxTime, CurrencyUtils.getStringCurrencyValue(value), moneyCurrency.getName() );
+        return String.format(Locale.ENGLISH, "|%-5d|%-5d|%-10s|%-10s|%-10s|%-5s|",
+                getId(), cardId, startTrxTime, finishTrxTime,
+                CurrencyUtils.getStringCurrencyValue(value), moneyCurrency.getName() );
     }
 }
