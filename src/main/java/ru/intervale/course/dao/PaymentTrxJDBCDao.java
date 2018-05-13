@@ -1,23 +1,12 @@
 package ru.intervale.course.dao;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import ru.intervale.course.beans.PaymentTrx;
-import ru.intervale.course.dao.interfaces.IPaymentTrxDao;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PaymentTrxJDBCDao extends AbstractJDBCDao<PaymentTrx> implements IPaymentTrxDao {
-
-    private static final String CREATE_PAYMENT_QUERY =
-            "INSERT INTO customers.payments (cardId, startTime, finishTime, value, currency) " +
-                    "VALUES (?, ?, CURRENT_TIME(), ?, ?)";
-    private static final String UPDATE_PAYMENT_QUERY =
-            "UPDATE customers.payments SET cardId = ?, value = ?, currency = ? WHERE id = ?";
-
-    private final Logger log = LoggerFactory.getLogger(PaymentTrx.class);
+public class PaymentTrxJDBCDao extends AbstractJDBCDao<PaymentTrx> {
 
     public PaymentTrxJDBCDao(Connection connection) {
         super(connection);
@@ -34,6 +23,44 @@ public class PaymentTrxJDBCDao extends AbstractJDBCDao<PaymentTrx> implements IP
     }
 
     @Override
+    public String getUpdateQuery() {
+        return "UPDATE customers.payments SET cardId = ?, value = ?, currency = ? WHERE id = ?";
+    }
+
+    @Override
+    public String getCreateQuery() {
+        return "INSERT INTO customers.payments (cardId, startTime, finishTime, value, currency) " +
+                "VALUES (?, ?, CURRENT_TIME(), ?, ?)";
+    }
+
+    @Override
+    protected void prepareStatementForUpdate(PreparedStatement pst, PaymentTrx entity)
+            throws DaoException {
+        try {
+            pst.setInt(1, entity.getCardId());
+            pst.setInt(1, entity.getValue());
+            pst.setString(3, entity.getMoneyCurrency().getName());
+            pst.setInt(4, entity.getId());
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
+    protected void prepareStatementForInsert(PreparedStatement pst, PaymentTrx entity)
+            throws DaoException {
+        try {
+            pst.setInt(1, entity.getCardId());
+            pst.setTime(2, entity.getStartTrxTime());
+            pst.setInt(3, entity.getValue());
+            pst.setString(4, entity.getMoneyCurrency().getName());
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+
+    }
+
+    @Override
     public List<PaymentTrx> parseResultSet(ResultSet rs) throws DaoException {
 
         try {
@@ -41,8 +68,8 @@ public class PaymentTrxJDBCDao extends AbstractJDBCDao<PaymentTrx> implements IP
             while (rs.next()) {
                 int id = rs.getInt(1);
                 int cardId = rs.getInt(2);
-                String startTime = rs.getString(3);
-                String finishTime = rs.getString(4);
+                Time startTime = rs.getTime(3);
+                Time finishTime = rs.getTime(4);
                 int value = rs.getInt(5);
                 String currency = rs.getString(6);
                 PaymentTrx paymentTrx = new PaymentTrx(id, cardId, startTime, finishTime,
@@ -50,48 +77,6 @@ public class PaymentTrxJDBCDao extends AbstractJDBCDao<PaymentTrx> implements IP
                 paymentsList.add(paymentTrx);
             }
             return paymentsList;
-        } catch (SQLException e) {
-            throw new DaoException(e);
-        }
-    }
-
-    @Override
-    public boolean create (int cardId, int value, String currency) throws DaoException {
-        if (new CardJDBCDao(connection).getEntityById(cardId) == null) {
-            log.error("No search any card with id {}. Transaction failed", cardId);
-            return false;
-        }
-        try (PreparedStatement pst = connection.prepareStatement(CREATE_PAYMENT_QUERY)) {
-            pst.setInt(1, cardId);
-            pst.setTime(2, new Time(new java.util.Date().getTime()));
-            pst.setInt(3, value);
-            pst.setString(4, currency);
-            pst.executeUpdate();
-            return true;
-        } catch (SQLException e) {
-            throw new DaoException(e);
-        }
-    }
-
-    @Override
-    public boolean update(int id, int cardId, int value, String currency)
-            throws DaoException {
-        if (getEntityById(id) == null) {
-            log.error("Payment with id {} was not found", id);
-            return false;
-        }
-        if (new PaymentTrxJDBCDao(connection).getEntityById(cardId) == null) {
-            log.error("Card with id {} was not found", cardId);
-            return false;
-        }
-        try (PreparedStatement pst =
-                     connection.prepareStatement(UPDATE_PAYMENT_QUERY)){
-            pst.setInt(1, cardId);
-            pst.setInt(2, value);
-            pst.setString(3, currency);
-            pst.setInt(4, id);
-            pst.executeUpdate();
-            return true;
         } catch (SQLException e) {
             throw new DaoException(e);
         }

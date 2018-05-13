@@ -5,32 +5,38 @@ import java.util.Locale;
 public class Customer extends AbstractEntity {
 
     private String name;
+
+
+
     private String surname;
     private String telephoneNumber;
     private Address address;
 
-    public Customer(int id, String name, String surname, String telephoneNumber) {
+
+    public Customer(int id, String name, String surname, String telephoneNumber,
+                    String country, String city, String street, String homeNumber,
+                    String flatNumber) {
         super(id);
         this.name = name;
         this.surname = surname;
         this.telephoneNumber = telephoneNumber;
+        address = new Address(country, city, street, homeNumber, flatNumber);
     }
 
-    public Customer(int id, String name, String surname, String telephoneNumber,
-                    Address address) {
-        this(id, name, surname, telephoneNumber);
-        this.address = address;
+    public Customer(String name, String surname, String telephoneNumber,
+                    String country, String city, String street, String homeNumber,
+                    String flatNumber) {
+        this(0, name, surname, telephoneNumber, country, city, street, homeNumber,
+                flatNumber);
     }
 
-    private class Address {
+    public class Address {
 
         private String country;
         private String city;
         private String street;
         private String homeNumber;
         private String flatNumber;
-
-        public Address () {}
 
         public Address(String country, String city, String street,
                        String homeNumber, String flatNumber) {
@@ -86,6 +92,21 @@ public class Customer extends AbstractEntity {
             return String.format(Locale.ENGLISH, "%s;%s;%s;%s;%s", country, city,street,
                     homeNumber,flatNumber);
         }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            Address address = (Address) o;
+
+            if (country != null ? !country.equals(address.country) : address.country != null) return false;
+            if (city != null ? !city.equals(address.city) : address.city != null) return false;
+            if (street != null ? !street.equals(address.street) : address.street != null) return false;
+            if (homeNumber != null ? !homeNumber.equals(address.homeNumber) : address.homeNumber != null) return false;
+            return flatNumber != null ? flatNumber.equals(address.flatNumber) : address.flatNumber == null;
+        }
+
     }
 
     public String getName() {
@@ -129,5 +150,18 @@ public class Customer extends AbstractEntity {
     public String toString() {
         return String.format(Locale.ENGLISH, "|%-5d|%-10s|%-15s|%-12s|%-45s|",
                 getId(), name, surname, telephoneNumber,address);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Customer customer = (Customer) o;
+
+        if (!name.equals(customer.name)) return false;
+        if (!surname.equals(customer.surname)) return false;
+        if (!telephoneNumber.equals(customer.telephoneNumber)) return false;
+        return address.equals(customer.address);
     }
 }

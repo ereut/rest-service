@@ -1,28 +1,72 @@
 package ru.intervale.course.dao;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.*;
+import ru.intervale.course.beans.Customer;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class AbstractJDBCDaoTest {
+
+    private static Connection cn;
+
+    private static Connection getConnection() throws DaoException {
+        if (cn == null) {
+            try {
+                cn = DriverManager.getConnection("jdbc:h2:tcp://localhost/~/customers", "sa", "");
+            } catch (SQLException e) {
+                throw new DaoException("Problems with connection to database during tests ", e);
+            }
+        }
+        return cn;
+    }
+
+
+    private static IDao<Customer> customerIDao;
+    private static Customer customer = new Customer("Yuri","Strel'chenia","298254789",
+                                    "Belarus", "Gomel", "Golovackiy street",
+                                    "136", "15");
+    private static Customer customerForUpdate = new Customer("Olia","Minnaya","293256987",
+                                             "Belarus", "Minsk", "Pushkin street",
+                                             "22", "12");
+    private static Customer insertingCustomer;
+    private static int insertingId;
+
+   @BeforeClass
+   public static void initData() throws Exception {
+       customerIDao = new CustomerJDBCDao(getConnection());
+       insertingCustomer = customerIDao.persist(customer);
+       insertingId = insertingCustomer.getId();
+       customerForUpdate.setId(insertingId);
+    }
+
+    @AfterClass
+    public static void closeConnection() throws Exception {
+       if (cn != null) {
+               cn.close();
+       }
+    }
+
+  @Test
+    public void persist() throws Exception {
+
+       Assert.assertNotNull(insertingCustomer);
+       Assert.assertEquals(true, customer.equals(insertingCustomer));
+
+    }
+
     @Test
     public void getEntityById() throws Exception {
-        final String GET_ID_QUERY = "SELECT id FROM customers.customers";
+       Assert.assertEquals(true, customer.equals(customerIDao.getEntityById(insertingId)));
+    }
 
-        try (Connection cn =
-                     DriverManager.getConnection("jdbc:h2:tcp://localhost/~/customers", "sa","");
-             PreparedStatement pst = cn.prepareStatement(GET_ID_QUERY)) {
+   @Test
+    public void update() throws Exception {
 
-            ResultSet rs = pst.executeQuery();
-            rs.next();
-            int id = rs.getInt(1);
-            Assert.assertNotNull(new CustomerJDBCDao(cn).getEntityById(id));
+       Assert.assertEquals(true, customerIDao.update(customerForUpdate));
+       Assert.assertEquals(true, customerForUpdate.equals(customerIDao.getEntityById(insertingId)));
 
-        }
     }
 
 }

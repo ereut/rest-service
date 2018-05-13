@@ -2,7 +2,6 @@ package ru.intervale.course.dao;
 
 import org.slf4j.LoggerFactory;
 import ru.intervale.course.beans.AbstractEntity;
-import ru.intervale.course.dao.interfaces.IDao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -20,6 +19,12 @@ public abstract class AbstractJDBCDao<T extends AbstractEntity> implements IDao<
 
     public abstract String getSelectQuery();
     public abstract String getDeleteQuery();
+    public abstract String getUpdateQuery();
+    public abstract String getCreateQuery();
+    protected abstract void prepareStatementForUpdate(PreparedStatement pst, T entity)
+            throws DaoException;
+    protected abstract void prepareStatementForInsert(PreparedStatement pst, T entity)
+            throws DaoException;
     protected abstract List<T> parseResultSet(ResultSet rs) throws DaoException;
 
     public String getSelectByIdQuery() {
@@ -69,5 +74,54 @@ public abstract class AbstractJDBCDao<T extends AbstractEntity> implements IDao<
             throw new DaoException(e);
         }
     }
+
+    @Override
+    public boolean update(T entity) throws DaoException {
+        String sql = getUpdateQuery();
+        try (PreparedStatement pst = connection.prepareStatement(sql)) {
+            prepareStatementForUpdate(pst, entity);
+            int count = pst.executeUpdate();
+            if (count == 1) {
+                return true;
+            } else {
+                throw new DaoException("Update more or less that one record " + count);
+            }
+        } catch (SQLException e) {
+           throw new DaoException(e);
+        }
+    }
+
+    @Override
+    public T persist (T entity) throws DaoException {
+        if (entity.getId() != 0) {
+            throw new DaoException("Entity is already persist");
+        }
+        String sql = getCreateQuery();
+        try (PreparedStatement pst = connection.prepareStatement(sql)) {
+            prepareStatementForInsert(pst, entity);
+            int count = pst.executeUpdate();
+            if (count != 1) {
+                throw new DaoException("On persist modify more then 1 records " + count);
+            }
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+
+        sql = getSelectQuery() + " WHERE id = last_insert_id()";
+
+        try(PreparedStatement pst = connection.prepareStatement(sql)) {
+            ResultSet rs = pst.executeQuery();
+            List<T> list = parseResultSet(rs);
+            if (list.isEmpty() || list.size() != 1) {
+                throw new DaoException("Insert error");
+            }
+            return list.iterator().next();
+
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+
+    }
+
 
 }

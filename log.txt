@@ -1,0 +1,1 @@
+2018-05-12 13:30:15,347 ERROR [main] r.i.c.Runner [Runner.java:104] java.sql.SQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '= last_insert_id()' at line 1

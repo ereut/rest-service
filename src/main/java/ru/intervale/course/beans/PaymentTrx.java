@@ -2,6 +2,8 @@ package ru.intervale.course.beans;
 
 import ru.intervale.course.utils.CurrencyUtils;
 
+import java.sql.Time;
+import java.util.Date;
 import java.util.Locale;
 
 public class PaymentTrx extends AbstractEntity {
@@ -14,38 +16,36 @@ public class PaymentTrx extends AbstractEntity {
         }
     }
 
-    private final int cardId;
-    private final String startTrxTime;
-    private final String finishTrxTime;
-    private final int value;
-    private final MoneyCurrencies moneyCurrency;
+    private int cardId;
+    private Time startTrxTime;
+    private Time finishTrxTime;
+    private int value;
+    private MoneyCurrencies moneyCurrency;
 
-    public PaymentTrx(int id, int cardId, String startTrxTime, String finishTrxTime,
-                      int value, MoneyCurrencies moneyCurrency) {
+    public PaymentTrx(int id, int cardId, Time startTrxTime, Time finishTrxTime,
+                      int value, String moneyCurrency) {
         super(id);
         this.cardId = cardId;
         this.startTrxTime = startTrxTime;
         this.finishTrxTime = finishTrxTime;
         this.value = value;
-        this.moneyCurrency = moneyCurrency;
+        this.moneyCurrency = MoneyCurrencies.valueOf(moneyCurrency.toUpperCase());
     }
 
-    public PaymentTrx(int id, int cardId, String startTrxTime, String finishTrxTime,
-                      int value, String currency) {
-        this(id, cardId, startTrxTime, finishTrxTime,
-                value, MoneyCurrencies.valueOf(currency.toUpperCase()));
-
+    public PaymentTrx(int cardId, int value, String currency) {
+        this(0, cardId, new Time(new Date().getTime()), null,
+                value, currency);
     }
 
     public int getCardId() {
         return cardId;
     }
 
-    public String getStartTrxTime() {
+    public Time getStartTrxTime() {
         return startTrxTime;
     }
 
-    public String getFinishTrxTime() {
+    public Time getFinishTrxTime() {
         return finishTrxTime;
     }
 
