@@ -20,9 +20,9 @@ public class JDBCConnector {
                     Properties properties = new Properties();
                     properties.put("user", "root");
                     properties.put("password", "1111");
-                    final String MY_SQL_DB_URL = "jdbc:mysql://localhost?" +
+                    final String MY_SQL_DB_URL = "jdbc:mysql://localhost/customers?" +
                             "autoReconnect=true&useSSL=false&useUnicode=true&useJDBCCompliantTimezoneShift=true" +
-                            "&useLegacyDatetimeCode=false&serverTimezone=UTC";
+                            "&useLegacyDatetimeCode=false&serverTimezone=UTC&nullNamePatternMatchesAll=true";
                     connection = DriverManager.getConnection(MY_SQL_DB_URL, properties);
                     return connection;
                 } catch (SQLException e) {

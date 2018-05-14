@@ -23,58 +23,6 @@ public class DatabaseUtils {
                     "JOIN customers.payments ON cards.id = payments.cardId \n" +
                     "ORDER BY id, value DESC";
 
-    private static final String CREATE_CUSTOMERS_TABLE_QUERY =
-            "CREATE TABLE IF NOT EXISTS`customers`.`customers` (\n" +
-                    "  `id` INT NOT NULL AUTO_INCREMENT,\n" +
-                    "  `name` VARCHAR(45) NOT NULL,\n" +
-                    "  `surname` VARCHAR(45) NOT NULL,\n" +
-                    "  `telephoneNumber` VARCHAR(45) NOT NULL,\n" +
-                    "  `country` VARCHAR(45) NOT NULL,\n" +
-                    "  `city` VARCHAR(45) NOT NULL,\n" +
-                    "  `street` VARCHAR(45) NOT NULL,\n" +
-                    "  `homeNumber` VARCHAR(45) NOT NULL,\n" +
-                    "  `flatNumber` VARCHAR(45) NULL,\n" +
-                    "  PRIMARY KEY (`id`));";
-
-    private static final String CREATE_CARDS_TABLE_QUERY =
-            "CREATE TABLE IF NOT EXISTS `customers`.`cards` (\n" +
-                    "  `id` INT NOT NULL AUTO_INCREMENT,\n" +
-                    "  `customerId` INT NOT NULL,\n" +
-                    "  `pan` VARCHAR(45) NOT NULL,\n" +
-                    "  `expiry` VARCHAR(45) NOT NULL,\n" +
-                    "  `registerTime` TIME NOT NULL,\n" +
-                    "  PRIMARY KEY (`id`))";
-
-    private static final String CREATE_PAYMENTS_TABLE_QUERY =
-            "CREATE TABLE IF NOT EXISTS `customers`.`payments` (\n" +
-                    "                    `id` INT NOT NULL AUTO_INCREMENT,\n" +
-                    "                    `cardId` INT NOT NULL,\n" +
-                    "                    `startTime` TIME NOT NULL,\n" +
-                    "                    `finishTime` TIME NOT NULL,\n" +
-                    "                    `value` INT NOT NULL,\n" +
-                    "                    `currency` VARCHAR(45) NOT NULL,\n" +
-                    "                    PRIMARY KEY (`id`))";
-
-    public static void createSchemaAndTables(Connection connection) throws DaoException {
-
-        try (   PreparedStatement schemaPst =
-                     connection.prepareStatement(CREATE_CUSTOMERS_SCHEMA);
-                PreparedStatement customersTablePst =
-                     connection.prepareStatement(CREATE_CUSTOMERS_TABLE_QUERY);
-             PreparedStatement cardsTablePst =
-                     connection.prepareStatement(CREATE_CARDS_TABLE_QUERY);
-             PreparedStatement paymentsTablePst =
-                     connection.prepareStatement(CREATE_PAYMENTS_TABLE_QUERY)) {
-            schemaPst.executeUpdate();
-            customersTablePst.executeUpdate();
-            cardsTablePst.executeUpdate();
-            paymentsTablePst.executeUpdate();
-        } catch (SQLException e) {
-            throw new DaoException(e);
-        }
-
-    }
-
     public static void printTrxSum(Connection cn) throws DaoException {
 
         try(PreparedStatement pst = cn.prepareStatement(SELECT_SUM_PAYMENTS_QUERY)) {
