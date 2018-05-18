@@ -1,0 +1,247 @@
+2018-05-12 13:30:15,347 ERROR [main] r.i.c.Runner [Runner.java:104] java.sql.SQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '= last_insert_id()' at line 1
+2018-05-13 21:45:12,345 ERROR [main] r.i.c.Runner [Runner.java:134] src/main/resources/databaseChangeLog.xml does not exist
+2018-05-13 21:46:32,650 ERROR [main] r.i.c.Runner [Runner.java:134] src/main/resources/liquibase/databaseChangeLog.xml does not exist
+2018-05-13 21:47:12,158 ERROR [main] r.i.c.Runner [Runner.java:134] Cannot find parser that supports src/main/resources/liquibase/databaseChangeLog
+2018-05-13 21:47:29,997 ERROR [main] r.i.c.Runner [Runner.java:134] src/main/resources/liquibase/databaseChangeLog.xml does not exist
+2018-05-13 21:50:54,823 ERROR [main] r.i.c.Runner [Runner.java:134] src//main//resources//liquibase//databaseChangeLog.xml does not exist
+2018-05-13 21:54:27,244 ERROR [main] r.i.c.Runner [Runner.java:134] resources//liquibase//databaseChangeLog.xml does not exist
+2018-05-13 21:56:30,845 ERROR [main] r.i.c.Runner [Runner.java:134] /liquibase/databaseChangeLog.xml does not exist
+2018-05-13 21:59:27,606 ERROR [main] r.i.c.Runner [Runner.java:134] main/resources/liquibase/databaseChangeLog.xml does not exist
+2018-05-13 21:59:55,184 ERROR [main] r.i.c.Runner [Runner.java:134] databaseChangeLog.xml does not exist
+2018-05-13 22:03:06,520 ERROR [main] r.i.c.Runner [Runner.java:134] C:/JavaWork/database_project/src/main/resources/liquibase/databaseChangeLog.xml does not exist
+2018-05-13 22:04:10,147 ERROR [main] r.i.c.Runner [Runner.java:134] C:/JavaWork/database_project/src/main/resources/liquibase/databaseChangeLog.xml does not exist
+2018-05-13 22:04:46,452 ERROR [main] r.i.c.Runner [Runner.java:134] C:/JavaWork/database_project/src/main/resources/liquibase/databaseChangeLog.xml does not exist
+2018-05-13 22:05:13,735 ERROR [main] r.i.c.Runner [Runner.java:134] c:/JavaWork/database_project/src/main/resources/liquibase/databaseChangeLog.xml does not exist
+2018-05-14 18:40:24,767 ERROR [main] r.i.c.Runner [Runner.java:121] liquibase.exception.SetupException: createCustomersTableChangeLog.xml does not exist
+2018-05-14 18:49:08,208 ERROR [main] r.i.c.Runner [Runner.java:121] org.h2.jdbc.JdbcSQLException: Таблица "CUSTOMERS" не найдена
+Table "CUSTOMERS" not found; SQL statement:
+INSERT INTO customers.customers (name, surname, telephoneNumber, country, city, street, homeNumber, flatNumber) VALUES (?, ?, ?, ?, ?, ?, ?, ?) [42102-197]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:357)
+	at org.h2.message.DbException.get(DbException.java:179)
+	at org.h2.message.DbException.get(DbException.java:155)
+	at org.h2.schema.Schema.getTableOrView(Schema.java:506)
+	at org.h2.command.Parser.readTableOrView(Parser.java:5903)
+	at org.h2.command.Parser.readTableOrView(Parser.java:5897)
+	at org.h2.command.Parser.parseInsert(Parser.java:1220)
+	at org.h2.command.Parser.parsePrepared(Parser.java:431)
+	at org.h2.command.Parser.parse(Parser.java:335)
+	at org.h2.command.Parser.parse(Parser.java:307)
+	at org.h2.command.Parser.prepareCommand(Parser.java:278)
+	at org.h2.engine.Session.prepareLocal(Session.java:611)
+	at org.h2.server.TcpServerThread.process(TcpServerThread.java:271)
+	at org.h2.server.TcpServerThread.run(TcpServerThread.java:165)
+	at java.lang.Thread.run(Thread.java:745)
+
+2018-05-14 18:52:46,224 ERROR [main] r.i.c.Runner [Runner.java:121] org.h2.jdbc.JdbcSQLException: Схема "CUSTOMERS" не найдена
+Schema "CUSTOMERS" not found; SQL statement:
+INSERT INTO customers.customers (name, surname, telephoneNumber, country, city, street, homeNumber, flatNumber) VALUES (?, ?, ?, ?, ?, ?, ?, ?) [90079-197]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:357)
+	at org.h2.message.DbException.get(DbException.java:179)
+	at org.h2.message.DbException.get(DbException.java:155)
+	at org.h2.command.Parser.getSchema(Parser.java:701)
+	at org.h2.command.Parser.getSchema(Parser.java:707)
+	at org.h2.command.Parser.readTableOrView(Parser.java:5903)
+	at org.h2.command.Parser.readTableOrView(Parser.java:5897)
+	at org.h2.command.Parser.parseInsert(Parser.java:1220)
+	at org.h2.command.Parser.parsePrepared(Parser.java:431)
+	at org.h2.command.Parser.parse(Parser.java:335)
+	at org.h2.command.Parser.parse(Parser.java:307)
+	at org.h2.command.Parser.prepareCommand(Parser.java:278)
+	at org.h2.engine.Session.prepareLocal(Session.java:611)
+	at org.h2.server.TcpServerThread.process(TcpServerThread.java:271)
+	at org.h2.server.TcpServerThread.run(TcpServerThread.java:165)
+	at java.lang.Thread.run(Thread.java:745)
+
+2018-05-14 18:56:56,566 ERROR [main] r.i.c.Runner [Runner.java:121] org.h2.jdbc.JdbcSQLException: Схема "CUSTOMERS" не найдена
+Schema "CUSTOMERS" not found; SQL statement:
+INSERT INTO customers.customers (name, surname, telephoneNumber, country, city, street, homeNumber, flatNumber) VALUES (?, ?, ?, ?, ?, ?, ?, ?) [90079-197]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:357)
+	at org.h2.message.DbException.get(DbException.java:179)
+	at org.h2.message.DbException.get(DbException.java:155)
+	at org.h2.command.Parser.getSchema(Parser.java:701)
+	at org.h2.command.Parser.getSchema(Parser.java:707)
+	at org.h2.command.Parser.readTableOrView(Parser.java:5903)
+	at org.h2.command.Parser.readTableOrView(Parser.java:5897)
+	at org.h2.command.Parser.parseInsert(Parser.java:1220)
+	at org.h2.command.Parser.parsePrepared(Parser.java:431)
+	at org.h2.command.Parser.parse(Parser.java:335)
+	at org.h2.command.Parser.parse(Parser.java:307)
+	at org.h2.command.Parser.prepareCommand(Parser.java:278)
+	at org.h2.engine.Session.prepareLocal(Session.java:611)
+	at org.h2.server.TcpServerThread.process(TcpServerThread.java:271)
+	at org.h2.server.TcpServerThread.run(TcpServerThread.java:165)
+	at java.lang.Thread.run(Thread.java:745)
+
+2018-05-14 18:57:20,704 ERROR [main] r.i.c.Runner [Runner.java:121] org.h2.jdbc.JdbcSQLException: Недопустимое имя базы данных: "~\customers\"
+Invalid database name: "~\customers\" [90138-197]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:357)
+	at org.h2.message.DbException.get(DbException.java:179)
+	at org.h2.message.DbException.get(DbException.java:155)
+	at org.h2.engine.ConnectionInfo.getName(ConnectionInfo.java:404)
+	at org.h2.engine.Engine.openSession(Engine.java:50)
+	at org.h2.engine.Engine.openSession(Engine.java:179)
+	at org.h2.engine.Engine.createSessionAndValidate(Engine.java:157)
+	at org.h2.engine.Engine.createSession(Engine.java:140)
+	at org.h2.server.TcpServerThread.run(TcpServerThread.java:155)
+	at java.lang.Thread.run(Thread.java:745)
+
+2018-05-14 18:58:05,303 ERROR [main] r.i.c.Runner [Runner.java:121] org.h2.jdbc.JdbcSQLException: Схема "CUSTOMERS" не найдена
+Schema "CUSTOMERS" not found; SQL statement:
+INSERT INTO customers.customers (name, surname, telephoneNumber, country, city, street, homeNumber, flatNumber) VALUES (?, ?, ?, ?, ?, ?, ?, ?) [90079-197]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:357)
+	at org.h2.message.DbException.get(DbException.java:179)
+	at org.h2.message.DbException.get(DbException.java:155)
+	at org.h2.command.Parser.getSchema(Parser.java:701)
+	at org.h2.command.Parser.getSchema(Parser.java:707)
+	at org.h2.command.Parser.readTableOrView(Parser.java:5903)
+	at org.h2.command.Parser.readTableOrView(Parser.java:5897)
+	at org.h2.command.Parser.parseInsert(Parser.java:1220)
+	at org.h2.command.Parser.parsePrepared(Parser.java:431)
+	at org.h2.command.Parser.parse(Parser.java:335)
+	at org.h2.command.Parser.parse(Parser.java:307)
+	at org.h2.command.Parser.prepareCommand(Parser.java:278)
+	at org.h2.engine.Session.prepareLocal(Session.java:611)
+	at org.h2.server.TcpServerThread.process(TcpServerThread.java:271)
+	at org.h2.server.TcpServerThread.run(TcpServerThread.java:165)
+	at java.lang.Thread.run(Thread.java:745)
+
+2018-05-14 18:58:26,561 ERROR [main] r.i.c.Runner [Runner.java:121] org.h2.jdbc.JdbcSQLException: Таблица "CUSTOMERS" не найдена
+Table "CUSTOMERS" not found; SQL statement:
+INSERT INTO customers.customers (name, surname, telephoneNumber, country, city, street, homeNumber, flatNumber) VALUES (?, ?, ?, ?, ?, ?, ?, ?) [42102-197]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:357)
+	at org.h2.message.DbException.get(DbException.java:179)
+	at org.h2.message.DbException.get(DbException.java:155)
+	at org.h2.schema.Schema.getTableOrView(Schema.java:506)
+	at org.h2.command.Parser.readTableOrView(Parser.java:5903)
+	at org.h2.command.Parser.readTableOrView(Parser.java:5897)
+	at org.h2.command.Parser.parseInsert(Parser.java:1220)
+	at org.h2.command.Parser.parsePrepared(Parser.java:431)
+	at org.h2.command.Parser.parse(Parser.java:335)
+	at org.h2.command.Parser.parse(Parser.java:307)
+	at org.h2.command.Parser.prepareCommand(Parser.java:278)
+	at org.h2.engine.Session.prepareLocal(Session.java:611)
+	at org.h2.server.TcpServerThread.process(TcpServerThread.java:271)
+	at org.h2.server.TcpServerThread.run(TcpServerThread.java:165)
+	at java.lang.Thread.run(Thread.java:745)
+
+2018-05-14 18:59:08,014 ERROR [main] r.i.c.Runner [Runner.java:121] org.h2.jdbc.JdbcSQLException: Соединение разорвано: "java.net.ConnectException: Connection refused: connect: localhost"
+Connection is broken: "java.net.ConnectException: Connection refused: connect: localhost" [90067-196]
+2018-05-14 19:01:33,524 ERROR [main] r.i.c.Runner [Runner.java:121] org.h2.jdbc.JdbcSQLException: Таблица "CUSTOMERS" не найдена
+Table "CUSTOMERS" not found; SQL statement:
+INSERT INTO customers.customers (name, surname, telephoneNumber, country, city, street, homeNumber, flatNumber) VALUES (?, ?, ?, ?, ?, ?, ?, ?) [42102-197]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:357)
+	at org.h2.message.DbException.get(DbException.java:179)
+	at org.h2.message.DbException.get(DbException.java:155)
+	at org.h2.schema.Schema.getTableOrView(Schema.java:506)
+	at org.h2.command.Parser.readTableOrView(Parser.java:5903)
+	at org.h2.command.Parser.readTableOrView(Parser.java:5897)
+	at org.h2.command.Parser.parseInsert(Parser.java:1220)
+	at org.h2.command.Parser.parsePrepared(Parser.java:431)
+	at org.h2.command.Parser.parse(Parser.java:335)
+	at org.h2.command.Parser.parse(Parser.java:307)
+	at org.h2.command.Parser.prepareCommand(Parser.java:278)
+	at org.h2.engine.Session.prepareLocal(Session.java:611)
+	at org.h2.server.TcpServerThread.process(TcpServerThread.java:271)
+	at org.h2.server.TcpServerThread.run(TcpServerThread.java:165)
+	at java.lang.Thread.run(Thread.java:745)
+
+2018-05-14 19:30:57,243 ERROR [main] r.i.c.Runner [Runner.java:121] Migration failed for change set liquibase/createCustomersTableChangeLog.xml::1::reut:
+     Reason: 
+          liquibase/masterChangeLog.xml : liquibase.precondition.core.TableExistsPrecondition@1294f8 : Table name pattern can not be NULL or empty.
+
+2018-05-14 19:34:04,067 ERROR [main] r.i.c.Runner [Runner.java:121] Validation Failed:
+     1 preconditions generated an error
+     liquibase/masterChangeLog.xml : liquibase.precondition.core.TableExistsPrecondition@1251a66 : Table name pattern can not be NULL or empty.
+
+2018-05-14 19:38:40,149 ERROR [main] r.i.c.Runner [Runner.java:121] Validation Failed:
+     1 preconditions generated an error
+     liquibase/masterChangeLog.xml : liquibase.precondition.core.TableExistsPrecondition@f7f7de : Table name pattern can not be NULL or empty.
+
+2018-05-14 19:43:52,210 ERROR [main] r.i.c.Runner [Runner.java:121] Error parsing line 12 column 40 of liquibase/masterChangeLog.xml: cvc-complex-type.2.4.a: Invalid content was found starting with element 'changeSet'. One of '{"http://www.liquibase.org/xml/ns/dbchangelog":validCheckSum, "http://www.liquibase.org/xml/ns/dbchangelog":preConditions, "http://www.liquibase.org/xml/ns/dbchangelog":tagDatabase, "http://www.liquibase.org/xml/ns/dbchangelog":comment, "http://www.liquibase.org/xml/ns/dbchangelog":createTable, "http://www.liquibase.org/xml/ns/dbchangelog":dropTable, "http://www.liquibase.org/xml/ns/dbchangelog":createView, "http://www.liquibase.org/xml/ns/dbchangelog":renameView, "http://www.liquibase.org/xml/ns/dbchangelog":dropView, "http://www.liquibase.org/xml/ns/dbchangelog":insert, "http://www.liquibase.org/xml/ns/dbchangelog":addColumn, "http://www.liquibase.org/xml/ns/dbchangelog":sql, "http://www.liquibase.org/xml/ns/dbchangelog":createProcedure, "http://www.liquibase.org/xml/ns/dbchangelog":dropProcedure, "http://www.liquibase.org/xml/ns/dbchangelog":sqlFile, "http://www.liquibase.org/xml/ns/dbchangelog":renameTable, "http://www.liquibase.org/xml/ns/dbchangelog":renameColumn, "http://www.liquibase.org/xml/ns/dbchangelog":dropColumn, "http://www.liquibase.org/xml/ns/dbchangelog":mergeColumns, "http://www.liquibase.org/xml/ns/dbchangelog":modifyDataType, "http://www.liquibase.org/xml/ns/dbchangelog":createSequence, "http://www.liquibase.org/xml/ns/dbchangelog":alterSequence, "http://www.liquibase.org/xml/ns/dbchangelog":dropSequence, "http://www.liquibase.org/xml/ns/dbchangelog":createIndex, "http://www.liquibase.org/xml/ns/dbchangelog":dropIndex, "http://www.liquibase.org/xml/ns/dbchangelog":addNotNullConstraint, "http://www.liquibase.org/xml/ns/dbchangelog":dropNotNullConstraint, "http://www.liquibase.org/xml/ns/dbchangelog":addForeignKeyConstraint, "http://www.liquibase.org/xml/ns/dbchangelog":dropForeignKeyConstraint, "http://www.liquibase.org/xml/ns/dbchangelog":dropAllForeignKeyConstraints, "http://www.liquibase.org/xml/ns/dbchangelog":addPrimaryKey, "http://www.liquibase.org/xml/ns/dbchangelog":dropPrimaryKey, "http://www.liquibase.org/xml/ns/dbchangelog":addLookupTable, "http://www.liquibase.org/xml/ns/dbchangelog":addAutoIncrement, "http://www.liquibase.org/xml/ns/dbchangelog":addDefaultValue, "http://www.liquibase.org/xml/ns/dbchangelog":dropDefaultValue, "http://www.liquibase.org/xml/ns/dbchangelog":addUniqueConstraint, "http://www.liquibase.org/xml/ns/dbchangelog":dropUniqueConstraint, "http://www.liquibase.org/xml/ns/dbchangelog":customChange, "http://www.liquibase.org/xml/ns/dbchangelog":update, "http://www.liquibase.org/xml/ns/dbchangelog":delete, "http://www.liquibase.org/xml/ns/dbchangelog":loadData, "http://www.liquibase.org/xml/ns/dbchangelog":loadUpdateData, "http://www.liquibase.org/xml/ns/dbchangelog":executeCommand, "http://www.liquibase.org/xml/ns/dbchangelog":stop, "http://www.liquibase.org/xml/ns/dbchangelog":rollback, WC[##other:"http://www.liquibase.org/xml/ns/dbchangelog"], "http://www.liquibase.org/xml/ns/dbchangelog":modifySql}' is expected.
+2018-05-14 19:45:49,631 ERROR [main] r.i.c.Runner [Runner.java:121] java.sql.SQLSyntaxErrorException: Table 'customers.customers' doesn't exist
+2018-05-14 19:51:58,799 ERROR [main] r.i.c.Runner [Runner.java:122] Validation Failed:
+     1 preconditions generated an error
+     liquibase/masterChangeLog.xml : liquibase.precondition.core.TableExistsPrecondition@f7f7de : Table name pattern can not be NULL or empty.
+
+2018-05-14 19:52:55,844 ERROR [main] r.i.c.Runner [Runner.java:122] Migration failed for change set liquibase/masterChangeLog.xml::1::bob:
+     Reason: 
+          liquibase/masterChangeLog.xml : liquibase.precondition.core.TableExistsPrecondition@5338df : Table name pattern can not be NULL or empty.
+
+2018-05-14 20:05:03,617 ERROR [main] r.i.c.Runner [Runner.java:122] liquibase/masterChangeLog.xml does not exist
+2018-05-14 20:33:41,742 ERROR [main] r.i.c.Runner [Runner.java:123] Validation Failed:
+     1 preconditions generated an error
+     liquibase/masterChangeLog.xml : liquibase.precondition.core.TableExistsPrecondition@f7f7de : Table name pattern can not be NULL or empty.
+
+2018-05-14 20:52:31,963 ERROR [main] r.i.c.Runner [Runner.java:123] liquibase/masterChangeLog.xml does not exist
+2018-05-14 20:52:59,571 ERROR [main] r.i.c.Runner [Runner.java:123] Migration failed for change set liquibase/changeLog.xml::100::reut:
+     Reason: liquibase.exception.DatabaseException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '`id` INT NOT NULL AUTO_INCREMENT,
+            `name` VARCHAR(45) NOT NULL,
+     ' at line 2 [Failed SQL: CREATE TABLE IF NOT EXISTS`customers`.`customers`
+           `id` INT NOT NULL AUTO_INCREMENT,
+            `name` VARCHAR(45) NOT NULL,
+            `surname` VARCHAR(45) NOT NULL,
+            `telephoneNumber` VARCHAR(45) NOT NULL,
+            `country` VARCHAR(45) NOT NULL,
+           `city` VARCHAR(45) NOT NULL
+           `street` VARCHAR(45) NOT NULL,
+            `homeNumber` VARCHAR(45) NOT NULL,
+           `flatNumber` VARCHAR(45) NULL,
+            PRIMARY KEY (`id`))]
+2018-05-14 20:57:21,072 ERROR [main] r.i.c.Runner [Runner.java:123] Migration failed for change set liquibase/changeLog.xml::100::reut:
+     Reason: 
+          liquibase/changeLog.xml : liquibase.precondition.core.TableExistsPrecondition@1d2da2d : Table name pattern can not be NULL or empty.
+
+2018-05-14 20:58:19,036 ERROR [main] r.i.c.Runner [Runner.java:123] Validation Failed:
+     1 preconditions generated an error
+     liquibase/changeLog.xml : liquibase.precondition.core.TableExistsPrecondition@f7f7de : Table name pattern can not be NULL or empty.
+
+2018-05-14 20:58:57,810 ERROR [main] r.i.c.Runner [Runner.java:123] Validation Failed:
+     1 preconditions generated an error
+     liquibase/changeLog.xml : liquibase.precondition.core.TableExistsPrecondition@f7f7de : Table name pattern can not be NULL or empty.
+
+2018-05-14 21:00:14,815 ERROR [main] r.i.c.Runner [Runner.java:123] Migration failed for change set liquibase/changeLog.xml::100::reut:
+     Reason: 
+          liquibase/changeLog.xml : liquibase.precondition.core.TableExistsPrecondition@1d2da2d : Table name pattern can not be NULL or empty.
+
+2018-05-14 21:01:56,410 ERROR [main] r.i.c.Runner [Runner.java:123] liquibase.exception.DatabaseException: Incorrect database name '' [Failed SQL: CREATE TABLE ``.DATABASECHANGELOGLOCK (ID INT NOT NULL, LOCKED BIT(1) NOT NULL, LOCKGRANTED datetime NULL, LOCKEDBY VARCHAR(255) NULL, CONSTRAINT PK_DATABASECHANGELOGLOCK PRIMARY KEY (ID))]
+2018-05-14 21:02:40,231 ERROR [main] r.i.c.Runner [Runner.java:123] liquibase.exception.DatabaseException: Incorrect database name '' [Failed SQL: CREATE TABLE ``.DATABASECHANGELOGLOCK (ID INT NOT NULL, LOCKED BIT(1) NOT NULL, LOCKGRANTED datetime NULL, LOCKEDBY VARCHAR(255) NULL, CONSTRAINT PK_DATABASECHANGELOGLOCK PRIMARY KEY (ID))]
+2018-05-14 21:03:25,024 ERROR [main] r.i.c.Runner [Runner.java:123] liquibase.exception.DatabaseException: Incorrect database name '' [Failed SQL: CREATE TABLE ``.DATABASECHANGELOGLOCK (ID INT NOT NULL, LOCKED BIT(1) NOT NULL, LOCKGRANTED datetime NULL, LOCKEDBY VARCHAR(255) NULL, CONSTRAINT PK_DATABASECHANGELOGLOCK PRIMARY KEY (ID))]
+2018-05-14 21:04:00,291 ERROR [main] r.i.c.Runner [Runner.java:123] liquibase.exception.DatabaseException: Incorrect database name '' [Failed SQL: CREATE TABLE ``.DATABASECHANGELOGLOCK (ID INT NOT NULL, LOCKED BIT(1) NOT NULL, LOCKGRANTED datetime NULL, LOCKEDBY VARCHAR(255) NULL, CONSTRAINT PK_DATABASECHANGELOGLOCK PRIMARY KEY (ID))]
+2018-05-14 21:04:26,441 ERROR [main] r.i.c.Runner [Runner.java:123] Problems with connection to MySQL database
+2018-05-14 21:04:48,242 ERROR [main] r.i.c.Runner [Runner.java:123] Migration failed for change set liquibase/changeLog.xml::100::reut:
+     Reason: 
+          liquibase/changeLog.xml : liquibase.precondition.core.TableExistsPrecondition@1d2da2d : Table name pattern can not be NULL or empty.
+
+2018-05-14 21:05:45,979 ERROR [main] r.i.c.Runner [Runner.java:123] Migration failed for change set liquibase/changeLog.xml::100::reut:
+     Reason: liquibase.exception.DatabaseException: Incorrect table definition; there can be only one auto column and it must be defined as a key [Failed SQL: CREATE TABLE customers.`table` (`column` INT AUTO_INCREMENT NULL)]
+2018-05-14 21:32:17,993 ERROR [main] r.i.c.Runner [Runner.java:123] liquibase.exception.SetupException: liquibase/db.changelog-createCustomersTable.xml does not exist
+2018-05-14 21:36:36,576 ERROR [main] r.i.c.Runner [Runner.java:123] Validation Failed:
+     1 preconditions generated an error
+     liquibase/db.changelog-master.xml : liquibase.precondition.core.TableExistsPrecondition@1fb19a0 : Table name pattern can not be NULL or empty.
+
+2018-05-14 21:51:25,559 ERROR [main] r.i.c.Runner [Runner.java:123] Migration failed for change set liquibase/db.changelog-createCustomersTable.xml::1::reut:
+     Reason: liquibase.exception.DatabaseException: Схема "CUSTOMERS" не найдена
+Schema "CUSTOMERS" not found; SQL statement:
+CREATE TABLE customers.customers (id INT AUTO_INCREMENT NOT NULL, CONSTRAINT PK_CUSTOMERS PRIMARY KEY (id)) [90079-196] [Failed SQL: CREATE TABLE customers.customers (id INT AUTO_INCREMENT NOT NULL, CONSTRAINT PK_CUSTOMERS PRIMARY KEY (id))]
+2018-05-14 22:02:05,352 ERROR [main] r.i.c.Runner [Runner.java:124] liquibase.exception.DatabaseException: Incorrect database name '' [Failed SQL: CREATE TABLE ``.DATABASECHANGELOGLOCK (ID INT NOT NULL, LOCKED BIT(1) NOT NULL, LOCKGRANTED datetime NULL, LOCKEDBY VARCHAR(255) NULL, CONSTRAINT PK_DATABASECHANGELOGLOCK PRIMARY KEY (ID))]
+2018-05-14 22:16:05,223 ERROR [main] r.i.c.Runner [Runner.java:124] Validation Failed:
+     1 change sets check sum
+          liquibase/db.changelog-createCustomersTable.xml::1::reut was: 7:8e8c0d9ee7ec41af303e34249e3d3ccb but is now: 7:29b6be6d7498fb4fb653dd0a28e7c911
+
+2018-05-14 22:24:53,877 ERROR [main] r.i.c.Runner [Runner.java:124] Validation Failed:
+     3 change sets check sum
+          liquibase/db.changelog-createCustomersTable.xml::1::reut was: 7:8e8c0d9ee7ec41af303e34249e3d3ccb but is now: 7:29b6be6d7498fb4fb653dd0a28e7c911
+          liquibase/db.changelog-createCardsTable.xml::2::reut was: 7:6dd5343e37e2ac86c5d0bcf39c0f75e9 but is now: 7:e533bda4387e6132975318b9b2568c80
+          liquibase/db.changelog-createPaymentsTable.xml::3::reut was: 7:05618f3bf28c78325b02c97a0dc30085 but is now: 7:b583311dd651d2462efe3e0cf3c8ef9e
+
+2018-05-14 22:26:19,461 ERROR [main] r.i.c.Runner [Runner.java:124] com.mysql.cj.jdbc.exceptions.MysqlDataTruncation: Data truncation: Data too long for column 'street' at row 1
+2018-05-14 22:28:02,032 ERROR [main] r.i.c.Runner [Runner.java:124] Validation Failed:
+     1 change sets check sum
+          liquibase/db.changelog-createCustomersTable.xml::1::reut was: 7:29b6be6d7498fb4fb653dd0a28e7c911 but is now: 7:49e5bc70000c4be2cd22c2b38075377d
+
+2018-05-14 22:34:01,200 ERROR [main] r.i.c.Runner [Runner.java:124] Validation Failed:
+     3 change sets check sum
+          liquibase/db.changelog-createCustomersTable.xml::1::reut was: 7:8e8c0d9ee7ec41af303e34249e3d3ccb but is now: 7:49e5bc70000c4be2cd22c2b38075377d
+          liquibase/db.changelog-createCardsTable.xml::2::reut was: 7:6dd5343e37e2ac86c5d0bcf39c0f75e9 but is now: 7:e533bda4387e6132975318b9b2568c80
+          liquibase/db.changelog-createPaymentsTable.xml::3::reut was: 7:05618f3bf28c78325b02c97a0dc30085 but is now: 7:b583311dd651d2462efe3e0cf3c8ef9e
+
