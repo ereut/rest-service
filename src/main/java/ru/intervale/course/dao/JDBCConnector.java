@@ -1,6 +1,7 @@
 package ru.intervale.course.dao;
 
 import org.slf4j.LoggerFactory;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -23,9 +24,10 @@ public class JDBCConnector {
                     final String MY_SQL_DB_URL = "jdbc:mysql://localhost/customers?" +
                             "autoReconnect=true&useSSL=false&useUnicode=true&useJDBCCompliantTimezoneShift=true" +
                             "&useLegacyDatetimeCode=false&serverTimezone=UTC&nullNamePatternMatchesAll=true";
+                    Class.forName("com.mysql.cj.jdbc.Driver");
                     connection = DriverManager.getConnection(MY_SQL_DB_URL, properties);
                     return connection;
-                } catch (SQLException e) {
+                } catch (SQLException | ClassNotFoundException e) {
                     throw new DaoException("Problems with connection to MySQL database", e) ;
                 }
             }
@@ -35,10 +37,11 @@ public class JDBCConnector {
                 try {
                     Properties properties = new Properties();
                     properties.put("user", "sa");
+                    Class.forName("org.h2.Driver");
                     connection =
                             DriverManager.getConnection("jdbc:h2:tcp://localhost/~/customers", properties);
                     return connection;
-                } catch (SQLException e) {
+                } catch (SQLException | ClassNotFoundException e) {
                     throw new DaoException(e);
                 }
 
@@ -60,5 +63,4 @@ public class JDBCConnector {
         return DaoEnum.valueOf(dao.toUpperCase()).getConnection();
 
     }
-
 }

@@ -6,6 +6,7 @@ import liquibase.Liquibase;
 import liquibase.database.Database;
 import liquibase.database.DatabaseFactory;
 import liquibase.database.jvm.JdbcConnection;
+import liquibase.exception.DatabaseException;
 import liquibase.exception.LiquibaseException;
 import liquibase.resource.ClassLoaderResourceAccessor;
 import org.slf4j.Logger;
@@ -17,11 +18,15 @@ import ru.intervale.course.beans.PaymentTrx;
 import ru.intervale.course.dao.*;
 import ru.intervale.course.utils.DatabaseUtils;
 
+import javax.servlet.ServletException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 public class Runner {
+
+    private static Logger log = LoggerFactory.getLogger(Runner.class);
 
     private static void printEntities(String header,
                                       List<? extends AbstractEntity> entitiesList) {
@@ -31,17 +36,32 @@ public class Runner {
         }
         System.out.println();
     }
+/*
+    private static void runTomcatEmb() throws LifecycleException, ServletException {
+        final Optional<String> port = Optional.ofNullable(System.getenv("PORT"));
+        String contextPath = "/api";
+        String appBase = ".";
+        Tomcat tomcat = new Tomcat();
+        tomcat.setPort(Integer.valueOf(port.orElse("8080") ));
+        tomcat.getHost().setAppBase(appBase);
+        tomcat.addWebapp(contextPath, appBase);
+        tomcat.start();
+        tomcat.getServer().await();
+    }
+*/
+    private static void runLiquibase(Connection cn) throws LiquibaseException {
+        Database database =
+                DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(cn));
+        Liquibase liquibase = new liquibase.Liquibase("liquibase/db.changelog-master.xml",
+                new ClassLoaderResourceAccessor(), database);
+        liquibase.update(new Contexts(), new LabelExpression());
+    }
 
-    private static Logger log = LoggerFactory.getLogger(Runner.class);
 
     public static void main(String args[]) {
 
         try (Connection cn = JDBCConnector.getConnection();) {
-            Database database =
-                    DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(cn));
-            Liquibase liquibase = new liquibase.Liquibase("liquibase/db.changelog-master.xml",
-                    new ClassLoaderResourceAccessor(), database);
-            liquibase.update(new Contexts(), new LabelExpression());
+           runLiquibase(cn);
 
             IDao<Customer> customerIDao = new CustomerJDBCDao(cn);
             IDao<Card> cardIDao = new CardJDBCDao(cn);

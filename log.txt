@@ -245,3 +245,7 @@ CREATE TABLE customers.customers (id INT AUTO_INCREMENT NOT NULL, CONSTRAINT PK_
           liquibase/db.changelog-createCardsTable.xml::2::reut was: 7:6dd5343e37e2ac86c5d0bcf39c0f75e9 but is now: 7:e533bda4387e6132975318b9b2568c80
           liquibase/db.changelog-createPaymentsTable.xml::3::reut was: 7:05618f3bf28c78325b02c97a0dc30085 but is now: 7:b583311dd651d2462efe3e0cf3c8ef9e
 
+2018-05-20 17:28:01,806 ERROR [main] r.i.c.Runner [Runner.java:126] org.h2.jdbc.JdbcSQLException: Соединение разорвано: "java.net.ConnectException: Connection refused: connect: localhost"
+Connection is broken: "java.net.ConnectException: Connection refused: connect: localhost" [90067-196]
+2018-05-20 18:27:53,499 ERROR [main] r.i.c.Runner [Runner.java:126] org.h2.jdbc.JdbcSQLException: Соединение разорвано: "java.net.ConnectException: Connection refused: connect: localhost"
+Connection is broken: "java.net.ConnectException: Connection refused: connect: localhost" [90067-196]

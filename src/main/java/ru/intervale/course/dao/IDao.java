@@ -15,3 +15,4 @@ public interface IDao<T extends AbstractEntity> extends Serializable {
     T persist(T entity) throws DaoException;
 
 }
+

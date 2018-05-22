@@ -5,9 +5,6 @@ import java.util.Locale;
 public class Customer extends AbstractEntity {
 
     private String name;
-
-
-
     private String surname;
     private String telephoneNumber;
     private Address address;
