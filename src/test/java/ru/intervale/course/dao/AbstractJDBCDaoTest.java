@@ -15,6 +15,7 @@ public class AbstractJDBCDaoTest {
         if (cn == null) {
             try {
                 cn = DriverManager.getConnection("jdbc:h2:tcp://localhost/~/customers", "sa", "");
+                cn.setAutoCommit(false);
             } catch (SQLException e) {
                 throw new DaoException("Problems with connection to database during tests ", e);
             }

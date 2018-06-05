@@ -9,6 +9,10 @@ public class Customer extends AbstractEntity {
     private String telephoneNumber;
     private Address address;
 
+    public Customer() {
+        super();
+        this.address = new Customer.Address();
+    }
 
     public Customer(int id, String name, String surname, String telephoneNumber,
                     String country, String city, String street, String homeNumber,
@@ -43,6 +47,7 @@ public class Customer extends AbstractEntity {
             this.homeNumber = homeNumber;
             this.flatNumber = flatNumber;
         }
+        public Address() {};
 
         public String getCountry() {
             return country;

@@ -6,9 +6,10 @@ import liquibase.Liquibase;
 import liquibase.database.Database;
 import liquibase.database.DatabaseFactory;
 import liquibase.database.jvm.JdbcConnection;
-import liquibase.exception.DatabaseException;
 import liquibase.exception.LiquibaseException;
 import liquibase.resource.ClassLoaderResourceAccessor;
+import org.apache.catalina.LifecycleException;
+import org.apache.catalina.startup.Tomcat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.intervale.course.beans.AbstractEntity;
@@ -19,10 +20,10 @@ import ru.intervale.course.dao.*;
 import ru.intervale.course.utils.DatabaseUtils;
 
 import javax.servlet.ServletException;
+import java.io.File;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Optional;
 
 public class Runner {
 
@@ -36,19 +37,22 @@ public class Runner {
         }
         System.out.println();
     }
-/*
+
     private static void runTomcatEmb() throws LifecycleException, ServletException {
-        final Optional<String> port = Optional.ofNullable(System.getenv("PORT"));
-        String contextPath = "/api";
-        String appBase = ".";
+
         Tomcat tomcat = new Tomcat();
-        tomcat.setPort(Integer.valueOf(port.orElse("8080") ));
-        tomcat.getHost().setAppBase(appBase);
-        tomcat.addWebapp(contextPath, appBase);
+        tomcat.setPort(8080);
+
+        String contextPath = "/api";
+        String warFilePath;
+        warFilePath = new File("target/database_project-1.0").getAbsolutePath();
+        tomcat.getHost().setAppBase(".");
+        tomcat.addWebapp(contextPath, warFilePath);
         tomcat.start();
         tomcat.getServer().await();
+
     }
-*/
+
     private static void runLiquibase(Connection cn) throws LiquibaseException {
         Database database =
                 DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(cn));
@@ -61,7 +65,7 @@ public class Runner {
     public static void main(String args[]) {
 
         try (Connection cn = JDBCConnector.getConnection();) {
-           runLiquibase(cn);
+            runLiquibase(cn);
 
             IDao<Customer> customerIDao = new CustomerJDBCDao(cn);
             IDao<Card> cardIDao = new CardJDBCDao(cn);
@@ -117,10 +121,13 @@ public class Runner {
             DatabaseUtils.printTrxSum(cn);
             DatabaseUtils.printPaymentsByCustomers(cn);
             cn.commit();
+            runTomcatEmb();
 
-        } catch (SQLException | DaoException | LiquibaseException e) {
+        } catch (SQLException | DaoException | LiquibaseException | ServletException |
+                LifecycleException e) {
             log.error(e.getMessage());
         }
 
     }
+
 }
