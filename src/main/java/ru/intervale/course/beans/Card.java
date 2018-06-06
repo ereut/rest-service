@@ -13,6 +13,10 @@ public class Card extends AbstractEntity {
     private String expiryCardDate;
     private String registerCardTime;
 
+    public Card() {
+        super();
+    }
+
     public Card(int id, int customerId, String panCard,String expiryCardDate,
                 String registerCardTime) {
         super(id);
@@ -45,6 +49,18 @@ public class Card extends AbstractEntity {
 
     public String getRegisterCardTime() {
         return registerCardTime;
+    }
+
+    public void setCustomerId(int customerId) {
+        this.customerId = customerId;
+    }
+
+    public void setPanCard(String panCard) {
+        this.panCard = panCard;
+    }
+
+    public void setExpiryCardDate(String expiryCardDate) {
+        this.expiryCardDate = expiryCardDate;
     }
 
     @Override

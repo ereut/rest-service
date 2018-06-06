@@ -5,10 +5,13 @@ import ru.intervale.course.dao.CardJDBCDao;
 import ru.intervale.course.dao.IDao;
 
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServletRequest;
 
 @WebServlet("/card/*")
 public class CardServlet extends AbstractServlet<Card, CardJDBCDao> {
+
+    private enum CardFields {
+        ID, CUSTOMERID, PAN, EXPIRY
+    }
 
     @Override
     protected IDao<Card> getDaoImpl() {
@@ -16,14 +19,30 @@ public class CardServlet extends AbstractServlet<Card, CardJDBCDao> {
     }
 
     @Override
-    protected Card parseAddReqBody(String body) {
-        return null;
-    }
+    protected Card parseReqBody(String body) {
 
-    @Override
-    protected Card parseUpdateReqBody(String body) {
-        return null;
-    }
+        Card card = new Card();
 
+        for (String str : body.split("\n")) {
+
+            CardFields field = CardFields.valueOf(getKeyFromLine(body).toUpperCase());
+
+            switch (field) {
+                case ID:
+                    card.setId(Integer.valueOf(getValueFromLine(str).trim()));
+                    break;
+                case CUSTOMERID:
+                    card.setCustomerId(Integer.valueOf(getValueFromLine(str).trim()));
+                    break;
+                case PAN:
+                    card.setPanCard(getValueFromLine(str));
+                    break;
+                case EXPIRY:
+                    card.setExpiryCardDate(getValueFromLine(getValueFromLine(str)));
+                    break;
+            }
+        }
+        return card;
+    }
 
 }

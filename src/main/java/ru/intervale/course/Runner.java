@@ -64,7 +64,8 @@ public class Runner {
 
     public static void main(String args[]) {
 
-        try (Connection cn = JDBCConnector.getConnection();) {
+        try (Connection cn = JDBCConnector.getConnection()) {
+            runTomcatEmb();
             runLiquibase(cn);
 
             IDao<Customer> customerIDao = new CustomerJDBCDao(cn);
@@ -121,7 +122,6 @@ public class Runner {
             DatabaseUtils.printTrxSum(cn);
             DatabaseUtils.printPaymentsByCustomers(cn);
             cn.commit();
-            runTomcatEmb();
 
         } catch (SQLException | DaoException | LiquibaseException | ServletException |
                 LifecycleException e) {

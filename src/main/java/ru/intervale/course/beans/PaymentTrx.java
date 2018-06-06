@@ -22,6 +22,10 @@ public class PaymentTrx extends AbstractEntity {
     private int value;
     private MoneyCurrencies moneyCurrency;
 
+    public PaymentTrx() {
+        super();
+    }
+
     public PaymentTrx(int id, int cardId, Time startTrxTime, Time finishTrxTime,
                       int value, String moneyCurrency) {
         super(id);
@@ -55,6 +59,22 @@ public class PaymentTrx extends AbstractEntity {
 
     public MoneyCurrencies getMoneyCurrency() {
         return moneyCurrency;
+    }
+
+    public void setCardId(int cardId) {
+        this.cardId = cardId;
+    }
+
+    public void setValue(int value) {
+        this.value = value;
+    }
+
+    public void setMoneyCurrency(MoneyCurrencies moneyCurrency) {
+        this.moneyCurrency = moneyCurrency;
+    }
+
+    public void setMoneyCurrency (String moneyCurrency) {
+        this.moneyCurrency = MoneyCurrencies.valueOf(moneyCurrency.toUpperCase());
     }
 
     @Override

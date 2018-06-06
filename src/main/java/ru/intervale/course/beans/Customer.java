@@ -47,7 +47,7 @@ public class Customer extends AbstractEntity {
             this.homeNumber = homeNumber;
             this.flatNumber = flatNumber;
         }
-        public Address() {};
+        public Address() {}
 
         public String getCountry() {
             return country;

@@ -1,6 +1,6 @@
 package ru.intervale.course.servlets;
 
-public class IllegalUriFormatException extends Exception {
+public class IllegalUriFormatException extends IllegalArgumentException {
 
     public IllegalUriFormatException(){
         super();

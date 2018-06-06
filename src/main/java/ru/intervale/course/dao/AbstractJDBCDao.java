@@ -11,23 +11,23 @@ import java.util.List;
 
 public abstract class AbstractJDBCDao<T extends AbstractEntity> implements IDao<T> {
 
-    protected Connection connection;
+    private Connection connection;
 
     public AbstractJDBCDao(Connection connection) {
         this.connection = connection;
     }
 
-    public abstract String getSelectQuery();
-    public abstract String getDeleteQuery();
-    public abstract String getUpdateQuery();
-    public abstract String getCreateQuery();
+    protected abstract String getSelectQuery();
+    protected abstract String getDeleteQuery();
+    protected abstract String getUpdateQuery();
+    protected abstract String getCreateQuery();
     protected abstract void prepareStatementForUpdate(PreparedStatement pst, T entity)
             throws DaoException;
     protected abstract void prepareStatementForInsert(PreparedStatement pst, T entity)
             throws DaoException;
     protected abstract List<T> parseResultSet(ResultSet rs) throws DaoException;
 
-    public String getSelectByIdQuery() {
+    private String getSelectByIdQuery() {
         return getSelectQuery() + " WHERE id = ?";
     }
 
@@ -84,7 +84,8 @@ public abstract class AbstractJDBCDao<T extends AbstractEntity> implements IDao<
             if (count == 1) {
                 return true;
             } else {
-                throw new DaoException("Update more or less that one record " + count);
+                LoggerFactory.getLogger(AbstractJDBCDao.class).error("Update more or less that one record ");
+                return false;
             }
         } catch (SQLException e) {
            throw new DaoException(e);
@@ -122,6 +123,5 @@ public abstract class AbstractJDBCDao<T extends AbstractEntity> implements IDao<
         }
 
     }
-
 
 }

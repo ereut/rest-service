@@ -9,8 +9,8 @@ import javax.servlet.annotation.WebServlet;
 @WebServlet("/customer/*")
 public class CustomerServlet extends AbstractServlet<Customer, CustomerJDBCDao> {
 
-    private enum CustomersFields {
-        ID, NAME, SURNAME, TELEPHONENUMBER, COUNTRY, CITY, STREET, HOMENUMBER, FLATNUMBER;
+    private enum CustomerFields {
+        ID, NAME, SURNAME, TELEPHONENUMBER, COUNTRY, CITY, STREET, HOMENUMBER, FLATNUMBER
     }
 
     @Override
@@ -19,11 +19,14 @@ public class CustomerServlet extends AbstractServlet<Customer, CustomerJDBCDao> 
     }
 
     @Override
-    protected Customer parseAddReqBody(String body) {
+    protected Customer parseReqBody(String body) {
         Customer customer = new Customer();
-        for (String str : body.split("/t")) {
-            CustomersFields field = CustomersFields.valueOf(getKeyFromLine(str).toUpperCase());
+        for (String str : body.split("\n")) {
+            CustomerFields field = CustomerFields.valueOf(getKeyFromLine(str).toUpperCase());
             switch (field) {
+                case ID:
+                    customer.setId(Integer.valueOf(getValueFromLine(str.trim())));
+                    break;
                 case NAME:
                     customer.setName(getValueFromLine(str));
                     break;
@@ -52,11 +55,4 @@ public class CustomerServlet extends AbstractServlet<Customer, CustomerJDBCDao> 
         }
         return customer;
     }
-
-    @Override
-    protected Customer parseUpdateReqBody(String body) {
-        return null;
-    }
-
-
 }

@@ -7,7 +7,7 @@ public enum StatusCodes {
     private int codeNumber;
     private String description;
 
-    private StatusCodes(int codeNumber, String description) {
+    StatusCodes(int codeNumber, String description) {
         this.codeNumber = codeNumber;
         this.description = description;
     }
