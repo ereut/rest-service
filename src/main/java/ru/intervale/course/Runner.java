@@ -1,32 +1,18 @@
 package ru.intervale.course;
 
 import ch.qos.logback.classic.Logger;
-import liquibase.Contexts;
-import liquibase.LabelExpression;
-import liquibase.Liquibase;
-import liquibase.database.Database;
-import liquibase.database.DatabaseFactory;
-import liquibase.database.jvm.JdbcConnection;
-import liquibase.exception.LiquibaseException;
-import liquibase.resource.ClassLoaderResourceAccessor;
 import org.slf4j.LoggerFactory;
 import ru.intervale.course.beans.AbstractEntity;
 import ru.intervale.course.beans.Card;
 import ru.intervale.course.beans.Customer;
 import ru.intervale.course.beans.PaymentTrx;
 import ru.intervale.course.dao.*;
-import ru.intervale.course.impl.CardJDBCDaoImpl;
-import ru.intervale.course.impl.CustomerJDBCDaoImpl;
-import ru.intervale.course.impl.PaymentTrxJDBCDaoImpl;
 import ru.intervale.course.utils.DatabaseUtils;
 
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
 
 public class Runner {
-
-
 
     private static void printEntities(String header,
                                       List<? extends AbstractEntity> entitiesList) {
@@ -41,12 +27,10 @@ public class Runner {
 
     public static void main(String args[]) {
 
-        try (Connection cn = JDBCConnector.getConnection();) {
-
-
-            IDao<Customer> customerIDao = new CustomerJDBCDaoImpl(cn);
-            IDao<Card> cardIDao = new CardJDBCDaoImpl(cn);
-            IDao<PaymentTrx> paymentTrxIDao = new PaymentTrxJDBCDaoImpl(cn);
+        try {
+            IDao<Customer> customerIDao = DaoFactory.getCustomerDaoImplFromFactory();
+            IDao<Card> cardIDao = DaoFactory.getCardDaoImplFromFactory();
+            IDao<PaymentTrx> paymentTrxIDao = DaoFactory.getPaymentTrxDaoImplFromFactory();
 
             //customers
             Customer customerYauheni = customerIDao.persist(new Customer("Yauheni","Reut",
@@ -95,11 +79,12 @@ public class Runner {
             printEntities(Constants.CARDS_PRINT_HEADER, cardIDao.getAll());
             printEntities(Constants.PAYMENTS_PRINT_HEADER, paymentTrxIDao.getAll());
 
+            Connection cn = DaoFactory.getJDBCConnection();
+
             DatabaseUtils.printTrxSum(cn);
             DatabaseUtils.printPaymentsByCustomers(cn);
-            cn.commit();
 
-        } catch (SQLException | DaoException e) {
+        } catch (DaoException e) {
             log.error(e.getMessage());
         }
 
