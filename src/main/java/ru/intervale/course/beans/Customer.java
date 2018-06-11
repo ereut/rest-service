@@ -4,15 +4,17 @@ import java.util.Locale;
 
 public class Customer extends AbstractEntity {
 
+    private static final String CUSTOMER_PRINT_FORMAT = "|%-5d|%-10s|%-15s|%-12s|%-45s|%-15s|%-15s|";
+    private static final String CUSTOMER_ADDRESS_PRINT_FORMAT = "%s;%s;%s;%s;%s";
+    private static final String DASH = "-";
+
     private String name;
     private String surname;
     private String telephoneNumber;
     private Address address;
+    private String login;
+    private String password;
 
-    public Customer() {
-        super();
-        this.address = new Customer.Address();
-    }
 
     public Customer(int id, String name, String surname, String telephoneNumber,
                     String country, String city, String street, String homeNumber,
@@ -47,7 +49,6 @@ public class Customer extends AbstractEntity {
             this.homeNumber = homeNumber;
             this.flatNumber = flatNumber;
         }
-        public Address() {}
 
         public String getCountry() {
             return country;
@@ -69,29 +70,9 @@ public class Customer extends AbstractEntity {
             return flatNumber;
         }
 
-        public void setCity(String city) {
-            this.city = city;
-        }
-
-        public void setCountry(String country) {
-            this.country = country;
-        }
-
-        public void setStreet(String street) {
-            this.street = street;
-        }
-
-        public void setFlatNumber(String flatNumber) {
-            this.flatNumber = flatNumber;
-        }
-
-        public void setHomeNumber(String homeNumber) {
-            this.homeNumber = homeNumber;
-        }
-
         @Override
         public String toString() {
-            return String.format(Locale.ENGLISH, "%s;%s;%s;%s;%s", country, city,street,
+            return String.format(Locale.ENGLISH, CUSTOMER_ADDRESS_PRINT_FORMAT, country, city,street,
                     homeNumber,flatNumber);
         }
 
@@ -127,31 +108,27 @@ public class Customer extends AbstractEntity {
         return address;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getLogin() {
+        return login;
     }
 
-    public void setSurname(String surname) {
-        this.surname = surname;
+    public String getPassword() {
+        return password;
     }
 
-    public void setTelephoneNumber(String telephoneNumber) {
-        this.telephoneNumber = telephoneNumber;
+    public void setLogin(String login) {
+        this.login = login;
     }
 
-    public void setAddress(String country, String city, String street,
-                           String homeNumber, String flatNumber) {
-        this.address = new Address(country, city, street, homeNumber, flatNumber);
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @Override
     public String toString() {
-        return String.format(Locale.ENGLISH, "|%-5d|%-10s|%-15s|%-12s|%-45s|",
-                getId(), name, surname, telephoneNumber,address);
+        return String.format(Locale.ENGLISH, CUSTOMER_PRINT_FORMAT,
+                getId(), name, surname, telephoneNumber, address, login == null ? DASH : login,
+                password == null ? DASH : login);
     }
 
     @Override
@@ -166,4 +143,5 @@ public class Customer extends AbstractEntity {
         if (!telephoneNumber.equals(customer.telephoneNumber)) return false;
         return address.equals(customer.address);
     }
+
 }

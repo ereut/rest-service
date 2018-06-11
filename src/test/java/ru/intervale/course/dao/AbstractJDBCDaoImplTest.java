@@ -2,12 +2,13 @@ package ru.intervale.course.dao;
 
 import org.junit.*;
 import ru.intervale.course.beans.Customer;
+import ru.intervale.course.impl.CustomerJDBCDaoImpl;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class AbstractJDBCDaoTest {
+public class AbstractJDBCDaoImplTest {
 
     private static Connection cn;
 
@@ -36,7 +37,7 @@ public class AbstractJDBCDaoTest {
 
    @BeforeClass
    public static void initData() throws Exception {
-       customerIDao = new CustomerJDBCDao(getConnection());
+       customerIDao = new CustomerJDBCDaoImpl(getConnection());
        insertingCustomer = customerIDao.persist(customer);
        insertingId = insertingCustomer.getId();
        customerForUpdate.setId(insertingId);

@@ -1,7 +1,9 @@
-package ru.intervale.course.dao;
+package ru.intervale.course.impl;
 
 import org.slf4j.LoggerFactory;
 import ru.intervale.course.beans.AbstractEntity;
+import ru.intervale.course.dao.DaoException;
+import ru.intervale.course.dao.IDao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,25 +11,25 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-public abstract class AbstractJDBCDao<T extends AbstractEntity> implements IDao<T> {
+public abstract class AbstractJDBCDaoImpl<T extends AbstractEntity> implements IDao<T> {
 
-    private Connection connection;
+    protected Connection connection;
 
-    public AbstractJDBCDao(Connection connection) {
+    public AbstractJDBCDaoImpl(Connection connection) {
         this.connection = connection;
     }
 
-    protected abstract String getSelectQuery();
-    protected abstract String getDeleteQuery();
-    protected abstract String getUpdateQuery();
-    protected abstract String getCreateQuery();
+    public abstract String getSelectQuery();
+    public abstract String getDeleteQuery();
+    public abstract String getUpdateQuery();
+    public abstract String getCreateQuery();
     protected abstract void prepareStatementForUpdate(PreparedStatement pst, T entity)
             throws DaoException;
     protected abstract void prepareStatementForInsert(PreparedStatement pst, T entity)
             throws DaoException;
     protected abstract List<T> parseResultSet(ResultSet rs) throws DaoException;
 
-    private String getSelectByIdQuery() {
+    public String getSelectByIdQuery() {
         return getSelectQuery() + " WHERE id = ?";
     }
 
@@ -63,7 +65,7 @@ public abstract class AbstractJDBCDao<T extends AbstractEntity> implements IDao<
     @Override
     public boolean delete(int id) throws DaoException {
         if (getEntityById(id) == null) {
-            LoggerFactory.getLogger(AbstractJDBCDao.class).error("Entity with id {} was not found", id);
+            LoggerFactory.getLogger(AbstractJDBCDaoImpl.class).error("Entity with id {} was not found", id);
             return false;
         }
         try (PreparedStatement pst = connection.prepareStatement(getDeleteQuery())) {
@@ -84,11 +86,10 @@ public abstract class AbstractJDBCDao<T extends AbstractEntity> implements IDao<
             if (count == 1) {
                 return true;
             } else {
-                LoggerFactory.getLogger(AbstractJDBCDao.class).error("Update more or less that one record ");
-                return false;
+                throw new DaoException("Update more or less that one record " + count);
             }
         } catch (SQLException e) {
-           throw new DaoException(e);
+            throw new DaoException(e);
         }
     }
 

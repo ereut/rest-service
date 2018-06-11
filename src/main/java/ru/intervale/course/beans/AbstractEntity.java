@@ -7,9 +7,6 @@ public abstract class AbstractEntity {
     public AbstractEntity(int id) {
         this.id = id;
     }
-    public AbstractEntity() {
-        this(0);
-    }
 
     public int getId() {
         return id;

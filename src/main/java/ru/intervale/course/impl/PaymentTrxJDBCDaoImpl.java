@@ -1,14 +1,15 @@
-package ru.intervale.course.dao;
+package ru.intervale.course.impl;
 
 import ru.intervale.course.beans.PaymentTrx;
+import ru.intervale.course.dao.DaoException;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PaymentTrxJDBCDao extends AbstractJDBCDao<PaymentTrx> {
+public class PaymentTrxJDBCDaoImpl extends AbstractJDBCDaoImpl<PaymentTrx> {
 
-    public PaymentTrxJDBCDao(Connection connection) {
+    public PaymentTrxJDBCDaoImpl(Connection connection) {
         super(connection);
     }
 
@@ -30,7 +31,7 @@ public class PaymentTrxJDBCDao extends AbstractJDBCDao<PaymentTrx> {
     @Override
     public String getCreateQuery() {
         return "INSERT INTO customers.payments (cardId, startTime, finishTime, value, currency) " +
-                "VALUES (?, ?, CURRENT_TIME(), ?, ?)";
+                "VALUES (?, ?, NOW(), ?, ?)";
     }
 
     @Override
@@ -51,7 +52,7 @@ public class PaymentTrxJDBCDao extends AbstractJDBCDao<PaymentTrx> {
             throws DaoException {
         try {
             pst.setInt(1, entity.getCardId());
-            pst.setTime(2, entity.getStartTrxTime());
+            pst.setTimestamp(2, new java.sql.Timestamp(entity.getStartTrxTime().getTime()));
             pst.setInt(3, entity.getValue());
             pst.setString(4, entity.getMoneyCurrency().getName());
         } catch (SQLException e) {
@@ -68,8 +69,8 @@ public class PaymentTrxJDBCDao extends AbstractJDBCDao<PaymentTrx> {
             while (rs.next()) {
                 int id = rs.getInt(1);
                 int cardId = rs.getInt(2);
-                Time startTime = rs.getTime(3);
-                Time finishTime = rs.getTime(4);
+                Date startTime = new Date(rs.getTimestamp(3).getTime());
+                Date finishTime = new Date(rs.getTimestamp(4).getTime());
                 int value = rs.getInt(5);
                 String currency = rs.getString(6);
                 PaymentTrx paymentTrx = new PaymentTrx(id, cardId, startTime, finishTime,

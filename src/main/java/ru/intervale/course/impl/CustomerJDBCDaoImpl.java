@@ -1,6 +1,7 @@
-package ru.intervale.course.dao;
+package ru.intervale.course.impl;
 
 import ru.intervale.course.beans.Customer;
+import ru.intervale.course.dao.DaoException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,9 +10,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CustomerJDBCDao extends AbstractJDBCDao<Customer> {
+public class CustomerJDBCDaoImpl extends AbstractJDBCDaoImpl<Customer> {
 
-    public CustomerJDBCDao(Connection connection) {
+    public CustomerJDBCDaoImpl(Connection connection) {
         super(connection);
     }
 
@@ -68,7 +69,7 @@ public class CustomerJDBCDao extends AbstractJDBCDao<Customer> {
             pst.setString(7, entity.getAddress().getHomeNumber());
             pst.setString(8, entity.getAddress().getFlatNumber());
         } catch (SQLException e) {
-           throw new DaoException();
+            throw new DaoException();
         }
     }
 

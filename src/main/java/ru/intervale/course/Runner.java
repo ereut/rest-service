@@ -1,5 +1,6 @@
 package ru.intervale.course;
 
+import ch.qos.logback.classic.Logger;
 import liquibase.Contexts;
 import liquibase.LabelExpression;
 import liquibase.Liquibase;
@@ -8,26 +9,24 @@ import liquibase.database.DatabaseFactory;
 import liquibase.database.jvm.JdbcConnection;
 import liquibase.exception.LiquibaseException;
 import liquibase.resource.ClassLoaderResourceAccessor;
-import org.apache.catalina.LifecycleException;
-import org.apache.catalina.startup.Tomcat;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.intervale.course.beans.AbstractEntity;
 import ru.intervale.course.beans.Card;
 import ru.intervale.course.beans.Customer;
 import ru.intervale.course.beans.PaymentTrx;
 import ru.intervale.course.dao.*;
+import ru.intervale.course.impl.CardJDBCDaoImpl;
+import ru.intervale.course.impl.CustomerJDBCDaoImpl;
+import ru.intervale.course.impl.PaymentTrxJDBCDaoImpl;
 import ru.intervale.course.utils.DatabaseUtils;
 
-import javax.servlet.ServletException;
-import java.io.File;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
 public class Runner {
 
-    private static Logger log = LoggerFactory.getLogger(Runner.class);
+
 
     private static void printEntities(String header,
                                       List<? extends AbstractEntity> entitiesList) {
@@ -38,39 +37,16 @@ public class Runner {
         System.out.println();
     }
 
-    private static void runTomcatEmb() throws LifecycleException, ServletException {
-
-        Tomcat tomcat = new Tomcat();
-        tomcat.setPort(8080);
-
-        String contextPath = "/api";
-        String warFilePath;
-        warFilePath = new File("target/database_project-1.0").getAbsolutePath();
-        tomcat.getHost().setAppBase(".");
-        tomcat.addWebapp(contextPath, warFilePath);
-        tomcat.start();
-        tomcat.getServer().await();
-
-    }
-
-    private static void runLiquibase(Connection cn) throws LiquibaseException {
-        Database database =
-                DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(cn));
-        Liquibase liquibase = new liquibase.Liquibase("liquibase/db.changelog-master.xml",
-                new ClassLoaderResourceAccessor(), database);
-        liquibase.update(new Contexts(), new LabelExpression());
-    }
-
+    private static Logger log = (Logger) LoggerFactory.getLogger(Runner.class);
 
     public static void main(String args[]) {
 
-        try (Connection cn = JDBCConnector.getConnection()) {
-            runTomcatEmb();
-            runLiquibase(cn);
+        try (Connection cn = JDBCConnector.getConnection();) {
 
-            IDao<Customer> customerIDao = new CustomerJDBCDao(cn);
-            IDao<Card> cardIDao = new CardJDBCDao(cn);
-            IDao<PaymentTrx> paymentTrxIDao = new PaymentTrxJDBCDao(cn);
+
+            IDao<Customer> customerIDao = new CustomerJDBCDaoImpl(cn);
+            IDao<Card> cardIDao = new CardJDBCDaoImpl(cn);
+            IDao<PaymentTrx> paymentTrxIDao = new PaymentTrxJDBCDaoImpl(cn);
 
             //customers
             Customer customerYauheni = customerIDao.persist(new Customer("Yauheni","Reut",
@@ -88,12 +64,12 @@ public class Runner {
 
             //cards
             Card customerYauheniCard = cardIDao.persist(new Card(customerYauheni.getId(),
-                    "1111 1111 1111 1111","1220"));
+                    "1111 1111 1111 1111","1220","yauheniCard"));
             Card customerNickCard = cardIDao.persist(new Card(customerNick.getId(),
-                    "2222 1111 1111 1111", "1019"));
+                    "2222 1111 1111 1111", "1019", "nickCard"));
             Card customerArseniyCard =
                     new Card(customerArseniy.getId(), "2222 1111 1111 1111",
-                            "0221");
+                            "0221", "arseniyCard");
 
             //payments
             PaymentTrx paymentTrx1 = paymentTrxIDao.persist(new PaymentTrx(customerYauheniCard.getId(),
@@ -115,19 +91,17 @@ public class Runner {
             PaymentTrx paymentTrx9 = paymentTrxIDao.persist(new PaymentTrx(customerArseniyCard.getId(),
                     5_99, "usd"));
 
-            printEntities(Constants.CUSTOMERS_HEADER, customerIDao.getAll());
-            printEntities(Constants.CARDS_HEADER, cardIDao.getAll());
-            printEntities(Constants.PAYMENTS_HEADER, paymentTrxIDao.getAll());
+            printEntities(Constants.CUSTOMERS_PRINT_HEADER, customerIDao.getAll());
+            printEntities(Constants.CARDS_PRINT_HEADER, cardIDao.getAll());
+            printEntities(Constants.PAYMENTS_PRINT_HEADER, paymentTrxIDao.getAll());
 
             DatabaseUtils.printTrxSum(cn);
             DatabaseUtils.printPaymentsByCustomers(cn);
             cn.commit();
 
-        } catch (SQLException | DaoException | LiquibaseException | ServletException |
-                LifecycleException e) {
+        } catch (SQLException | DaoException e) {
             log.error(e.getMessage());
         }
 
     }
-
 }

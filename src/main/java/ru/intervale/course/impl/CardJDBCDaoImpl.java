@@ -1,15 +1,20 @@
-package ru.intervale.course.dao;
+package ru.intervale.course.impl;
 
 import ru.intervale.course.beans.Card;
+import ru.intervale.course.dao.DaoException;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
-public class CardJDBCDao extends AbstractJDBCDao<Card> {
+public class CardJDBCDaoImpl extends AbstractJDBCDaoImpl<Card> {
 
-    public CardJDBCDao(Connection connection) {
+    public CardJDBCDaoImpl(Connection connection) {
         super(connection);
     }
 
@@ -25,13 +30,13 @@ public class CardJDBCDao extends AbstractJDBCDao<Card> {
 
     @Override
     public String getUpdateQuery() {
-        return "UPDATE customers.cards SET customerId = ?, pan = ?, expiry = ? WHERE id = ?";
+        return "UPDATE customers.cards SET customerId = ?, pan = ?, expiry = ?, title = ? WHERE id = ?";
     }
 
     @Override
     public String getCreateQuery() {
-        return "INSERT INTO customers.cards (customerId, pan, expiry, registerTime) VALUES " +
-                "(?, ?, ?, CURRENT_TIME())";
+        return "INSERT INTO customers.cards (customerId, pan, expiry, registerTime, title) VALUES " +
+                "(?, ?, ?, NOW(), ?)";
     }
 
     @Override
@@ -41,7 +46,8 @@ public class CardJDBCDao extends AbstractJDBCDao<Card> {
             pst.setInt(1, entity.getCustomerId());
             pst.setString(2, entity.getPanCard());
             pst.setString(3, entity.getExpiryCardDate());
-            pst.setInt(4, entity.getId());
+            pst.setString(4, entity.getTitle());
+            pst.setInt(5, entity.getId());
         } catch (SQLException e) {
             throw new DaoException(e);
         }
@@ -55,10 +61,10 @@ public class CardJDBCDao extends AbstractJDBCDao<Card> {
             pst.setInt(1, entity.getCustomerId());
             pst.setString(2, entity.getPanCard());
             pst.setString(3, entity.getExpiryCardDate());
+            pst.setString(4, entity.getTitle());
         } catch (SQLException e) {
             throw new DaoException(e);
         }
-
     }
 
     @Override
@@ -71,8 +77,9 @@ public class CardJDBCDao extends AbstractJDBCDao<Card> {
                 int customerId = rs.getInt(2);
                 String pan = rs.getString(3);
                 String expiry = rs.getString(4);
-                String time = rs.getString(5);
-                Card card = new Card(id, customerId, pan, expiry, time);
+                Date date = rs.getTimestamp(5);
+                String title = rs.getString(6);
+                Card card = new Card(id, customerId, pan, expiry, date, title);
                 cardsList.add(card);
             }
             return cardsList;
@@ -80,4 +87,5 @@ public class CardJDBCDao extends AbstractJDBCDao<Card> {
             throw new DaoException();
         }
     }
+
 }
