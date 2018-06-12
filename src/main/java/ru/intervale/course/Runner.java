@@ -1,8 +1,6 @@
 package ru.intervale.course;
 
 import ch.qos.logback.classic.Logger;
-import org.apache.catalina.LifecycleException;
-import org.apache.catalina.startup.Tomcat;
 import org.slf4j.LoggerFactory;
 import ru.intervale.course.beans.AbstractEntity;
 import ru.intervale.course.beans.Card;
@@ -10,8 +8,8 @@ import ru.intervale.course.beans.Customer;
 import ru.intervale.course.beans.PaymentTrx;
 import ru.intervale.course.dao.*;
 import ru.intervale.course.utils.DatabaseUtils;
+import ru.intervale.course.utils.TomcatUtils;
 
-import java.io.File;
 import java.sql.Connection;
 import java.util.List;
 
@@ -29,21 +27,6 @@ public class Runner {
     private static Logger log = (Logger) LoggerFactory.getLogger(Runner.class);
 
     public static void main(String args[]) {
-
-
-        try {
-            Tomcat tomcat = new Tomcat();
-            tomcat.setPort(8080);
-            String contextPath = "/app";
-            String docBase = new File(".").getAbsolutePath();
-            tomcat.addContext(contextPath, docBase);
-            tomcat.start();
-            tomcat.getServer().await();
-
-            System.out.println("Tomcat startoval");
-        } catch (LifecycleException e) {
-            e.printStackTrace();
-        }
 
         try {
             IDao<Customer> customerIDao = DaoFactory.getCustomerDaoImplFromFactory();
@@ -101,6 +84,8 @@ public class Runner {
 
             DatabaseUtils.printTrxSum(cn);
             DatabaseUtils.printPaymentsByCustomers(cn);
+
+            TomcatUtils.runTomcatEmbedded();
 
         } catch (DaoException e) {
             log.error(e.getMessage());

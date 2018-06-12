@@ -1527,3 +1527,5 @@
 2018-06-11 21:14:03,164 DEBUG [main] r.i.c.d.DaoFactory [DaoFactory.java:128] Install default database type MySql
 2018-06-11 21:14:03,207 DEBUG [main] r.i.c.d.DaoFactory [DaoFactory.java:128] Install default database type MySql
 2018-06-11 22:06:05,478 DEBUG [main] r.i.c.d.DaoFactory [DaoFactory.java:40] Default type of database MySql was installed
+2018-06-12 20:16:56,908 ERROR [main] r.i.c.Runner [Runner.java:91] org.h2.jdbc.JdbcSQLException: Соединение разорвано: "java.net.ConnectException: Connection refused: connect: localhost"
+Connection is broken: "java.net.ConnectException: Connection refused: connect: localhost" [90067-196]
