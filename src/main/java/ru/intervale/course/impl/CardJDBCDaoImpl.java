@@ -30,7 +30,12 @@ public class CardJDBCDaoImpl extends AbstractJDBCDaoImpl<Card> {
 
     @Override
     public String getUpdateQuery() {
-        return "UPDATE customers.cards SET customerId = ?, pan = ?, expiry = ?, title = ? WHERE id = ?";
+        return "UPDATE customers.cards SET " +
+                "customerId = IFNULL(?, `customerId`), " +
+                "pan = IFNULL(?, `pan`), " +
+                "expiry = IFNULL(?, `expiry`) " +
+                "title = IFNULL(?, `title`) " +
+                "WHERE id = ?";
     }
 
     @Override

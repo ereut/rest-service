@@ -20,6 +20,8 @@ public class Card extends AbstractEntity {
     private Date registerCardTime;
     private String title;
 
+    public Card() {}
+
     public Card(int id, int customerId, String panCard,String expiryCardDate,
                 Date registerCardTime, String title) {
         super(id);
@@ -39,10 +41,6 @@ public class Card extends AbstractEntity {
         this(0, customerId, panCard, expiryCardDate, null, title);
     }
 
-    public Card(int id, int customerId, String panCard, String expiryCardDate, String title) {
-        this(id, customerId, panCard, expiryCardDate, null, title);
-    }
-
     public int getCustomerId() {
         return customerId;
     }
@@ -51,22 +49,35 @@ public class Card extends AbstractEntity {
         return panCard;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
     public String getExpiryCardDate() {
         return expiryCardDate;
     }
 
-    public Date getRegisterCardTime() {
-        return registerCardTime;
+    public void setPanCard(String panCard) {
+        this.panCard = panCard;
     }
 
-    public String getTitle() {
-        return title;
+    public void setCustomerId(int customerId) {
+        this.customerId = customerId;
+    }
+
+    public void setExpiryCardDate(String expiryCardDate) {
+        this.expiryCardDate = expiryCardDate;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     @Override
     public String toString() {
         return String.format(Locale.ENGLISH, CARD_PRINT_FORMAT, getId(), customerId, panCard,
-                expiryCardDate, new SimpleDateFormat(Constants.DATE_PATTERN).format(registerCardTime), title);
+                expiryCardDate, new SimpleDateFormat(Constants.DATE_PATTERN).format(registerCardTime),
+                getFieldForPrint(title));
     }
 
     private static boolean isExpiryCardDateInvalid(String date) {
@@ -78,6 +89,7 @@ public class Card extends AbstractEntity {
         } catch (ParseException e) {
             return true;
         }
+
     }
 
 }

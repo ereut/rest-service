@@ -7,26 +7,35 @@
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
     <changeSet id="3" author="reut">
+
         <createTable tableName="payments" schemaName="customers">
+
             <column name="id" type="int" autoIncrement="true">
-                <constraints primaryKey="true" nullable="true"/>
+                <constraints primaryKey="true" nullable="false"/>
             </column>
+
             <column name="cardId" type="int">
                 <constraints nullable="false"/>
             </column>
+
             <column name="startTime" type="time">
                 <constraints nullable="false"/>
             </column>
+
             <column name="finishTime" type="time">
                 <constraints nullable="false"/>
             </column>
+
             <column name="value" type="int">
                 <constraints nullable="false"/>
             </column>
+
             <column name="currency" type="varchar(10)">
                 <constraints nullable="false"/>
             </column>
+
         </createTable>
+
     </changeSet>
 
 </databaseChangeLog>

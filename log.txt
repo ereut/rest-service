@@ -1529,3 +1529,12 @@
 2018-06-11 22:06:05,478 DEBUG [main] r.i.c.d.DaoFactory [DaoFactory.java:40] Default type of database MySql was installed
 2018-06-12 20:16:56,908 ERROR [main] r.i.c.Runner [Runner.java:91] org.h2.jdbc.JdbcSQLException: Соединение разорвано: "java.net.ConnectException: Connection refused: connect: localhost"
 Connection is broken: "java.net.ConnectException: Connection refused: connect: localhost" [90067-196]
+2018-06-15 20:32:57,209 ERROR [http-nio-8080-exec-1] r.i.c.i.AbstractJDBCDaoImpl [AbstractJDBCDaoImpl.java:72] Entity with id 19 was not found
+2018-06-15 20:32:59,442 ERROR [http-nio-8080-exec-3] r.i.c.i.AbstractJDBCDaoImpl [AbstractJDBCDaoImpl.java:72] Entity with id 19 was not found
+2018-06-15 20:33:00,184 ERROR [http-nio-8080-exec-5] r.i.c.i.AbstractJDBCDaoImpl [AbstractJDBCDaoImpl.java:72] Entity with id 19 was not found
+2018-06-15 20:33:56,902 ERROR [http-nio-8080-exec-1] r.i.c.i.AbstractJDBCDaoImpl [AbstractJDBCDaoImpl.java:72] Entity with id 25 was not found
+2018-06-15 20:33:57,502 ERROR [http-nio-8080-exec-3] r.i.c.i.AbstractJDBCDaoImpl [AbstractJDBCDaoImpl.java:72] Entity with id 25 was not found
+2018-06-15 20:34:11,405 ERROR [http-nio-8080-exec-5] r.i.c.i.AbstractJDBCDaoImpl [AbstractJDBCDaoImpl.java:72] Entity with id 19 was not found
+2018-06-15 21:18:43,600 ERROR [http-nio-8080-exec-1] r.i.c.i.AbstractJDBCDaoImpl [AbstractJDBCDaoImpl.java:72] Entity with id 19 was not found
+2018-06-15 21:29:54,428 ERROR [main] r.i.c.Runner [Runner.java:91] liquibase.exception.ChangeLogParseException: liquibase/db.changelog-master.xml does not exist
+2018-06-16 18:34:08,375 ERROR [main] r.i.c.i.AbstractJDBCDaoImpl [AbstractJDBCDaoImpl.java:72] Entity with id 7 was not found

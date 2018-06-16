@@ -44,13 +44,13 @@ public class DaoFactory {
 
     private static DaoImplTypes daoImplType;
 
-    private static String MY_SQL_DATABASE_URL;
-    private static String MY_SQL_DATABASE_USER;
-    private static String MY_SQL_DATABASE_PASSWORD;
+    private static final String MY_SQL_DATABASE_URL;
+    private static final String MY_SQL_DATABASE_USER;
+    private static final String MY_SQL_DATABASE_PASSWORD;
 
-    private static String H2_DATABASE_URL;
-    private static String H2_DATABASE_USER;
-    private static String H2_SQL_DATABASE_PASSWORD;
+    private static final String H2_DATABASE_URL;
+    private static final String H2_DATABASE_USER;
+    private static final String H2_SQL_DATABASE_PASSWORD;
 
     private static Connection connection;
 
@@ -119,6 +119,17 @@ public class DaoFactory {
             }
         }
         return connection;
+    }
+
+    public static void closeJDBCConnection() throws DaoException {
+        if (connection != null) {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                throw new DaoException(e);
+            }
+
+        }
     }
 
     public static IDao<Customer> getCustomerDaoImplFromFactory() throws DaoException {

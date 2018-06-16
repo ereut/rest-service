@@ -25,7 +25,7 @@ public class PaymentTrxJDBCDaoImpl extends AbstractJDBCDaoImpl<PaymentTrx> {
 
     @Override
     public String getUpdateQuery() {
-        return "UPDATE customers.payments SET cardId = ?, value = ?, currency = ? WHERE id = ?";
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -37,14 +37,7 @@ public class PaymentTrxJDBCDaoImpl extends AbstractJDBCDaoImpl<PaymentTrx> {
     @Override
     protected void prepareStatementForUpdate(PreparedStatement pst, PaymentTrx entity)
             throws DaoException {
-        try {
-            pst.setInt(1, entity.getCardId());
-            pst.setInt(1, entity.getValue());
-            pst.setString(3, entity.getMoneyCurrency().getName());
-            pst.setInt(4, entity.getId());
-        } catch (SQLException e) {
-            throw new DaoException(e);
-        }
+       throw new UnsupportedOperationException();
     }
 
     @Override

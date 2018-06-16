@@ -5,13 +5,17 @@ import ru.intervale.course.beans.AbstractEntity;
 import ru.intervale.course.dao.DaoException;
 import ru.intervale.course.dao.IDao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.List;
 
 public abstract class AbstractJDBCDaoImpl<T extends AbstractEntity> implements IDao<T> {
+
+    private static final String ENTITY_ALREADY_PERSIST_MESSAGE = "Entity is already persist";
+    private static final String INVALID_PERSIST_MODIFY_MESSAGE = "On persist modify more then 1 records ";
+    private static final String INVALID_INSERT_MESSAGE = "Entity wasn't insert";
+    private static final String INVALID_UPDATE_MESSAGE = "Update more or less that one record ";
+    private static final String INVALID_ENTITY_FOR_UPDATE = "Entity without id didn't save";
+    private static final String INVALID_DELETE_LOGGER_MESSAGE = "Entity with id {} was not found";
 
     protected Connection connection;
 
@@ -65,7 +69,7 @@ public abstract class AbstractJDBCDaoImpl<T extends AbstractEntity> implements I
     @Override
     public boolean delete(int id) throws DaoException {
         if (getEntityById(id) == null) {
-            LoggerFactory.getLogger(AbstractJDBCDaoImpl.class).error("Entity with id {} was not found", id);
+            LoggerFactory.getLogger(AbstractJDBCDaoImpl.class).error(INVALID_DELETE_LOGGER_MESSAGE, id);
             return false;
         }
         try (PreparedStatement pst = connection.prepareStatement(getDeleteQuery())) {
@@ -79,6 +83,9 @@ public abstract class AbstractJDBCDaoImpl<T extends AbstractEntity> implements I
 
     @Override
     public boolean update(T entity) throws DaoException {
+        if (entity.getId() == 0) {
+            throw new DaoException(INVALID_ENTITY_FOR_UPDATE);
+        }
         String sql = getUpdateQuery();
         try (PreparedStatement pst = connection.prepareStatement(sql)) {
             prepareStatementForUpdate(pst, entity);
@@ -86,7 +93,7 @@ public abstract class AbstractJDBCDaoImpl<T extends AbstractEntity> implements I
             if (count == 1) {
                 return true;
             } else {
-                throw new DaoException("Update more or less that one record " + count);
+                throw new DaoException(INVALID_UPDATE_MESSAGE + count);
             }
         } catch (SQLException e) {
             throw new DaoException(e);
@@ -96,33 +103,26 @@ public abstract class AbstractJDBCDaoImpl<T extends AbstractEntity> implements I
     @Override
     public T persist (T entity) throws DaoException {
         if (entity.getId() != 0) {
-            throw new DaoException("Entity is already persist");
+            throw new DaoException(ENTITY_ALREADY_PERSIST_MESSAGE);
         }
         String sql = getCreateQuery();
-        try (PreparedStatement pst = connection.prepareStatement(sql)) {
+        try (PreparedStatement pst = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             prepareStatementForInsert(pst, entity);
             int count = pst.executeUpdate();
             if (count != 1) {
-                throw new DaoException("On persist modify more then 1 records " + count);
+                throw new DaoException(INVALID_PERSIST_MODIFY_MESSAGE + count);
+            }
+            try (ResultSet rs = pst.getGeneratedKeys()) {
+                if (rs.next()) {
+                    entity.setId(rs.getInt(1));
+                    return entity;
+                } else {
+                    throw new DaoException(INVALID_INSERT_MESSAGE);
+                }
             }
         } catch (SQLException e) {
             throw new DaoException(e);
         }
-
-        sql = getSelectQuery() + " WHERE id = last_insert_id()";
-
-        try(PreparedStatement pst = connection.prepareStatement(sql)) {
-            ResultSet rs = pst.executeQuery();
-            List<T> list = parseResultSet(rs);
-            if (list.isEmpty() || list.size() != 1) {
-                throw new DaoException("Insert error");
-            }
-            return list.iterator().next();
-
-        } catch (SQLException e) {
-            throw new DaoException(e);
-        }
-
     }
 
 }

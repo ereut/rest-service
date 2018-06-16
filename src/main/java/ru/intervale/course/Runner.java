@@ -33,6 +33,9 @@ public class Runner {
             IDao<Card> cardIDao = DaoFactory.getCardDaoImplFromFactory();
             IDao<PaymentTrx> paymentTrxIDao = DaoFactory.getPaymentTrxDaoImplFromFactory();
 
+            TomcatUtils.runTomcatEmbedded();
+
+/*
             //customers
             Customer customerYauheni = customerIDao.persist(new Customer("Yauheni","Reut",
                     "297336763",
@@ -85,11 +88,12 @@ public class Runner {
             DatabaseUtils.printTrxSum(cn);
             DatabaseUtils.printPaymentsByCustomers(cn);
 
-            TomcatUtils.runTomcatEmbedded();
 
+*/
         } catch (DaoException e) {
             log.error(e.getMessage());
         }
+
 
     }
 }
