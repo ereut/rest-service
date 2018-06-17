@@ -83,7 +83,7 @@ public abstract class AbstractJDBCDaoImpl<T extends AbstractEntity> implements I
 
     @Override
     public boolean update(T entity) throws DaoException {
-        if (entity.getId() == 0) {
+        if (entity.getId() == null) {
             throw new DaoException(INVALID_ENTITY_FOR_UPDATE);
         }
         String sql = getUpdateQuery();
@@ -102,7 +102,7 @@ public abstract class AbstractJDBCDaoImpl<T extends AbstractEntity> implements I
 
     @Override
     public T persist (T entity) throws DaoException {
-        if (entity.getId() != 0) {
+        if (entity.getId() != null) {
             throw new DaoException(ENTITY_ALREADY_PERSIST_MESSAGE);
         }
         String sql = getCreateQuery();

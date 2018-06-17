@@ -19,7 +19,7 @@ public class PaymentTrx extends AbstractEntity {
         }
     }
 
-    private int cardId;
+    private Integer cardId;
     private Date startTrxTime;
     private Date finishTrxTime;
     private int value;
@@ -27,7 +27,7 @@ public class PaymentTrx extends AbstractEntity {
 
     public PaymentTrx() {}
 
-    public PaymentTrx(int id, int cardId, Date startTrxTime, Date finishTrxTime,
+    public PaymentTrx(Integer id, int cardId, Date startTrxTime, Date finishTrxTime,
                       int value, String moneyCurrency) {
         super(id);
         this.cardId = cardId;
@@ -37,8 +37,8 @@ public class PaymentTrx extends AbstractEntity {
         this.moneyCurrency = MoneyCurrencies.valueOf(moneyCurrency.toUpperCase());
     }
 
-    public PaymentTrx(int cardId, int value, String currency) {
-        this(0, cardId, new Date(), null,
+    public PaymentTrx(Integer cardId, int value, String currency) {
+        this(null, cardId, new Date(), null,
                 value, currency);
     }
 

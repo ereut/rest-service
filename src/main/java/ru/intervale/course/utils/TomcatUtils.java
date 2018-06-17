@@ -3,25 +3,39 @@ package ru.intervale.course.utils;
 import org.apache.catalina.Context;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.startup.Tomcat;
-import ru.intervale.course.servlets.CardServlet;
-import ru.intervale.course.servlets.CustomerServlet;
-import ru.intervale.course.servlets.PaymentTrxServlet;
-import ru.intervale.course.servlets.SessionStartServlet;
+import ru.intervale.course.servlets.*;
 
 import java.io.File;
 
 public class TomcatUtils {
 
-    private static final String CUSTOMER_SERVLET_NAME = "CustomerServlet";
-    private static final String CARD_SERVLET_NAME = "CardServlet";
-    private static final String PAYMENT_TRX_SERVLET_NAME = "PaymentTrxServlet";
-    private static final String SESSION_START_SERVLET_NAME = "SessionStartServlet";
+    private static final String ADD_CUSTOMER_SERVLET_NAME = "AddCustomerServlet";
+    private static final String UPDATE_CUSTOMER_SERVLET_NAME = "UpdateCustomerServlet";
+    private static final String DELETE_CUSTOMER_SERVLET_NAME = "DeleteCustomerServlet";
+    private static final String GET_CUSTOMER_SERVLET_NAME = "GetCustomerServlet";
 
-    private static final String CUSTOMER_SERVLET_URL_PATTERN = "/customer/*";
-    private static final String CARD_SERVLET_URL_PATTERN = "/card/*";
-    private static final String PAYMENT_TRX_SERVLET_URL_PATTERN = "/payment/*";
-    private static final String SESSION_START_SERVLET_URL_PATTERN = "/session/start";
+    private static final String ADD_CARD_SERVLET_NAME = "AddCardServlet";
+    private static final String UPDATE_CARD_SERVLET_NAME = "UpdateCardServlet";
+    private static final String DELETE_CARD_SERVLET_NAME = "DeleteCardServlet";
+    private static final String GET_CARD_SERVLET_NAME = "GetCardServlet";
 
+    private static final String ADD_PAYMENT_SERVLET_NAME = "AddPaymentTrxServlet";
+    private static final String DELETE_PAYMENT_SERVLET_NAME = "DeletePaymentTrxServlet";
+    private static final String GET_PAYMENT_SERVLET_NAME = "GetPaymentTrxServlet";
+
+    private static final String ADD_CUSTOMER_SERVLET_URL_PATTERN = "/customer/add";
+    private static final String UPDATE_CUSTOMER_SERVLET_URL_PATTERN = "/customer/update";
+    private static final String DELETE_CUSTOMER_SERVLET_URL_PATTERN = "/customer/delete";
+    private static final String GET_CUSTOMER_SERVLET_URL_PATTERN = "/customer/*";
+
+    private static final String ADD_CARD_SERVLET_URL_PATTERN = "/card/add";
+    private static final String UPDATE_CARD_SERVLET_URL_PATTERN = "/card/update";
+    private static final String DELETE_CARD_SERVLET_URL_PATTERN = "/card/delete";
+    private static final String GET_CARD_SERVLET_URL_PATTERN = "/card/*";
+
+    private static final String ADD_PAYMENT_SERVLET_URL_PATTERN = "/payment/add";
+    private static final String DELETE_PAYMENT_SERVLET_URL_PATTERN = "/payment/delete";
+    private static final String GET_PAYMENT_SERVLET_URL_PATTERN = "/payment/*";
 
     public static void runTomcatEmbedded() {
         try {
@@ -31,15 +45,33 @@ public class TomcatUtils {
             String docBase = new File(".").getAbsolutePath();
             Context context = tomcat.addContext(contextPath, docBase);
 
-            tomcat.addServlet(contextPath, CUSTOMER_SERVLET_NAME, new CustomerServlet());
-            tomcat.addServlet(contextPath, CARD_SERVLET_NAME, new CardServlet());
-            tomcat.addServlet(contextPath, PAYMENT_TRX_SERVLET_NAME, new PaymentTrxServlet());
-            tomcat.addServlet(contextPath, SESSION_START_SERVLET_NAME, new SessionStartServlet());
+            tomcat.addServlet(contextPath, ADD_CUSTOMER_SERVLET_NAME, new AddCustomerServlet());
+            tomcat.addServlet(contextPath, UPDATE_CUSTOMER_SERVLET_NAME, new UpdateCustomerServlet());
+            tomcat.addServlet(contextPath, DELETE_CUSTOMER_SERVLET_NAME, new DeleteCustomerServlet());
+            tomcat.addServlet(contextPath, GET_CUSTOMER_SERVLET_NAME, new GetCustomerServlet());
 
-            context.addServletMappingDecoded(CUSTOMER_SERVLET_URL_PATTERN, CUSTOMER_SERVLET_NAME);
-            context.addServletMappingDecoded(CARD_SERVLET_URL_PATTERN, CARD_SERVLET_NAME);
-            context.addServletMappingDecoded(PAYMENT_TRX_SERVLET_URL_PATTERN, PAYMENT_TRX_SERVLET_NAME);
-            context.addServletMappingDecoded(SESSION_START_SERVLET_URL_PATTERN, SESSION_START_SERVLET_NAME);
+            context.addServletMappingDecoded(ADD_CUSTOMER_SERVLET_URL_PATTERN, ADD_CUSTOMER_SERVLET_NAME);
+            context.addServletMappingDecoded(UPDATE_CUSTOMER_SERVLET_URL_PATTERN, UPDATE_CUSTOMER_SERVLET_NAME);
+            context.addServletMappingDecoded(DELETE_CUSTOMER_SERVLET_URL_PATTERN, DELETE_CUSTOMER_SERVLET_NAME);
+            context.addServletMappingDecoded(GET_CUSTOMER_SERVLET_URL_PATTERN, GET_CUSTOMER_SERVLET_NAME);
+
+            tomcat.addServlet(contextPath, ADD_CARD_SERVLET_NAME, new AddCardServlet());
+            tomcat.addServlet(contextPath, UPDATE_CARD_SERVLET_NAME, new UpdateCardServlet());
+            tomcat.addServlet(contextPath, DELETE_CARD_SERVLET_NAME, new DeleteCardServlet());
+            tomcat.addServlet(contextPath, GET_CARD_SERVLET_NAME, new GetCardServlet());
+
+            context.addServletMappingDecoded(ADD_CARD_SERVLET_URL_PATTERN, ADD_CARD_SERVLET_NAME);
+            context.addServletMappingDecoded(UPDATE_CARD_SERVLET_URL_PATTERN, UPDATE_CARD_SERVLET_NAME);
+            context.addServletMappingDecoded(DELETE_CARD_SERVLET_URL_PATTERN, DELETE_CARD_SERVLET_NAME);
+            context.addServletMappingDecoded(GET_CARD_SERVLET_URL_PATTERN, GET_CARD_SERVLET_NAME);
+
+            tomcat.addServlet(contextPath, ADD_PAYMENT_SERVLET_NAME, new AddPaymentTrxServlet());
+            tomcat.addServlet(contextPath, DELETE_PAYMENT_SERVLET_NAME, new DeletePaymentTrxServlet());
+            tomcat.addServlet(contextPath, GET_PAYMENT_SERVLET_NAME, new GetPaymentTrxServlet());
+
+            context.addServletMappingDecoded(ADD_PAYMENT_SERVLET_URL_PATTERN, ADD_PAYMENT_SERVLET_NAME);
+            context.addServletMappingDecoded(DELETE_PAYMENT_SERVLET_URL_PATTERN, DELETE_PAYMENT_SERVLET_NAME);
+            context.addServletMappingDecoded(GET_PAYMENT_SERVLET_URL_PATTERN, GET_PAYMENT_SERVLET_NAME);
 
             tomcat.start();
             tomcat.getServer().await();

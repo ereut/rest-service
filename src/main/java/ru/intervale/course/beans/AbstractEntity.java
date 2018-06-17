@@ -4,21 +4,21 @@ import ru.intervale.course.Constants;
 
 public abstract class AbstractEntity {
 
-    private int id;
+    private Integer id;
 
-    public AbstractEntity(int id) {
+    public AbstractEntity(Integer id) {
         this.id = id;
     }
 
     public AbstractEntity() {
-        this(0);
+        this(null);
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

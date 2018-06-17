@@ -7,19 +7,8 @@ import ru.intervale.course.dao.IDao;
 import ru.intervale.course.impl.CustomerJDBCDaoImpl;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServletRequest;
 
-@WebServlet("/customer/*")
-public class CustomerServlet extends AbstractEntityServlet<Customer, CustomerJDBCDaoImpl> {
-
-    private enum CustomerFields {
-        ID, LOGIN, PASSWORD, NAME, SURNAME, TELEPHONENUMBER, ADDRESS;
-
-        public String getName() {
-            return name().toLowerCase();
-        }
-    }
+public abstract class CustomerServlet extends AbstractEntityServlet<Customer, CustomerJDBCDaoImpl> {
 
     @Override
     public void init() throws ServletException {
@@ -27,22 +16,8 @@ public class CustomerServlet extends AbstractEntityServlet<Customer, CustomerJDB
     }
 
     @Override
-    public IDao<Customer> getDaoImpl() throws DaoException {
+    protected IDao<Customer> getDaoImpl() throws DaoException {
         return DaoFactory.getCustomerDaoImplFromFactory();
-    }
-
-    @Override
-    protected Customer parseReqBody(HttpServletRequest req) {
-
-        Customer customer = new Customer();
-        RequestParameters requestParameters = new RequestParameters(req);
-
-        String login = requestParameters.getRequired(CustomerFields.LOGIN.getName());
-        String password = requestParameters.getRequired(CustomerFields.PASSWORD.getName());
-
-
-
-        return customer;
     }
 
 }

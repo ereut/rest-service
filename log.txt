@@ -1538,3 +1538,9 @@ Connection is broken: "java.net.ConnectException: Connection refused: connect: l
 2018-06-15 21:18:43,600 ERROR [http-nio-8080-exec-1] r.i.c.i.AbstractJDBCDaoImpl [AbstractJDBCDaoImpl.java:72] Entity with id 19 was not found
 2018-06-15 21:29:54,428 ERROR [main] r.i.c.Runner [Runner.java:91] liquibase.exception.ChangeLogParseException: liquibase/db.changelog-master.xml does not exist
 2018-06-16 18:34:08,375 ERROR [main] r.i.c.i.AbstractJDBCDaoImpl [AbstractJDBCDaoImpl.java:72] Entity with id 7 was not found
+2018-06-17 10:29:29,393 ERROR [main] r.i.c.Runner [Runner.java:94] liquibase.exception.ValidationFailedException: Validation Failed:
+     1 change sets check sum
+          liquibase/db.changelog-createCardsTable.xml::2::Yauheni Reut was: 7:e8a6b4d577d3fec6e5b0d450c3246182 but is now: 7:f8ff234953ddf44ac7ffd21d23996fa0
+
+2018-06-17 12:25:58,630 ERROR [http-nio-8080-exec-7] r.i.c.i.AbstractJDBCDaoImpl [AbstractJDBCDaoImpl.java:72] Entity with id 2 was not found
+2018-06-17 12:29:31,999 ERROR [http-nio-8080-exec-6] r.i.c.i.AbstractJDBCDaoImpl [AbstractJDBCDaoImpl.java:72] Entity with id 1 was not found

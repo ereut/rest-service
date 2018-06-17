@@ -17,126 +17,77 @@ import java.io.PrintWriter;
 public abstract class AbstractEntityServlet<T extends AbstractEntity, K extends AbstractJDBCDaoImpl<T>>
         extends HttpServlet {
 
-    private enum Operations {
-        ADD, DELETE, UPDATE;
-    }
-
-    private static final ObjectMapper MAPPER = new ObjectMapper();
     private static final String RESPONSE_CHARACTER_ENCODING = "UTF-8";
     private static final String RESPONSE_CONTENT_TYPE = "application/json";
+    private static final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
     public void init() throws ServletException {
         super.init();
     }
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
+    protected abstract IDao<T> getDaoImpl() throws DaoException;
+    protected abstract T parseReqBody(HttpServletRequest req);
 
-        PrintWriter pw = getPrintWriterFromResp(resp);
+    protected void deleteEntity(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        try {
+            getDaoImpl().delete(parseReqBody(req).getId());
+            resp.setStatus(HttpServletResponse.SC_OK);
+        } catch (DaoException e) {
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+        }
+    }
+
+    protected void getEntity(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        PrintWriter pw = getPrintWriter(resp);
         String pathInfo = req.getPathInfo();
 
         try {
             if (pathInfo == null || Constants.URI_DELIMITER.equals(pathInfo)) {
-                pw.print(MAPPER.writeValueAsString(ResponceStatusCodes.SUCCESS ));
-                pw.print(MAPPER.writeValueAsString(getDaoImpl().getAll()));
-                pw.flush();
-                return;
+                pw.print(objectMapper.writeValueAsString(getDaoImpl().getAll()));
             } else {
-                try {
-                    int id = Integer.parseInt(pathInfo.replace(Constants.URI_DELIMITER,""));
-                    T entity = getDaoImpl().getEntityById(id);
-                    if (entity == null) {
-                        pw.print(MAPPER.writeValueAsString(ResponceStatusCodes.NOT_FOUND));
-                        pw.flush();
-                        return;
-                    }
-                    pw.print(MAPPER.writeValueAsString(ResponceStatusCodes.SUCCESS));
-                    pw.print(MAPPER.writeValueAsString(entity));
-                    pw.flush();
-                } catch (NumberFormatException e) {
-                    pw.print(MAPPER.writeValueAsString(ResponceStatusCodes.BAD_REQUEST));
-                    pw.flush();
+                int id = Integer.parseInt(pathInfo.replace(Constants.URI_DELIMITER, ""));
+                AbstractEntity entity = getDaoImpl().getEntityById(id);
+                if (entity == null) {
+                    resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+                    return;
                 }
+                pw.print(objectMapper.writeValueAsString(entity));
             }
-        } catch (DaoException e) {
-            pw.print(MAPPER.writeValueAsString(ResponceStatusCodes.BAD_REQUEST));
+            resp.setStatus(HttpServletResponse.SC_OK);
             pw.flush();
+        } catch (DaoException e) {
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
     }
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
-
-        PrintWriter pw = getPrintWriterFromResp(resp);
-        String pathInfo = req.getPathInfo().replace(Constants.URI_DELIMITER, "");
+    protected void updateEntity(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
         try {
+            getDaoImpl().update(parseReqBody(req));
+            resp.setStatus(HttpServletResponse.SC_OK);
 
-            Operations operation = Operations.valueOf(pathInfo.toUpperCase());
-
-            switch (operation) {
-
-                case ADD:
-                    try {
-                        T entity = getDaoImpl().persist(parseReqBody(req));
-                        pw.print(MAPPER.writeValueAsString(ResponceStatusCodes.SUCCESS));
-                        pw.print( MAPPER.writeValueAsString(entity));
-                        pw.flush();
-                    } catch (DaoException e) {
-                        pw.print(MAPPER.writeValueAsString(ResponceStatusCodes.BAD_REQUEST));
-                        pw.flush();
-                    }
-                    return;
-
-                case UPDATE:
-                    try {
-                        boolean isUpdate = getDaoImpl().update(parseReqBody(req));
-                        printUpdateOrDeleteResult(isUpdate, pw);
-                    } catch (DaoException e) {
-                        pw.print(MAPPER.writeValueAsString(ResponceStatusCodes.BAD_REQUEST));
-                        pw.flush();
-                    }
-                    return;
-
-                case DELETE:
-                    try {
-                        T entity = parseReqBody(req);
-                        int id = entity.getId();
-                        boolean isDeleted = getDaoImpl().delete(id);
-                        printUpdateOrDeleteResult(isDeleted, pw);
-                    } catch (DaoException e) {
-                        pw.print(MAPPER.writeValueAsString(ResponceStatusCodes.BAD_REQUEST));
-                        pw.flush();
-                    }
-            }
-
-        } catch (EnumConstantNotPresentException e) {
-            pw.print(ResponceStatusCodes.BAD_REQUEST);
-            pw.flush();
+        } catch (DaoException e) {
+            e.printStackTrace();
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
-
     }
 
-    protected abstract IDao<T> getDaoImpl() throws DaoException;
-    protected abstract T parseReqBody(HttpServletRequest req);
+    protected void addEntity(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        try {
+            PrintWriter pw = getPrintWriter(resp);
+            AbstractEntity entity = getDaoImpl().persist(parseReqBody(req));
+            pw.print(objectMapper.writeValueAsString(entity));
+            pw.flush();
+        } catch (DaoException e) {
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
+        }
+    }
 
-    private static PrintWriter getPrintWriterFromResp(HttpServletResponse resp) throws IOException {
+    private static PrintWriter getPrintWriter(HttpServletResponse resp) throws IOException {
         resp.setCharacterEncoding(RESPONSE_CHARACTER_ENCODING);
         resp.setContentType(RESPONSE_CONTENT_TYPE);
         return resp.getWriter();
-    }
-
-    private static void printUpdateOrDeleteResult(boolean isDone, PrintWriter pw) throws IOException {
-        if (isDone) {
-            pw.print(MAPPER.writeValueAsString(ResponceStatusCodes.SUCCESS));
-            pw.flush();
-        } else {
-            pw.print(MAPPER.writeValueAsString(ResponceStatusCodes.NOT_FOUND));
-            pw.flush();
-        }
     }
 
 }

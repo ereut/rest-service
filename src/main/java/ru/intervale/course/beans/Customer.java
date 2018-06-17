@@ -17,7 +17,7 @@ public class Customer extends AbstractEntity {
         super();
     }
 
-    public Customer(int id,String login, String password, String name, String surname,
+    public Customer(Integer id, String login, String password, String name, String surname,
                     String telephoneNumber, String address) {
         super(id);
         this.login = login;
@@ -31,7 +31,7 @@ public class Customer extends AbstractEntity {
 
     public Customer(String login, String password, String name, String surname,
                     String telephoneNumber, String address) {
-        this(0, login, password, name, surname, telephoneNumber, address);
+        this(null, login, password, name, surname, telephoneNumber, address);
     }
 
     public String getLogin() {

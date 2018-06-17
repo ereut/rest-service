@@ -14,7 +14,7 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
 
-            <column name="customerId" type="int">
+            <column name="customerId" type="varchar(25)">
                 <constraints nullable="false"/>
             </column>
 

@@ -10,4 +10,8 @@ public class InvalidRequestException extends IllegalArgumentException {
         this.parameterName = parameterName;
     }
 
+    @Override
+    public String toString() {
+        return message + parameterName;
+    }
 }

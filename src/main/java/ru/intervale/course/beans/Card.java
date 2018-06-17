@@ -14,7 +14,7 @@ public class Card extends AbstractEntity {
     private static final String CARD_PRINT_FORMAT = "|%-5d|%-5d|%-22s|%-5s|%-20s|%-15s|";
     private static final String EXPIRY_DATE_PATTERN = "MMyy";
 
-    private int customerId;
+    private Integer customerId;
     private String panCard;
     private String expiryCardDate;
     private Date registerCardTime;
@@ -22,11 +22,11 @@ public class Card extends AbstractEntity {
 
     public Card() {}
 
-    public Card(int id, int customerId, String panCard,String expiryCardDate,
+    public Card(Integer id, Integer customerId, String panCard,String expiryCardDate,
                 Date registerCardTime, String title) {
         super(id);
         this.customerId = customerId;
-        if (isExpiryCardDateInvalid(expiryCardDate)) {
+        if (panCard != null && isExpiryCardDateInvalid(expiryCardDate)) {
             LoggerFactory.getLogger(Card.class).error(ILLEGAL_EXPIRY_CARD_DATE_MESSAGE +
                     expiryCardDate);
             throw new IllegalArgumentException(ILLEGAL_EXPIRY_CARD_DATE_MESSAGE + expiryCardDate);
@@ -37,11 +37,11 @@ public class Card extends AbstractEntity {
         this.title = title;
     }
 
-    public Card(int customerId, String panCard, String expiryCardDate, String title) {
-        this(0, customerId, panCard, expiryCardDate, null, title);
+    public Card(Integer customerId, String panCard, String expiryCardDate, String title) {
+        this(null, customerId, panCard, expiryCardDate, null, title);
     }
 
-    public int getCustomerId() {
+    public Integer getCustomerId() {
         return customerId;
     }
 
@@ -61,7 +61,7 @@ public class Card extends AbstractEntity {
         this.panCard = panCard;
     }
 
-    public void setCustomerId(int customerId) {
+    public void setCustomerId(Integer customerId) {
         this.customerId = customerId;
     }
 

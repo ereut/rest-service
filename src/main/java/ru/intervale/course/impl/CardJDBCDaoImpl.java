@@ -33,7 +33,7 @@ public class CardJDBCDaoImpl extends AbstractJDBCDaoImpl<Card> {
         return "UPDATE customers.cards SET " +
                 "customerId = IFNULL(?, `customerId`), " +
                 "pan = IFNULL(?, `pan`), " +
-                "expiry = IFNULL(?, `expiry`) " +
+                "expiry = IFNULL(?, `expiry`), " +
                 "title = IFNULL(?, `title`) " +
                 "WHERE id = ?";
     }
@@ -48,7 +48,8 @@ public class CardJDBCDaoImpl extends AbstractJDBCDaoImpl<Card> {
     protected void prepareStatementForUpdate(PreparedStatement pst, Card entity)
             throws DaoException {
         try {
-            pst.setInt(1, entity.getCustomerId());
+            Integer customerId = entity.getCustomerId();
+            pst.setString(1, customerId == null ? null : String.valueOf(customerId));
             pst.setString(2, entity.getPanCard());
             pst.setString(3, entity.getExpiryCardDate());
             pst.setString(4, entity.getTitle());
