@@ -18,7 +18,7 @@
                 <constraints nullable="false" unique="true"/>
             </column>
 
-            <column name="password" type="varchar(25)">
+            <column name="password" type="varchar(50)">
                 <constraints nullable="false"/>
             </column>
 
@@ -30,7 +30,7 @@
                 <constraints nullable="true"/>
             </column>
 
-            <column name="telephoneNumber" type="varchar(40)">
+            <column name="telephoneNumber" type="varchar(15)">
                 <constraints nullable="true"/>
             </column>
 

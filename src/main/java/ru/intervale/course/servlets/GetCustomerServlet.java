@@ -3,10 +3,13 @@ package ru.intervale.course.servlets;
 import ru.intervale.course.beans.Customer;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+
+@WebServlet("/customer/*")
 public class GetCustomerServlet extends CustomerServlet {
 
     @Override

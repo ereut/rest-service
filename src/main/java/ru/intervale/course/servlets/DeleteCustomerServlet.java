@@ -1,7 +1,7 @@
 package ru.intervale.course.servlets;
 
+import ru.intervale.course.Constants;
 import ru.intervale.course.beans.Customer;
-import ru.intervale.course.servlets.enums.CustomerFields;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -12,16 +12,18 @@ public class DeleteCustomerServlet extends CustomerServlet {
 
     @Override
     protected Customer parseReqBody(HttpServletRequest req) {
-        RequestParameters requestParameters = new RequestParameters(req);
-        int id = Integer.parseInt(requestParameters.getRequired(CustomerFields.ID.getName()));
-        Customer customer = new Customer();
-        customer.setId(id);
+
+        Customer customer = (Customer) req.getSession().getAttribute(Constants.CUSTOMER_ATTRIBUTE_NAME);
         return customer;
+
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+
         deleteEntity(req, resp);
+
     }
 
 }

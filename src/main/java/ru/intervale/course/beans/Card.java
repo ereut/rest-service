@@ -1,6 +1,5 @@
 package ru.intervale.course.beans;
 
-import org.slf4j.LoggerFactory;
 import ru.intervale.course.Constants;
 
 import java.text.ParseException;
@@ -10,29 +9,28 @@ import java.util.Locale;
 
 public class Card extends AbstractEntity {
 
-    private static final String ILLEGAL_EXPIRY_CARD_DATE_MESSAGE = "Illegal expiry card date ";
     private static final String CARD_PRINT_FORMAT = "|%-5d|%-5d|%-22s|%-5s|%-20s|%-15s|";
-    private static final String EXPIRY_DATE_PATTERN = "MMyy";
 
     private Integer customerId;
     private String panCard;
-    private String expiryCardDate;
+    private Date expiryCardDate;
     private Date registerCardTime;
     private String title;
 
     public Card() {}
 
-    public Card(Integer id, Integer customerId, String panCard,String expiryCardDate,
+    public Card(Integer id, Integer customerId, String panCard, String expiryCardDate,
                 Date registerCardTime, String title) {
         super(id);
         this.customerId = customerId;
-        if (panCard != null && isExpiryCardDateInvalid(expiryCardDate)) {
-            LoggerFactory.getLogger(Card.class).error(ILLEGAL_EXPIRY_CARD_DATE_MESSAGE +
-                    expiryCardDate);
-            throw new IllegalArgumentException(ILLEGAL_EXPIRY_CARD_DATE_MESSAGE + expiryCardDate);
+
+        try {
+            this.expiryCardDate = expiryCardDate == null ? null :
+                    Constants.CARD_EXPIRY_DATE_FORMAT.parse(expiryCardDate);
+        } catch (ParseException e) {
+           throw new IllegalArgumentException(Constants.ILLEGAL_EXPIRY_CARD_DATE_MESSAGE, e);
         }
         this.panCard = panCard;
-        this.expiryCardDate = expiryCardDate;
         this.registerCardTime = registerCardTime;
         this.title = title;
     }
@@ -53,7 +51,7 @@ public class Card extends AbstractEntity {
         return title;
     }
 
-    public String getExpiryCardDate() {
+    public Date getExpiryCardDate() {
         return expiryCardDate;
     }
 
@@ -65,31 +63,32 @@ public class Card extends AbstractEntity {
         this.customerId = customerId;
     }
 
-    public void setExpiryCardDate(String expiryCardDate) {
+    public void setExpiryCardDate(Date expiryCardDate) {
         this.expiryCardDate = expiryCardDate;
+    }
+
+    public void setExpiryCardDate(String expiryCardDate) {
+        try {
+            this.expiryCardDate = expiryCardDate == null ? null : Constants.CARD_EXPIRY_DATE_FORMAT.parse(expiryCardDate);
+        } catch (ParseException e) {
+            throw new IllegalArgumentException(Constants.ILLEGAL_EXPIRY_CARD_DATE_MESSAGE + expiryCardDate, e);
+        }
     }
 
     public void setTitle(String title) {
         this.title = title;
     }
 
+    public void setRegisterCardTime(Date registerCardTime) {
+        this.registerCardTime = registerCardTime;
+    }
+
     @Override
     public String toString() {
         return String.format(Locale.ENGLISH, CARD_PRINT_FORMAT, getId(), customerId, panCard,
-                expiryCardDate, new SimpleDateFormat(Constants.DATE_PATTERN).format(registerCardTime),
-                getFieldForPrint(title));
-    }
-
-    private static boolean isExpiryCardDateInvalid(String date) {
-        final SimpleDateFormat CARD_EXPIRY_DATE_FORMAT =
-                new SimpleDateFormat(EXPIRY_DATE_PATTERN);
-        CARD_EXPIRY_DATE_FORMAT.setLenient(true);
-        try {
-            return !CARD_EXPIRY_DATE_FORMAT.format(CARD_EXPIRY_DATE_FORMAT.parse(date)).equals(date);
-        } catch (ParseException e) {
-            return true;
-        }
-
+                Constants.CARD_EXPIRY_DATE_FORMAT.format(expiryCardDate),
+                new SimpleDateFormat(Constants.DATE_PATTERN).format(registerCardTime),
+                title);
     }
 
 }

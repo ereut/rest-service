@@ -3,82 +3,82 @@ package ru.intervale.course.utils;
 import org.apache.catalina.Context;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.startup.Tomcat;
+import org.apache.tomcat.util.descriptor.web.FilterDef;
+import org.apache.tomcat.util.descriptor.web.FilterMap;
+import ru.intervale.course.Constants;
+import ru.intervale.course.filters.AddCardFilter;
+import ru.intervale.course.filters.DeleteCustomerFilter;
 import ru.intervale.course.servlets.*;
 
+import javax.servlet.http.HttpServlet;
 import java.io.File;
 
 public class TomcatUtils {
 
-    private static final String ADD_CUSTOMER_SERVLET_NAME = "AddCustomerServlet";
-    private static final String UPDATE_CUSTOMER_SERVLET_NAME = "UpdateCustomerServlet";
-    private static final String DELETE_CUSTOMER_SERVLET_NAME = "DeleteCustomerServlet";
-    private static final String GET_CUSTOMER_SERVLET_NAME = "GetCustomerServlet";
+    private final static String APPLICATION_CONTEXT_PATH = "/app";
 
-    private static final String ADD_CARD_SERVLET_NAME = "AddCardServlet";
-    private static final String UPDATE_CARD_SERVLET_NAME = "UpdateCardServlet";
-    private static final String DELETE_CARD_SERVLET_NAME = "DeleteCardServlet";
-    private static final String GET_CARD_SERVLET_NAME = "GetCardServlet";
-
-    private static final String ADD_PAYMENT_SERVLET_NAME = "AddPaymentTrxServlet";
-    private static final String DELETE_PAYMENT_SERVLET_NAME = "DeletePaymentTrxServlet";
-    private static final String GET_PAYMENT_SERVLET_NAME = "GetPaymentTrxServlet";
-
-    private static final String ADD_CUSTOMER_SERVLET_URL_PATTERN = "/customer/add";
-    private static final String UPDATE_CUSTOMER_SERVLET_URL_PATTERN = "/customer/update";
-    private static final String DELETE_CUSTOMER_SERVLET_URL_PATTERN = "/customer/delete";
-    private static final String GET_CUSTOMER_SERVLET_URL_PATTERN = "/customer/*";
-
-    private static final String ADD_CARD_SERVLET_URL_PATTERN = "/card/add";
-    private static final String UPDATE_CARD_SERVLET_URL_PATTERN = "/card/update";
-    private static final String DELETE_CARD_SERVLET_URL_PATTERN = "/card/delete";
-    private static final String GET_CARD_SERVLET_URL_PATTERN = "/card/*";
-
-    private static final String ADD_PAYMENT_SERVLET_URL_PATTERN = "/payment/add";
-    private static final String DELETE_PAYMENT_SERVLET_URL_PATTERN = "/payment/delete";
-    private static final String GET_PAYMENT_SERVLET_URL_PATTERN = "/payment/*";
+    private static void addServletWithMapping(String urlPattern, HttpServlet servlet) {
+        TOMCAT.addServlet(APPLICATION_CONTEXT_PATH, servlet.getClass().getSimpleName(), servlet);
+        CONTEXT.addServletMappingDecoded(urlPattern, servlet.getServletName());
+    }
 
     public static void runTomcatEmbedded() {
-        try {
-            Tomcat tomcat = new Tomcat();
-            tomcat.setPort(8080);
-            String contextPath = "/app";
-            String docBase = new File(".").getAbsolutePath();
-            Context context = tomcat.addContext(contextPath, docBase);
 
-            tomcat.addServlet(contextPath, ADD_CUSTOMER_SERVLET_NAME, new AddCustomerServlet());
-            tomcat.addServlet(contextPath, UPDATE_CUSTOMER_SERVLET_NAME, new UpdateCustomerServlet());
-            tomcat.addServlet(contextPath, DELETE_CUSTOMER_SERVLET_NAME, new DeleteCustomerServlet());
-            tomcat.addServlet(contextPath, GET_CUSTOMER_SERVLET_NAME, new GetCustomerServlet());
+    }
 
-            context.addServletMappingDecoded(ADD_CUSTOMER_SERVLET_URL_PATTERN, ADD_CUSTOMER_SERVLET_NAME);
-            context.addServletMappingDecoded(UPDATE_CUSTOMER_SERVLET_URL_PATTERN, UPDATE_CUSTOMER_SERVLET_NAME);
-            context.addServletMappingDecoded(DELETE_CUSTOMER_SERVLET_URL_PATTERN, DELETE_CUSTOMER_SERVLET_NAME);
-            context.addServletMappingDecoded(GET_CUSTOMER_SERVLET_URL_PATTERN, GET_CUSTOMER_SERVLET_NAME);
 
-            tomcat.addServlet(contextPath, ADD_CARD_SERVLET_NAME, new AddCardServlet());
-            tomcat.addServlet(contextPath, UPDATE_CARD_SERVLET_NAME, new UpdateCardServlet());
-            tomcat.addServlet(contextPath, DELETE_CARD_SERVLET_NAME, new DeleteCardServlet());
-            tomcat.addServlet(contextPath, GET_CARD_SERVLET_NAME, new GetCardServlet());
+    /*
 
-            context.addServletMappingDecoded(ADD_CARD_SERVLET_URL_PATTERN, ADD_CARD_SERVLET_NAME);
-            context.addServletMappingDecoded(UPDATE_CARD_SERVLET_URL_PATTERN, UPDATE_CARD_SERVLET_NAME);
-            context.addServletMappingDecoded(DELETE_CARD_SERVLET_URL_PATTERN, DELETE_CARD_SERVLET_NAME);
-            context.addServletMappingDecoded(GET_CARD_SERVLET_URL_PATTERN, GET_CARD_SERVLET_NAME);
+     try {
+            addServletWithMapping("/customer/add", new AddCustomerServlet());
+            addServletWithMapping("/customer/update", new UpdateCustomerServlet());
+            addServletWithMapping("/customer/delete", new DeleteCustomerServlet());
+            addServletWithMapping("/customer/*", new GetCustomerServlet());
 
-            tomcat.addServlet(contextPath, ADD_PAYMENT_SERVLET_NAME, new AddPaymentTrxServlet());
-            tomcat.addServlet(contextPath, DELETE_PAYMENT_SERVLET_NAME, new DeletePaymentTrxServlet());
-            tomcat.addServlet(contextPath, GET_PAYMENT_SERVLET_NAME, new GetPaymentTrxServlet());
+            addServletWithMapping("/card/add", new AddCardServlet());
+            addServletWithMapping("/card/update", new UpdateCardServlet());
+            addServletWithMapping("/card/delete", new DeleteCardServlet());
+            addServletWithMapping("/card/*", new GetCardServlet());
 
-            context.addServletMappingDecoded(ADD_PAYMENT_SERVLET_URL_PATTERN, ADD_PAYMENT_SERVLET_NAME);
-            context.addServletMappingDecoded(DELETE_PAYMENT_SERVLET_URL_PATTERN, DELETE_PAYMENT_SERVLET_NAME);
-            context.addServletMappingDecoded(GET_PAYMENT_SERVLET_URL_PATTERN, GET_PAYMENT_SERVLET_NAME);
+            addServletWithMapping("/payment/add", new AddPaymentTrxServlet());
+            addServletWithMapping("/payment/delete", new DeletePaymentTrxServlet());
+            addServletWithMapping("/payment/*", new GetPaymentTrxServlet());
 
-            tomcat.start();
-            tomcat.getServer().await();
-
+            addServletWithMapping("/session/start", new StartSessionServlet());
+            addServletWithMapping("/session/finish", new FinishSessionServlet());
+            TOMCAT.start();
+            TOMCAT.getServer().await();
         } catch (LifecycleException e) {
             e.printStackTrace();
         }
-    }
+
+            FilterDef addCardFilterDef = new FilterDef();
+            addCardFilterDef.setFilterName(AddCardFilter.class.getSimpleName());
+            addCardFilterDef.setFilterClass(AddCardFilter.class.getName());
+            context.addFilterDef(addCardFilterDef);
+
+            FilterMap addCardFilterMap = new FilterMap();
+            addCardFilterMap.setFilterName(AddCardFilter.class.getSimpleName());
+            addCardFilterMap.addURLPattern(Constants.ADD_CARD_SERVLET_URL_PATTERN);
+            context.addFilterMap(addCardFilterMap);
+
+            ////////
+
+            FilterDef deleteCustomerFilterDef = new FilterDef();
+            deleteCustomerFilterDef.setFilterName(DeleteCustomerFilter.class.getSimpleName());
+            deleteCustomerFilterDef.setFilterClass(DeleteCustomerFilter.class.getName());
+            context.addFilterDef(deleteCustomerFilterDef);
+
+            FilterMap deleteCustomerFilterMap = new FilterMap();
+            deleteCustomerFilterMap.setFilterName(DeleteCustomerFilter.class.getSimpleName());
+            deleteCustomerFilterMap.addURLPattern(Constants.DELETE_CUSTOMER_SERVLET_URL_PATTERN);
+            context.addFilterMap(deleteCustomerFilterMap);
+
+*/
+
+
+
+
+
 
 }

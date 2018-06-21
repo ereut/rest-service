@@ -19,7 +19,7 @@ public abstract class AbstractEntityServlet<T extends AbstractEntity, K extends 
 
     private static final String RESPONSE_CHARACTER_ENCODING = "UTF-8";
     private static final String RESPONSE_CONTENT_TYPE = "application/json";
-    private static final ObjectMapper objectMapper = new ObjectMapper();
+    private static ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
     public void init() throws ServletException {
@@ -27,7 +27,7 @@ public abstract class AbstractEntityServlet<T extends AbstractEntity, K extends 
     }
 
     protected abstract IDao<T> getDaoImpl() throws DaoException;
-    protected abstract T parseReqBody(HttpServletRequest req);
+    protected abstract T parseReqBody(HttpServletRequest req) throws DaoException;
 
     protected void deleteEntity(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try {
@@ -75,10 +75,13 @@ public abstract class AbstractEntityServlet<T extends AbstractEntity, K extends 
 
     protected void addEntity(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try {
+            System.out.println("addEntity");
             PrintWriter pw = getPrintWriter(resp);
             AbstractEntity entity = getDaoImpl().persist(parseReqBody(req));
             pw.print(objectMapper.writeValueAsString(entity));
+            resp.setStatus(HttpServletResponse.SC_OK);
             pw.flush();
+
         } catch (DaoException e) {
             resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
         }

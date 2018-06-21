@@ -1,6 +1,7 @@
 package ru.intervale.course;
 
 import ch.qos.logback.classic.Logger;
+import org.apache.catalina.LifecycleException;
 import org.slf4j.LoggerFactory;
 import ru.intervale.course.beans.AbstractEntity;
 import ru.intervale.course.beans.Card;
@@ -10,6 +11,7 @@ import ru.intervale.course.dao.*;
 import ru.intervale.course.utils.DatabaseUtils;
 import ru.intervale.course.utils.TomcatUtils;
 
+import javax.servlet.ServletException;
 import java.sql.Connection;
 import java.util.List;
 

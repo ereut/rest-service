@@ -1544,3 +1544,15 @@ Connection is broken: "java.net.ConnectException: Connection refused: connect: l
 
 2018-06-17 12:25:58,630 ERROR [http-nio-8080-exec-7] r.i.c.i.AbstractJDBCDaoImpl [AbstractJDBCDaoImpl.java:72] Entity with id 2 was not found
 2018-06-17 12:29:31,999 ERROR [http-nio-8080-exec-6] r.i.c.i.AbstractJDBCDaoImpl [AbstractJDBCDaoImpl.java:72] Entity with id 1 was not found
+2018-06-17 16:06:16,464 ERROR [main] r.i.c.Runner [Runner.java:94] org.h2.jdbc.JdbcSQLException: Соединение разорвано: "java.net.ConnectException: Connection refused: connect: localhost"
+Connection is broken: "java.net.ConnectException: Connection refused: connect: localhost" [90067-196]
+2018-06-17 21:58:31,359 ERROR [http-nio-8080-exec-3] r.i.c.b.Card [Card.java:30] Illegal expiry card date 110488
+2018-06-18 21:45:06,260 ERROR [http-nio-8080-exec-4] r.i.c.i.AbstractJDBCDaoImpl [AbstractJDBCDaoImpl.java:72] Entity with id 2 was not found
+2018-06-18 22:37:51,595 ERROR [http-nio-8080-exec-3] r.i.c.i.AbstractJDBCDaoImpl [AbstractJDBCDaoImpl.java:72] Entity with id 9 was not found
+2018-06-19 14:25:42,688 ERROR [http-nio-8080-exec-9] r.i.c.i.AbstractJDBCDaoImpl [AbstractJDBCDaoImpl.java:72] Entity with id 10 was not found
+2018-06-19 14:46:50,208 ERROR [http-nio-8080-exec-7] r.i.c.i.AbstractJDBCDaoImpl [AbstractJDBCDaoImpl.java:72] Entity with id 15 was not found
+2018-06-19 14:51:13,257 ERROR [http-nio-8080-exec-7] r.i.c.i.AbstractJDBCDaoImpl [AbstractJDBCDaoImpl.java:72] Entity with id 16 was not found
+2018-06-20 20:47:31,155 ERROR [main] r.i.c.Runner [Runner.java:94] liquibase.exception.ValidationFailedException: Validation Failed:
+     1 change sets check sum
+          liquibase/db.changelog-createCustomersTable.xml::1::Yauheni Reut was: 7:d19c1998bb48139049aec0266fba97b5 but is now: 7:3780208bf390038bd7b81f0f46c9ce8e
+

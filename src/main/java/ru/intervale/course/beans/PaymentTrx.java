@@ -3,13 +3,14 @@ package ru.intervale.course.beans;
 import ru.intervale.course.Constants;
 import ru.intervale.course.utils.CurrencyUtils;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
 public class PaymentTrx extends AbstractEntity {
 
-    private static final String PAYMENT_PRINT_FORMAT = "|%-5d|%-5d|%-20s|%-20s|%-10s|%-5s|";
+    private static final String PAYMENT_PRINT_FORMAT = "|%-5d|%-5d|%-20s|%-20s|%-10s|%-5s|%-5s|%-20|";
 
     public enum MoneyCurrencies {
         BYN, USD, EURO;
@@ -24,25 +25,33 @@ public class PaymentTrx extends AbstractEntity {
     private Date finishTrxTime;
     private int value;
     private MoneyCurrencies moneyCurrency;
+    private Date expiry;
+    private String pan;
 
     public PaymentTrx() {}
 
-    public PaymentTrx(Integer id, int cardId, Date startTrxTime, Date finishTrxTime,
-                      int value, String moneyCurrency) {
+    public PaymentTrx(Integer id, Integer cardId, Date startTrxTime, Date finishTrxTime,
+                      int value, String moneyCurrency, String expiry, String pan) {
         super(id);
         this.cardId = cardId;
         this.startTrxTime = startTrxTime;
         this.finishTrxTime = finishTrxTime;
         this.value = value;
         this.moneyCurrency = MoneyCurrencies.valueOf(moneyCurrency.toUpperCase());
+        try {
+            this.expiry = expiry == null ? null : Constants.CARD_EXPIRY_DATE_FORMAT.parse(expiry);
+        } catch (ParseException e) {
+            throw new IllegalArgumentException(Constants.ILLEGAL_EXPIRY_CARD_DATE_MESSAGE + expiry, e);
+        }
+        this.pan = pan;
     }
 
-    public PaymentTrx(Integer cardId, int value, String currency) {
-        this(null, cardId, new Date(), null,
-                value, currency);
+    public PaymentTrx(Integer cardId, int value, String currency, String expiry, String pan) {
+        this(null, cardId, new Date(), null,value,
+                currency, expiry, pan);
     }
 
-    public int getCardId() {
+    public Integer getCardId() {
         return cardId;
     }
 
@@ -58,7 +67,15 @@ public class PaymentTrx extends AbstractEntity {
         return startTrxTime;
     }
 
-    public void setCardId(int cardId) {
+    public Date getExpiry() {
+        return expiry;
+    }
+
+    public String getPan() {
+        return pan;
+    }
+
+    public void setCardId(Integer cardId) {
         this.cardId = cardId;
     }
 
@@ -74,12 +91,20 @@ public class PaymentTrx extends AbstractEntity {
         this.value = value;
     }
 
+    public void setExpiry(Date expiry) {
+        this.expiry = expiry;
+    }
+
+    public void setPan(String pan) {
+        this.pan = pan;
+    }
+
     @Override
     public String toString() {
         SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATE_PATTERN);
         return String.format(Locale.ENGLISH, PAYMENT_PRINT_FORMAT,
                 getId(), cardId, sdf.format(startTrxTime), sdf.format(finishTrxTime),
-                CurrencyUtils.getStringCurrencyValue(value), moneyCurrency.getName() );
+                CurrencyUtils.getStringCurrencyValue(value), moneyCurrency.getName(), expiry, pan);
     }
 
 

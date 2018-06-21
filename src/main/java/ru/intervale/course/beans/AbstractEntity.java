@@ -2,6 +2,8 @@ package ru.intervale.course.beans;
 
 import ru.intervale.course.Constants;
 
+import java.text.ParseException;
+
 public abstract class AbstractEntity {
 
     private Integer id;
@@ -20,10 +22,6 @@ public abstract class AbstractEntity {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    protected static String getFieldForPrint(String field) {
-        return field == null || "".equals(field) ? Constants.DASH : field;
     }
 
 }

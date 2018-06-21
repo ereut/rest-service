@@ -1,5 +1,6 @@
 package ru.intervale.course.impl;
 
+import ru.intervale.course.Constants;
 import ru.intervale.course.beans.Card;
 import ru.intervale.course.dao.DaoException;
 
@@ -51,7 +52,9 @@ public class CardJDBCDaoImpl extends AbstractJDBCDaoImpl<Card> {
             Integer customerId = entity.getCustomerId();
             pst.setString(1, customerId == null ? null : String.valueOf(customerId));
             pst.setString(2, entity.getPanCard());
-            pst.setString(3, entity.getExpiryCardDate());
+            Date expiryCardDate = entity.getExpiryCardDate();
+            pst.setString(3, expiryCardDate == null ? null :
+                    Constants.CARD_EXPIRY_DATE_FORMAT.format(entity.getExpiryCardDate()));
             pst.setString(4, entity.getTitle());
             pst.setInt(5, entity.getId());
         } catch (SQLException e) {
@@ -66,7 +69,7 @@ public class CardJDBCDaoImpl extends AbstractJDBCDaoImpl<Card> {
         try {
             pst.setInt(1, entity.getCustomerId());
             pst.setString(2, entity.getPanCard());
-            pst.setString(3, entity.getExpiryCardDate());
+            pst.setString(3, Constants.CARD_EXPIRY_DATE_FORMAT.format(entity.getExpiryCardDate()));
             pst.setString(4, entity.getTitle());
         } catch (SQLException e) {
             throw new DaoException(e);

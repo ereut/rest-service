@@ -84,9 +84,8 @@ public class Customer extends AbstractEntity {
 
     @Override
     public String toString() {
-        return String.format(Locale.ENGLISH, CUSTOMER_PRINT_FORMAT,
-                getId(), login, password, getFieldForPrint(name), getFieldForPrint(surname),
-                getFieldForPrint(telephoneNumber), getFieldForPrint(address));
+        return String.format(Locale.ENGLISH, CUSTOMER_PRINT_FORMAT, getId(), login, password, name , surname,
+                telephoneNumber, address);
     }
 
 }

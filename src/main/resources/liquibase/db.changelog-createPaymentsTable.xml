@@ -6,7 +6,7 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-    <changeSet id="3" author="reut">
+    <changeSet id="3" author="Yauheni Reut">
 
         <createTable tableName="payments" schemaName="customers">
 
@@ -14,8 +14,8 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
 
-            <column name="cardId" type="int">
-                <constraints nullable="false"/>
+            <column name="cardId" type="varchar(25)">
+                <constraints nullable="true"/>
             </column>
 
             <column name="startTime" type="time">
@@ -32,6 +32,14 @@
 
             <column name="currency" type="varchar(10)">
                 <constraints nullable="false"/>
+            </column>
+
+            <column name="expiry" type="varchar(4)">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="pan" type = "varchar(20)">
+                <constraints nullable="true"/>
             </column>
 
         </createTable>
