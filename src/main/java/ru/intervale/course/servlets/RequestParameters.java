@@ -17,7 +17,7 @@ public class RequestParameters {
         return request.getParameter(name);
     }
 
-    public String getRequired(String name) {
+    public String getRequired(String name) throws InvalidRequestException {
         String value = getOptional(name);
         if (value == null) {
             throw new InvalidRequestException(MISSING_REQUIRED_REQUEST_PARAMETER_MESSAGE, name);

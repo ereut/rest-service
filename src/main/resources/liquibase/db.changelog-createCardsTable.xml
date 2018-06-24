@@ -26,7 +26,7 @@
                 <constraints nullable="false"/>
             </column>
 
-            <column name="registerTime" type="time">
+            <column name="registerTime" type="datetime">
                 <constraints nullable="false"/>
             </column>
 

@@ -31,8 +31,7 @@ public class DaoFactory {
         H2_DATABASE_USER = RB.getString("db.h2.user");
         H2_SQL_DATABASE_PASSWORD = RB.getString("db.h2.password");
 
-        String daoImplTypeString = DEFAULT_DATABASE_TYPE;
-        daoImplType = DaoImplTypes.valueOf(daoImplTypeString.toUpperCase());
+        daoImplType = DaoImplTypes.valueOf(DEFAULT_DATABASE_TYPE.toUpperCase());
 
         try {
             daoImplType = DaoImplTypes.valueOf(RB.getString(DATABASE_TYPE).toUpperCase());
@@ -104,22 +103,22 @@ public class DaoFactory {
         abstract IDao<Card> getCardDaoImpl() throws DaoException;
         abstract IDao<PaymentTrx> getPaymentTrxDaoImpl() throws DaoException;
 
-        abstract Connection getConnection() throws DaoException, SQLException;
+        abstract Connection getConnection() throws SQLException;
 
     }
 
      public static Connection getJDBCConnection() throws DaoException {
-        if (connection == null) {
-            try {
-                connection = daoImplType.getConnection();
-                DatabaseUtils.runLiquibase(connection);
-                connection.setAutoCommit(true);
-            } catch (SQLException e) {
-                throw new DaoException(e);
-            }
-        }
-        return connection;
-    }
+         if (connection == null) {
+             try {
+                 connection = daoImplType.getConnection();
+                 DatabaseUtils.runLiquibase(connection);
+                 connection.setAutoCommit(true);
+             } catch (SQLException e) {
+                 throw new DaoException(e);
+             }
+         }
+         return connection;
+     }
 
     public static void closeJDBCConnection() throws DaoException {
         if (connection != null) {
@@ -128,7 +127,6 @@ public class DaoFactory {
             } catch (SQLException e) {
                 throw new DaoException(e);
             }
-
         }
     }
 

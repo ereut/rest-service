@@ -14,28 +14,35 @@ public class PaymentTrxJDBCDaoImpl extends AbstractJDBCDaoImpl<PaymentTrx> {
         super(connection);
     }
 
+    protected static final String CHECKING_CARD_SQL_QUERY =
+            "SELECT customerId FROM customers.cards WHERE id = ? AND customerId = ?";
+
     @Override
-    public String getSelectQuery() {
+    protected String getSelectQuery() {
         return "SELECT * FROM customers.payments";
     }
 
     @Override
-    public String getDeleteQuery() {
+    protected String getSelectAllQuery() {
+        return getSelectQuery() + " WHERE customerId = ?";
+    }
+
+    @Override
+    protected String getDeleteQuery() {
         return "DELETE FROM customers.payments WHERE id = ?";
     }
 
     @Override
-    public String getUpdateQuery() {
-        throw new UnsupportedOperationException();
+    protected String getCreateQuery() {
+        return "INSERT INTO customers.payments " +
+                "(cardId, startTime, finishTime, value, currency, expiry, pan, customerId) " +
+                "VALUES (?, ?, NOW(), ?, ?, ?, ?, ?)";
     }
 
     @Override
-    public String getCreateQuery() {
-        return "INSERT INTO customers.payments (cardId, startTime, finishTime, value, currency, expiry, pan) " +
-                "VALUES (?, ?, NOW(), ?, ?, ?, ?)";
+    protected String getUpdateQuery() {
+        throw new UnsupportedOperationException();
     }
-
-    private static final String GET_CARDS_ID_QUERY = "SELECT id FROM customers.cards WHERE customerId = ?";
 
     @Override
     protected void prepareStatementForUpdate(PreparedStatement pst, PaymentTrx entity)
@@ -44,18 +51,17 @@ public class PaymentTrxJDBCDaoImpl extends AbstractJDBCDaoImpl<PaymentTrx> {
     }
 
     @Override
-    protected void prepareStatementForInsert(PreparedStatement pst, PaymentTrx entity)
+    protected void prepareStatementForDelete(PreparedStatement pst, PaymentTrx entity)
             throws DaoException {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    protected void prepareStatementForGetAll(PreparedStatement pst, Integer customerId)
+            throws DaoException {
+
         try {
-            Integer cardId = entity.getCardId();
-            pst.setString(1, cardId == null ? null : String.valueOf(cardId));
-            pst.setTimestamp(2, new java.sql.Timestamp(entity.getStartTrxTime().getTime()));
-            pst.setInt(3, entity.getValue());
-            pst.setString(4, entity.getMoneyCurrency().getName());
-            java.util.Date expiry = entity.getExpiry();
-            pst.setString(5, expiry == null ? null : Constants.CARD_EXPIRY_DATE_FORMAT.format(expiry));
-            String pan = entity.getPan();
-            pst.setString(6, pan == null ? null : pan);
+            pst.setInt(1, customerId);
         } catch (SQLException e) {
             throw new DaoException(e);
         }
@@ -63,7 +69,44 @@ public class PaymentTrxJDBCDaoImpl extends AbstractJDBCDaoImpl<PaymentTrx> {
     }
 
     @Override
-    public List<PaymentTrx> parseResultSet(ResultSet rs) throws DaoException {
+    protected void prepareStatementForInsert(PreparedStatement pst, PaymentTrx entity)
+            throws DaoException, InvalidDataException {
+
+        Integer customerId = entity.getCustomerId();
+        Integer cardId = entity.getCardId();
+
+        if (customerId != null) {
+
+            try (PreparedStatement checkingPst = connection.prepareStatement(CHECKING_CARD_SQL_QUERY)) {
+                checkingPst.setInt(1, cardId);
+                checkingPst.setInt(2, customerId);
+                ResultSet rs = checkingPst.executeQuery();
+                if (!rs.isBeforeFirst()) {
+                    throw new InvalidDataException("Invalid idCard: " + cardId +
+                            "for customer with id " + customerId);
+                }
+            } catch (SQLException e) {
+                throw new DaoException(e);
+            }
+        }
+        try {
+            pst.setString(1, cardId == null ? null : String.valueOf(cardId));
+            pst.setTimestamp(2, new java.sql.Timestamp(entity.getStartTrxTime().getTime()));
+            pst.setInt(3, entity.getValue());
+            pst.setString(4, entity.getMoneyCurrency().getName());
+            java.util.Date expiry = entity.getExpiry();
+            pst.setString(5, expiry == null ? null : Constants.CARD_EXPIRY_DATE_FORMAT.format(expiry));
+            String pan = entity.getPan();
+            pst.setString(6, pan);
+            pst.setString(7, customerId == null ? null : String.valueOf(customerId));
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+
+    }
+
+    @Override
+    protected List<PaymentTrx> parseResultSet(ResultSet rs) throws DaoException {
 
         try {
             List<PaymentTrx> paymentsList = new ArrayList<>();
@@ -77,27 +120,12 @@ public class PaymentTrxJDBCDaoImpl extends AbstractJDBCDaoImpl<PaymentTrx> {
                 String currency = rs.getString(6);
                 String expiry = rs.getString(7);
                 String pan = rs.getString(8);
+                Integer customerId = rs.getInt(9);
                 PaymentTrx paymentTrx = new PaymentTrx(id, cardId, startTime, finishTime,
-                        value, currency, expiry, pan);
+                        value, currency, expiry, pan, customerId);
                 paymentsList.add(paymentTrx);
             }
             return paymentsList;
-        } catch (SQLException e) {
-            throw new DaoException(e);
-        }
-    }
-
-    public boolean isCardBelongsCustomer(int customerId, int cardId) throws DaoException {
-        try (PreparedStatement pst = connection.prepareStatement(GET_CARDS_ID_QUERY)) {
-            pst.setInt(1, customerId);
-            ResultSet rs = pst.executeQuery();
-            while(rs.next()) {
-                if (cardId == rs.getInt(1)) {
-                    return true;
-                }
-            }
-            return false;
-
         } catch (SQLException e) {
             throw new DaoException(e);
         }

@@ -3,11 +3,13 @@ package ru.intervale.course.servlets;
 import ru.intervale.course.utils.ServletUtils;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+@WebServlet("/session/finish")
 public class FinishSessionServlet extends HttpServlet {
 
     @Override
@@ -17,10 +19,6 @@ public class FinishSessionServlet extends HttpServlet {
         String sessionId = ServletUtils.parseSessionHeader(req);
         Integer customerId = CustomerSessionMap.getCustomerId(sessionId);
 
-        if (customerId == null) {
-            resp.sendError(HttpServletResponse.SC_NOT_FOUND);
-            return;
-        }
         CustomerSessionMap.invalidateSession(customerId);
         resp.setStatus(HttpServletResponse.SC_OK);
 

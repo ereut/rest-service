@@ -1,6 +1,6 @@
 package ru.intervale.course.servlets;
 
-public class InvalidRequestException extends IllegalArgumentException {
+public class InvalidRequestException extends Exception {
 
     private String message;
     private String parameterName;

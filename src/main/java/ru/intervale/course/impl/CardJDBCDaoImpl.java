@@ -20,27 +20,31 @@ public class CardJDBCDaoImpl extends AbstractJDBCDaoImpl<Card> {
     }
 
     @Override
-    public String getSelectQuery() {
+    protected String getSelectQuery() {
         return "SELECT * FROM customers.cards";
     }
 
     @Override
-    public String getDeleteQuery() {
-        return "DELETE FROM customers.cards WHERE id = ?";
+    protected String getSelectAllQuery() {
+        return getSelectQuery() + " WHERE customerId = ?";
     }
 
     @Override
-    public String getUpdateQuery() {
+    protected String getDeleteQuery() {
+        return "DELETE FROM customers.cards WHERE id = ? AND customerId = ?";
+    }
+
+    @Override
+    protected String getUpdateQuery() {
         return "UPDATE customers.cards SET " +
-                "customerId = IFNULL(?, `customerId`), " +
                 "pan = IFNULL(?, `pan`), " +
                 "expiry = IFNULL(?, `expiry`), " +
                 "title = IFNULL(?, `title`) " +
-                "WHERE id = ?";
+                "WHERE id = ? AND customerId = ?";
     }
 
     @Override
-    public String getCreateQuery() {
+   protected String getCreateQuery() {
         return "INSERT INTO customers.cards (customerId, pan, expiry, registerTime, title) VALUES " +
                 "(?, ?, ?, NOW(), ?)";
     }
@@ -49,14 +53,13 @@ public class CardJDBCDaoImpl extends AbstractJDBCDaoImpl<Card> {
     protected void prepareStatementForUpdate(PreparedStatement pst, Card entity)
             throws DaoException {
         try {
-            Integer customerId = entity.getCustomerId();
-            pst.setString(1, customerId == null ? null : String.valueOf(customerId));
-            pst.setString(2, entity.getPanCard());
+            pst.setString(1, entity.getPanCard());
             Date expiryCardDate = entity.getExpiryCardDate();
-            pst.setString(3, expiryCardDate == null ? null :
+            pst.setString(2, expiryCardDate == null ? null :
                     Constants.CARD_EXPIRY_DATE_FORMAT.format(entity.getExpiryCardDate()));
-            pst.setString(4, entity.getTitle());
-            pst.setInt(5, entity.getId());
+            pst.setString(3, entity.getTitle());
+            pst.setInt(4, entity.getId());
+            pst.setInt(5, entity.getCustomerId());
         } catch (SQLException e) {
             throw new DaoException(e);
         }
@@ -77,7 +80,30 @@ public class CardJDBCDaoImpl extends AbstractJDBCDaoImpl<Card> {
     }
 
     @Override
-    public List<Card> parseResultSet(ResultSet rs) throws DaoException {
+    protected void prepareStatementForDelete(PreparedStatement pst, Card entity)
+            throws DaoException {
+        try {
+            pst.setInt(1, entity.getId());
+            pst.setInt(2,entity.getCustomerId());
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
+    protected void prepareStatementForGetAll(PreparedStatement pst, Integer customerId)
+            throws DaoException {
+
+        try {
+            pst.setInt(1, customerId);
+        } catch (SQLException e) {
+           throw new DaoException(e);
+        }
+
+    }
+
+    @Override
+    protected List<Card> parseResultSet(ResultSet rs) throws DaoException {
 
         try {
             List<Card> cardsList = new ArrayList<>();
@@ -96,5 +122,6 @@ public class CardJDBCDaoImpl extends AbstractJDBCDaoImpl<Card> {
             throw new DaoException();
         }
     }
+
 
 }

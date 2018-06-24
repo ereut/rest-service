@@ -18,11 +18,11 @@
                 <constraints nullable="true"/>
             </column>
 
-            <column name="startTime" type="time">
+            <column name="startTime" type="datetime">
                 <constraints nullable="false"/>
             </column>
 
-            <column name="finishTime" type="time">
+            <column name="finishTime" type="datetime">
                 <constraints nullable="false"/>
             </column>
 
@@ -39,6 +39,10 @@
             </column>
 
             <column name="pan" type = "varchar(20)">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="customerId" type="int">
                 <constraints nullable="true"/>
             </column>
 

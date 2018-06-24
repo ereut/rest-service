@@ -24,10 +24,10 @@ public class DatabaseUtils {
     private static final String LIQUIBASE_FILE_NAME = "liquibase/db.changelog-master.xml";
 
     private static final String SELECT_PAYMENTS_BY_CUSTOMERS =
-            "SELECT customers.id, customers.name, customers.surname, cards.pan, payments.value, payments.currency \n" +
-                    "FROM customers.customers \n" +
-                    "JOIN customers.cards ON customers.id = cards.customerId \n" +
-                    "JOIN customers.payments ON cards.id = payments.cardId \n" +
+            "SELECT customers.id, customers.name, customers.surname, cards.pan, payments.value, payments.currency " +
+                    "FROM customers.customers " +
+                    "JOIN customers.cards ON customers.id = cards.customerId " +
+                    "JOIN customers.payments ON cards.id = payments.cardId " +
                     "ORDER BY id, value DESC";
 
     public static void runLiquibase(Connection connection) throws DaoException {

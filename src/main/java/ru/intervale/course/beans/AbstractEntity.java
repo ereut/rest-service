@@ -1,9 +1,5 @@
 package ru.intervale.course.beans;
 
-import ru.intervale.course.Constants;
-
-import java.text.ParseException;
-
 public abstract class AbstractEntity {
 
     private Integer id;

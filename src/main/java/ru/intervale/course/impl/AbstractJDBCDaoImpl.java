@@ -1,10 +1,11 @@
 package ru.intervale.course.impl;
 
-import org.slf4j.LoggerFactory;
 import ru.intervale.course.beans.AbstractEntity;
 import ru.intervale.course.dao.DaoException;
 import ru.intervale.course.dao.IDao;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.sql.*;
 import java.util.List;
 
@@ -13,9 +14,7 @@ public abstract class AbstractJDBCDaoImpl<T extends AbstractEntity> implements I
     private static final String ENTITY_ALREADY_PERSIST_MESSAGE = "Entity is already persist";
     private static final String INVALID_PERSIST_MODIFY_MESSAGE = "On persist modify more then 1 records ";
     private static final String INVALID_INSERT_MESSAGE = "Entity wasn't insert";
-    private static final String INVALID_UPDATE_MESSAGE = "Update more or less that one record ";
     private static final String INVALID_ENTITY_FOR_UPDATE = "Entity without id didn't save";
-    private static final String INVALID_DELETE_LOGGER_MESSAGE = "Entity with id {} was not found";
 
     protected Connection connection;
 
@@ -23,22 +22,32 @@ public abstract class AbstractJDBCDaoImpl<T extends AbstractEntity> implements I
         this.connection = connection;
     }
 
-    public abstract String getSelectQuery();
-    public abstract String getDeleteQuery();
-    public abstract String getUpdateQuery();
-    public abstract String getCreateQuery();
+    protected abstract String getSelectQuery();
+    protected abstract String getSelectAllQuery();
+    protected abstract String getDeleteQuery();
+    protected abstract String getUpdateQuery();
+    protected abstract String getCreateQuery();
+
     protected abstract void prepareStatementForUpdate(PreparedStatement pst, T entity)
             throws DaoException;
     protected abstract void prepareStatementForInsert(PreparedStatement pst, T entity)
+            throws DaoException, InvalidDataException;
+    protected abstract void prepareStatementForDelete(PreparedStatement pst, T entity)
             throws DaoException;
+    protected abstract void prepareStatementForGetAll(PreparedStatement pst, Integer customerId)
+            throws DaoException;
+
+    @Nonnull
     protected abstract List<T> parseResultSet(ResultSet rs) throws DaoException;
 
-    public String getSelectByIdQuery() {
+    @Nonnull
+    protected String getSelectByIdQuery() {
         return getSelectQuery() + " WHERE id = ?";
     }
 
     @Override
-    public T getEntityById(int id) throws DaoException {
+    @Nullable
+    public T getEntityById(Integer id) throws DaoException {
         try (PreparedStatement pst =
                      connection.prepareStatement(getSelectByIdQuery())) {
             List<T> list;
@@ -55,6 +64,21 @@ public abstract class AbstractJDBCDaoImpl<T extends AbstractEntity> implements I
     }
 
     @Override
+    @Nonnull
+    public List<T> getAllByCustomerId(Integer customerId) throws DaoException {
+        try (PreparedStatement pst = connection.prepareStatement(getSelectAllQuery())) {
+            prepareStatementForGetAll(pst, customerId);
+            List<T> list;
+            ResultSet rs = pst.executeQuery();
+            list = parseResultSet(rs);
+            return list;
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
+    @Nonnull
     public List<T> getAll() throws DaoException {
         try (PreparedStatement pst = connection.prepareStatement(getSelectQuery())) {
             List<T> list;
@@ -67,15 +91,11 @@ public abstract class AbstractJDBCDaoImpl<T extends AbstractEntity> implements I
     }
 
     @Override
-    public boolean delete(int id) throws DaoException {
-        if (getEntityById(id) == null) {
-            LoggerFactory.getLogger(AbstractJDBCDaoImpl.class).error(INVALID_DELETE_LOGGER_MESSAGE, id);
-            return false;
-        }
+    public boolean delete(T entity) throws DaoException {
         try (PreparedStatement pst = connection.prepareStatement(getDeleteQuery())) {
-            pst.setInt(1, id);
-            pst.executeUpdate();
-            return true;
+            prepareStatementForDelete(pst, entity);
+            int count = pst.executeUpdate();
+            return count == 1;
         } catch (SQLException e) {
             throw new DaoException(e);
         }
@@ -90,21 +110,20 @@ public abstract class AbstractJDBCDaoImpl<T extends AbstractEntity> implements I
         try (PreparedStatement pst = connection.prepareStatement(sql)) {
             prepareStatementForUpdate(pst, entity);
             int count = pst.executeUpdate();
-            if (count == 1) {
-                return true;
-            } else {
-                throw new DaoException(INVALID_UPDATE_MESSAGE + count);
-            }
+            return count == 1;
         } catch (SQLException e) {
             throw new DaoException(e);
         }
     }
 
     @Override
-    public T persist (T entity) throws DaoException {
+    @Nonnull
+    public T persist (T entity) throws DaoException, InvalidDataException {
+
         if (entity.getId() != null) {
             throw new DaoException(ENTITY_ALREADY_PERSIST_MESSAGE);
         }
+
         String sql = getCreateQuery();
         try (PreparedStatement pst = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             prepareStatementForInsert(pst, entity);

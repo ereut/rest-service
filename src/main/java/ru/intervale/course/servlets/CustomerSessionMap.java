@@ -1,5 +1,7 @@
 package ru.intervale.course.servlets;
 
+import com.google.common.base.Strings;
+
 import javax.annotation.Nullable;
 import java.util.Date;
 import java.util.Map;
@@ -28,24 +30,15 @@ public class CustomerSessionMap {
     }
 
     @Nullable
-    public static String getValidSessionId(Integer customerId) {
-        Session session = customerSessionMap.get(customerId);
-        if (session == null) {
-            return null;
-        }
-        if (new Date().before(session.getFinishSessionTime())) {
-            return session.getSessionId();
-        }
-        return null;
-    }
-
-    @Nullable
     public static Session getSession(Integer customerId) {
         return customerSessionMap.get(customerId);
     }
 
     public  static boolean isCurrentSessionValid(Integer customerId) {
-        return new Date().before(customerSessionMap.get(customerId).getFinishSessionTime());
+        Session session = customerSessionMap.get(customerId);
+
+        return session != null && new Date().before(customerSessionMap.get(customerId).getFinishSessionTime());
+
     }
 
     public static void invalidateSession(Integer customerId) {
@@ -54,51 +47,22 @@ public class CustomerSessionMap {
 
     @Nullable
     public static Integer getCustomerId(String sessionId) {
-       Optional<Integer> optional= customerSessionMap.entrySet()
+
+        if (Strings.isNullOrEmpty(sessionId)) {
+            return null;
+        }
+
+        Optional<Integer> optional= customerSessionMap.entrySet()
                .stream()
                .filter(entry -> sessionId.equals(entry.getValue().getSessionId()))
                .findFirst()
-               .map(entry -> entry.getKey());
-       if (optional.isPresent()) {
-           return optional.get();
-       }
-       return null;
+               .map(Map.Entry::getKey);
+        return optional.orElse(null);
     }
 
     private static Date getSessionDurationTime() {
         return new Date(new Date().getTime() + SESSION_DURATION);
     }
-
-    private static void printMap() {
-        for (Map.Entry<Integer, Session> entry : customerSessionMap.entrySet()) {
-            System.out.println(entry.getKey() + " -> " + entry.getValue().getFinishSessionTime());
-        }
-    }
-
-    public static void main (String[] args) throws InterruptedException {
-
-        insertSession(1, "aaaaaaa");
-        System.out.println(getCustomerId("aaadeaaaa"));
-
-
-
-        /*Thread.sleep(5000);
-        insertSession(2, "aaaaaaa");
-        printMap();
-        System.out.println(isCurrentSessionValid(1));
-        Thread.sleep(5000);
-        updateSession(1);
-        invalidateSession(1);
-        printMap();
-        */
-
-    }
-
-
-
-
-
-
 
 
 }

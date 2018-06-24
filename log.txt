@@ -1556,3 +1556,98 @@ Connection is broken: "java.net.ConnectException: Connection refused: connect: l
      1 change sets check sum
           liquibase/db.changelog-createCustomersTable.xml::1::Yauheni Reut was: 7:d19c1998bb48139049aec0266fba97b5 but is now: 7:3780208bf390038bd7b81f0f46c9ce8e
 
+2018-06-22 17:38:14,172 INFO [localhost-startStop-1] r.i.c.s.AppContextListener [AppContextListener.java:20] Application context was initialized
+2018-06-22 17:41:47,989 INFO [localhost-startStop-1] r.i.c.s.AppContextListener [AppContextListener.java:20] Application context was initialized
+2018-06-22 17:47:04,040 INFO [localhost-startStop-1] r.i.c.s.AppContextListener [AppContextListener.java:20] Application context was initialized
+2018-06-22 18:12:42,650 INFO [localhost-startStop-1] r.i.c.s.AppContextListener [AppContextListener.java:20] Application context was initialized
+2018-06-22 18:15:24,761 INFO [localhost-startStop-1] r.i.c.s.AppContextListener [AppContextListener.java:20] Application context was initialized
+2018-06-22 18:22:43,261 INFO [localhost-startStop-1] r.i.c.s.AppContextListener [AppContextListener.java:20] Application context was initialized
+2018-06-22 18:24:01,122 INFO [localhost-startStop-1] r.i.c.s.AppContextListener [AppContextListener.java:20] Application context was initialized
+2018-06-22 18:26:35,029 INFO [localhost-startStop-1] r.i.c.s.AppContextListener [AppContextListener.java:20] Application context was initialized
+2018-06-22 18:37:59,894 INFO [localhost-startStop-1] r.i.c.s.AppContextListener [AppContextListener.java:20] Application context was initialized
+2018-06-22 18:40:47,022 INFO [localhost-startStop-1] r.i.c.s.AppContextListener [AppContextListener.java:20] Application context was initialized
+2018-06-23 08:53:10,710 INFO [localhost-startStop-1] r.i.c.s.AppContextListener [AppContextListener.java:20] Application context was initialized
+2018-06-23 09:02:22,067 INFO [localhost-startStop-1] r.i.c.s.AppContextListener [AppContextListener.java:20] Application context was initialized
+2018-06-23 09:06:21,615 INFO [localhost-startStop-1] r.i.c.s.AppContextListener [AppContextListener.java:20] Application context was initialized
+2018-06-23 09:16:57,266 INFO [localhost-startStop-1] r.i.c.s.AppContextListener [AppContextListener.java:20] Application context was initialized
+2018-06-23 09:28:18,811 INFO [localhost-startStop-1] r.i.c.s.AppContextListener [AppContextListener.java:20] Application context was initialized
+2018-06-23 09:53:45,093 INFO [localhost-startStop-1] r.i.c.s.AppContextListener [AppContextListener.java:20] Application context was initialized
+2018-06-23 15:37:53,835 INFO [localhost-startStop-1] r.i.c.s.AppContextListener [AppContextListener.java:20] Application context was initialized
+2018-06-23 16:55:19,375 INFO [localhost-startStop-1] r.i.c.s.AppContextListener [AppContextListener.java:20] Application context was initialized
+2018-06-23 18:16:05,399 INFO [localhost-startStop-1] r.i.c.s.AppContextListener [AppContextListener.java:20] Application context was initialized
+2018-06-23 18:24:39,732 INFO [localhost-startStop-1] r.i.c.s.AppContextListener [AppContextListener.java:20] Application context was initialized
+2018-06-23 18:28:00,033 INFO [localhost-startStop-1] r.i.c.s.AppContextListener [AppContextListener.java:20] Application context was initialized
+2018-06-23 18:31:37,813 INFO [localhost-startStop-1] r.i.c.s.AppContextListener [AppContextListener.java:20] Application context was initialized
+2018-06-23 18:33:44,988 INFO [localhost-startStop-1] r.i.c.s.AppContextListener [AppContextListener.java:20] Application context was initialized
+2018-06-23 19:28:56,831 INFO [localhost-startStop-1] r.i.c.s.AppContextListener [AppContextListener.java:20] Application context was initialized
+2018-06-23 19:36:45,403 INFO [localhost-startStop-1] r.i.c.s.AppContextListener [AppContextListener.java:20] Application context was initialized
+2018-06-23 20:01:34,996 INFO [localhost-startStop-1] r.i.c.s.AppContextListener [AppContextListener.java:20] Application context was initialized
+2018-06-23 20:10:24,305 INFO [localhost-startStop-1] r.i.c.s.AppContextListener [AppContextListener.java:20] Application context was initialized
+2018-06-23 20:15:01,768 INFO [localhost-startStop-1] r.i.c.s.AppContextListener [AppContextListener.java:20] Application context was initialized
+2018-06-23 20:18:51,365 INFO [localhost-startStop-1] r.i.c.s.AppContextListener [AppContextListener.java:20] Application context was initialized
+2018-06-23 20:21:59,612 INFO [localhost-startStop-1] r.i.c.s.AppContextListener [AppContextListener.java:20] Application context was initialized
+2018-06-23 20:43:22,199 INFO [localhost-startStop-1] r.i.c.s.AppContextListener [AppContextListener.java:20] Application context was initialized
+2018-06-23 20:46:24,744 INFO [localhost-startStop-1] r.i.c.s.AppContextListener [AppContextListener.java:20] Application context was initialized
+2018-06-23 20:51:14,599 INFO [localhost-startStop-1] r.i.c.s.AppContextListener [AppContextListener.java:20] Application context was initialized
+2018-06-23 21:19:41,317 INFO [localhost-startStop-1] r.i.c.s.AppContextListener [AppContextListener.java:21] Application context was initialized
+2018-06-23 21:21:55,022 INFO [localhost-startStop-1] r.i.c.s.AppContextListener [AppContextListener.java:21] Application context was initialized
+2018-06-24 09:50:27,258 ERROR [main] r.i.c.u.TomcatUtils [TomcatUtils.java:37] Problems with start Tomcat
+2018-06-24 09:51:34,253 INFO [localhost-startStop-1] r.i.c.s.AppContextListener [AppContextListener.java:20] Application context was initialized
+2018-06-24 10:48:45,672 INFO [localhost-startStop-1] r.i.c.s.AppContextListener [AppContextListener.java:20] Application context was initialized
+2018-06-24 10:55:00,932 INFO [localhost-startStop-1] r.i.c.s.AppContextListener [AppContextListener.java:20] Application context was initialized
+2018-06-24 11:11:36,311 INFO [localhost-startStop-1] r.i.c.s.AppContextListener [AppContextListener.java:20] Application context was initialized
+2018-06-24 11:14:57,300 INFO [localhost-startStop-1] r.i.c.s.AppContextListener [AppContextListener.java:20] Application context was initialized
+2018-06-24 12:14:36,962 INFO [localhost-startStop-1] r.i.c.s.AppContextListener [AppContextListener.java:20] Application context was initialized
+2018-06-24 12:26:55,651 INFO [localhost-startStop-1] r.i.c.s.AppContextListener [AppContextListener.java:20] Application context was initialized
+2018-06-24 13:24:53,788 INFO [localhost-startStop-1] r.i.c.s.AppContextListener [AppContextListener.java:20] Application context was initialized
+2018-06-24 13:39:27,017 INFO [localhost-startStop-1] r.i.c.s.AppContextListener [AppContextListener.java:20] Application context was initialized
+2018-06-24 13:55:47,532 INFO [localhost-startStop-1] r.i.c.s.AppContextListener [AppContextListener.java:20] Application context was initialized
+2018-06-24 14:22:40,418 INFO [localhost-startStop-1] r.i.c.s.AppContextListener [AppContextListener.java:20] Application context was initialized
+2018-06-24 14:29:28,313 INFO [localhost-startStop-1] r.i.c.s.AppContextListener [AppContextListener.java:20] Application context was initialized
+2018-06-24 14:38:44,954 INFO [localhost-startStop-1] r.i.c.s.AppContextListener [AppContextListener.java:20] Application context was initialized
+2018-06-24 15:41:03,729 INFO [localhost-startStop-1] r.i.c.s.AppContextListener [AppContextListener.java:20] Application context was initialized
+2018-06-24 16:41:54,361 ERROR [main] r.i.c.Runner [Runner.java:86] org.h2.jdbc.JdbcSQLException: Нарушение уникального индекса или первичного ключа: "CONSTRAINT_INDEX_6 ON CUSTOMERS.CUSTOMERS(LOGIN) VALUES ('yauheni', 22)"
+Unique index or primary key violation: "CONSTRAINT_INDEX_6 ON CUSTOMERS.CUSTOMERS(LOGIN) VALUES ('yauheni', 22)"; SQL statement:
+INSERT INTO customers.customers (login, password, name, surname, telephoneNumber, address) VALUES (?, ?, ?, ?, ?, ?) [23505-197]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:357)
+	at org.h2.message.DbException.get(DbException.java:179)
+	at org.h2.message.DbException.get(DbException.java:155)
+	at org.h2.index.BaseIndex.getDuplicateKeyException(BaseIndex.java:101)
+	at org.h2.mvstore.db.MVSecondaryIndex.requireUnique(MVSecondaryIndex.java:236)
+	at org.h2.mvstore.db.MVSecondaryIndex.add(MVSecondaryIndex.java:202)
+	at org.h2.mvstore.db.MVTable.addRow(MVTable.java:732)
+	at org.h2.command.dml.Insert.insertRows(Insert.java:182)
+	at org.h2.command.dml.Insert.update(Insert.java:134)
+	at org.h2.command.CommandContainer.update(CommandContainer.java:102)
+	at org.h2.command.Command.executeUpdate(Command.java:261)
+	at org.h2.server.TcpServerThread.process(TcpServerThread.java:399)
+	at org.h2.server.TcpServerThread.run(TcpServerThread.java:165)
+	at java.lang.Thread.run(Thread.java:745)
+
+2018-06-24 16:45:53,681 INFO [localhost-startStop-1] r.i.c.s.AppContextListener [AppContextListener.java:20] Application context was initialized
+2018-06-24 16:47:06,118 INFO [localhost-startStop-1] r.i.c.s.AppContextListener [AppContextListener.java:20] Application context was initialized
+2018-06-24 16:48:20,846 INFO [localhost-startStop-1] r.i.c.s.AppContextListener [AppContextListener.java:20] Application context was initialized
+2018-06-24 16:49:08,447 INFO [localhost-startStop-1] r.i.c.s.AppContextListener [AppContextListener.java:20] Application context was initialized
+2018-06-24 16:56:25,079 INFO [localhost-startStop-1] r.i.c.s.AppContextListener [AppContextListener.java:20] Application context was initialized
+2018-06-24 16:58:41,313 INFO [localhost-startStop-1] r.i.c.s.AppContextListener [AppContextListener.java:20] Application context was initialized
+2018-06-24 17:01:25,506 INFO [localhost-startStop-1] r.i.c.s.AppContextListener [AppContextListener.java:20] Application context was initialized
+2018-06-24 17:04:03,187 INFO [localhost-startStop-1] r.i.c.s.AppContextListener [AppContextListener.java:20] Application context was initialized
+2018-06-24 17:06:23,162 ERROR [main] r.i.c.Runner [Runner.java:85] org.h2.jdbc.JdbcSQLException: Нарушение уникального индекса или первичного ключа: "CONSTRAINT_INDEX_6 ON CUSTOMERS.CUSTOMERS(LOGIN) VALUES ('yauheni', 1)"
+Unique index or primary key violation: "CONSTRAINT_INDEX_6 ON CUSTOMERS.CUSTOMERS(LOGIN) VALUES ('yauheni', 1)"; SQL statement:
+INSERT INTO customers.customers (login, password, name, surname, telephoneNumber, address) VALUES (?, ?, ?, ?, ?, ?) [23505-197]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:357)
+	at org.h2.message.DbException.get(DbException.java:179)
+	at org.h2.message.DbException.get(DbException.java:155)
+	at org.h2.index.BaseIndex.getDuplicateKeyException(BaseIndex.java:101)
+	at org.h2.mvstore.db.MVSecondaryIndex.requireUnique(MVSecondaryIndex.java:236)
+	at org.h2.mvstore.db.MVSecondaryIndex.add(MVSecondaryIndex.java:202)
+	at org.h2.mvstore.db.MVTable.addRow(MVTable.java:732)
+	at org.h2.command.dml.Insert.insertRows(Insert.java:182)
+	at org.h2.command.dml.Insert.update(Insert.java:134)
+	at org.h2.command.CommandContainer.update(CommandContainer.java:102)
+	at org.h2.command.Command.executeUpdate(Command.java:261)
+	at org.h2.server.TcpServerThread.process(TcpServerThread.java:399)
+	at org.h2.server.TcpServerThread.run(TcpServerThread.java:165)
+	at java.lang.Thread.run(Thread.java:745)
+
+2018-06-24 17:28:46,670 INFO [localhost-startStop-1] r.i.c.s.AppContextListener [AppContextListener.java:20] Application context was initialized

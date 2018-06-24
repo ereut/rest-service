@@ -1,8 +1,10 @@
 package ru.intervale.course.impl;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import ru.intervale.course.beans.Customer;
 import ru.intervale.course.dao.DaoException;
 
+import javax.annotation.Nullable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,34 +14,27 @@ import java.util.List;
 
 public class CustomerJDBCDaoImpl extends AbstractJDBCDaoImpl<Customer> {
 
-    private static final String INSERT_SESSION_QUERY = "UPDATE customers.customers SET" +
-            " sessionId = ?, " +
-            "sessionLifeTime = DATE_ADD(NOW(), INTERVAL 20 MINUTE) " +
-            "WHERE id = ?";
-
-    private static final String UPDATE_CURRENT_SESSION_QUERY = "UPDATE customers.customers SET " +
-            "sessionLifeTime = DATE_ADD(NOW(), INTERVAL 20 MINUTE) " +
-            "WHERE id = ?";
-
-    private final static String GET_VALID_SESSION_ID_QUERY =
-            "SELECT `sessionLifeTime` > NOW(), `sessionId` FROM customers.customers WHERE id = ?";
-
     public CustomerJDBCDaoImpl(Connection connection) {
         super(connection);
     }
 
     @Override
-    public String getSelectQuery() {
+    protected String getSelectQuery() {
         return "SELECT * FROM customers.customers";
     }
 
     @Override
-    public String getDeleteQuery() {
+    protected String getSelectAllQuery() {
+        return getSelectQuery() + " WHERE id = ?";
+    }
+
+    @Override
+    protected String getDeleteQuery() {
         return "DELETE FROM customers.customers WHERE id = ?";
     }
 
     @Override
-    public String getUpdateQuery() {
+    protected String getUpdateQuery() {
         return "UPDATE customers.customers SET " +
                 "password = IFNULL(?, `password`), " +
                 "name = IFNULL(?, `name`), " +
@@ -50,22 +45,23 @@ public class CustomerJDBCDaoImpl extends AbstractJDBCDaoImpl<Customer> {
     }
 
     @Override
-    public String getCreateQuery() {
+    protected String getCreateQuery() {
         return "INSERT INTO customers.customers (login, password, name, surname, telephoneNumber, address) " +
                 "VALUES (?, ?, ?, ?, ?, ?)";
     }
 
     @Override
-    public void prepareStatementForUpdate(PreparedStatement pst, Customer entity)
+    protected void prepareStatementForUpdate(PreparedStatement pst, Customer entity)
             throws DaoException {
 
         try {
-            pst.setString(1, entity.getPassword());
+            pst.setString(1, DigestUtils.md2Hex(entity.getPassword()));
             pst.setString(2, entity.getName());
             pst.setString(3, entity.getSurname());
             pst.setString(4, entity.getTelephoneNumber());
             pst.setString(5, entity.getAddress());
             pst.setInt(6, entity.getId());
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -77,7 +73,7 @@ public class CustomerJDBCDaoImpl extends AbstractJDBCDaoImpl<Customer> {
             throws DaoException {
         try {
             pst.setString(1, entity.getLogin());
-            pst.setString(2, entity.getPassword());
+            pst.setString(2, DigestUtils.md2Hex(entity.getPassword()));
             pst.setString(3, entity.getName());
             pst.setString(4, entity.getSurname());
             pst.setString(5, entity.getTelephoneNumber());
@@ -88,7 +84,28 @@ public class CustomerJDBCDaoImpl extends AbstractJDBCDaoImpl<Customer> {
     }
 
     @Override
-    public List<Customer> parseResultSet(ResultSet rs) throws DaoException {
+    protected void prepareStatementForDelete(PreparedStatement pst, Customer entity)
+            throws DaoException {
+        try {
+            pst.setInt(1, entity.getId());
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+
+    }
+
+    @Override
+    protected void prepareStatementForGetAll(PreparedStatement pst, Integer customerId)
+            throws DaoException {
+        try {
+            pst.setInt(1, customerId);
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
+    protected List<Customer> parseResultSet(ResultSet rs) throws DaoException {
         try {
             List<Customer> customersList = new ArrayList<>();
             while (rs.next()) {
@@ -110,65 +127,17 @@ public class CustomerJDBCDaoImpl extends AbstractJDBCDaoImpl<Customer> {
         }
     }
 
+    @Nullable
     public Customer getCustomerByLoginAndPassword(String login, String password) throws DaoException {
         String sql = getSelectQuery() + " WHERE login = ? AND password = ?";
         try (PreparedStatement pst = connection.prepareStatement(sql)) {
             pst.setString(1, login);
-            pst.setString(2, password);
+            pst.setString(2, DigestUtils.md2Hex(password));
             ResultSet rs = pst.executeQuery();
-            return parseResultSet(rs).iterator().next();
+            return !(rs.isBeforeFirst()) ? null : parseResultSet(rs).iterator().next();
         } catch (SQLException e) {
             throw new DaoException(e);
         }
-    }
-
-    public boolean insertSession(Customer customer, String sessionId) throws DaoException {
-
-        try (PreparedStatement pst = connection.prepareStatement(INSERT_SESSION_QUERY)) {
-            pst.setString(1, sessionId);
-            pst.setInt(2, customer.getId());
-            return pst.executeUpdate() == 1 ? true : false;
-        } catch (SQLException e) {
-            throw new DaoException(e);
-        }
-    }
-
-    public boolean updateCurrentSession(Customer customer) throws DaoException {
-        try (PreparedStatement pst = connection.prepareStatement(UPDATE_CURRENT_SESSION_QUERY)) {
-            pst.setInt(1, customer.getId());
-            return pst.executeUpdate() == 1 ? true : false;
-        } catch (SQLException e) {
-            throw new DaoException(e);
-        }
-    }
-
-    public String getValidSessionId(Customer customer) throws DaoException {
-        try (PreparedStatement pst = connection.prepareStatement(GET_VALID_SESSION_ID_QUERY)) {
-            pst.setInt(1, customer.getId());
-            ResultSet rs = pst.executeQuery();
-            rs.next();
-            return rs.getInt(1) == 1 ? rs.getString(2) : null;
-        } catch (SQLException e) {
-            throw new DaoException(e);
-        }
-    }
-
-    private static final String SELECT_CUSTOMER_ID_QUERY = "SELECT `id` FROM customers.customers " +
-            "WHERE `sessionId` = ? ";
-
-    public int getCustomerIdBySessionId(String sessionId) throws DaoException {
-        try (PreparedStatement pst =
-                     connection.prepareStatement(SELECT_CUSTOMER_ID_QUERY)) {
-
-            pst.setString(1, sessionId );
-            ResultSet rs = pst.executeQuery();
-            rs.next();
-            return rs.getInt(1);
-
-        } catch (SQLException e) {
-            throw new DaoException(e);
-        }
-
     }
 
 }

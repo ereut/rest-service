@@ -4,7 +4,7 @@ import java.util.Locale;
 
 public class Customer extends AbstractEntity {
 
-    private static final String CUSTOMER_PRINT_FORMAT = "|%-6d|%-15s|%-15s|%-15s|%-15s|%-20s|%-40s|";
+    private static final String CUSTOMER_PRINT_FORMAT = "|%-6d|%-15s|%-15s|%-15s|%-20s|%-40s|";
 
     private String login;
     private String password;
@@ -84,8 +84,35 @@ public class Customer extends AbstractEntity {
 
     @Override
     public String toString() {
-        return String.format(Locale.ENGLISH, CUSTOMER_PRINT_FORMAT, getId(), login, password, name , surname,
+        return String.format(Locale.ENGLISH, CUSTOMER_PRINT_FORMAT, getId(), login, name , surname,
                 telephoneNumber, address);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Customer customer = (Customer) o;
+
+        if (!login.equals(customer.login)) return false;
+        if (!password.equals(customer.password)) return false;
+        if (name != null ? !name.equals(customer.name) : customer.name != null) return false;
+        if (surname != null ? !surname.equals(customer.surname) : customer.surname != null) return false;
+        if (telephoneNumber != null ? !telephoneNumber.equals(customer.telephoneNumber) : customer.telephoneNumber != null)
+            return false;
+        return address != null ? address.equals(customer.address) : customer.address == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = login.hashCode();
+        result = 31 * result + password.hashCode();
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (surname != null ? surname.hashCode() : 0);
+        result = 31 * result + (telephoneNumber != null ? telephoneNumber.hashCode() : 0);
+        result = 31 * result + (address != null ? address.hashCode() : 0);
+        return result;
     }
 
 }
