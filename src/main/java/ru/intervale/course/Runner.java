@@ -6,12 +6,16 @@ import ru.intervale.course.beans.AbstractEntity;
 import ru.intervale.course.beans.Card;
 import ru.intervale.course.beans.Customer;
 import ru.intervale.course.beans.PaymentTrx;
-import ru.intervale.course.dao.*;
+import ru.intervale.course.dao.DaoException;
+import ru.intervale.course.dao.DaoFactory;
+import ru.intervale.course.dao.IDao;
+import ru.intervale.course.dao.JDBCConnector;
 import ru.intervale.course.impl.InvalidDataException;
 import ru.intervale.course.utils.DatabaseUtils;
 import ru.intervale.course.utils.TomcatUtils;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
 public class Runner {
@@ -28,7 +32,7 @@ public class Runner {
 
     public static void main(String args[]) {
 
-        try {
+        try (Connection cn = JDBCConnector.getJDBCConnection()) {
             IDao<Customer> customerIDao = DaoFactory.getCustomerDaoImplFromFactory();
             IDao<Card> cardIDao = DaoFactory.getCardDaoImplFromFactory();
             IDao<PaymentTrx> paymentTrxIDao = DaoFactory.getPaymentTrxDaoImplFromFactory();
@@ -75,16 +79,14 @@ public class Runner {
             printEntities(Constants.CARDS_PRINT_HEADER, cardIDao.getAll());
             printEntities(Constants.PAYMENTS_PRINT_HEADER, paymentTrxIDao.getAll());
 
-            Connection cn = DaoFactory.getJDBCConnection();
-
             DatabaseUtils.printTrxSum(cn);
             DatabaseUtils.printPaymentsByCustomers(cn);
 
-            TomcatUtils.runTomcatEmbedded();
-
-        } catch (DaoException | InvalidDataException e) {
+        } catch (SQLException | InvalidDataException | DaoException e) {
             log.error(e.getMessage());
         }
+
+        TomcatUtils.runTomcatEmbedded();
 
     }
 }

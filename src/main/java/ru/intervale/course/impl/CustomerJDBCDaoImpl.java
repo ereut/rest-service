@@ -3,7 +3,9 @@ package ru.intervale.course.impl;
 import org.apache.commons.codec.digest.DigestUtils;
 import ru.intervale.course.beans.Customer;
 import ru.intervale.course.dao.DaoException;
+import ru.intervale.course.dao.JDBCConnector;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,10 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CustomerJDBCDaoImpl extends AbstractJDBCDaoImpl<Customer> {
-
-    public CustomerJDBCDaoImpl(Connection connection) {
-        super(connection);
-    }
 
     @Override
     protected String getSelectQuery() {
@@ -55,6 +53,7 @@ public class CustomerJDBCDaoImpl extends AbstractJDBCDaoImpl<Customer> {
             throws DaoException {
 
         try {
+
             pst.setString(1, DigestUtils.md2Hex(entity.getPassword()));
             pst.setString(2, entity.getName());
             pst.setString(3, entity.getSurname());
@@ -63,21 +62,23 @@ public class CustomerJDBCDaoImpl extends AbstractJDBCDaoImpl<Customer> {
             pst.setInt(6, entity.getId());
 
         } catch (SQLException e) {
-            e.printStackTrace();
+           throw new DaoException(e);
         }
-
     }
 
     @Override
     protected void prepareStatementForInsert(PreparedStatement pst, Customer entity)
             throws DaoException {
+
         try {
+
             pst.setString(1, entity.getLogin());
             pst.setString(2, DigestUtils.md2Hex(entity.getPassword()));
             pst.setString(3, entity.getName());
             pst.setString(4, entity.getSurname());
             pst.setString(5, entity.getTelephoneNumber());
             pst.setString(6, entity.getAddress());
+
         } catch (SQLException e) {
             throw new DaoException();
         }
@@ -87,26 +88,31 @@ public class CustomerJDBCDaoImpl extends AbstractJDBCDaoImpl<Customer> {
     protected void prepareStatementForDelete(PreparedStatement pst, Customer entity)
             throws DaoException {
         try {
+
             pst.setInt(1, entity.getId());
+
         } catch (SQLException e) {
             throw new DaoException(e);
         }
-
     }
 
     @Override
     protected void prepareStatementForGetAll(PreparedStatement pst, Integer customerId)
             throws DaoException {
         try {
+
             pst.setInt(1, customerId);
+
         } catch (SQLException e) {
             throw new DaoException(e);
         }
     }
 
+    @Nonnull
     @Override
     protected List<Customer> parseResultSet(ResultSet rs) throws DaoException {
         try {
+
             List<Customer> customersList = new ArrayList<>();
             while (rs.next()) {
                 int id = rs.getInt(1);
@@ -120,6 +126,7 @@ public class CustomerJDBCDaoImpl extends AbstractJDBCDaoImpl<Customer> {
                 Customer customer = new Customer(id, login, password, name, surname,
                         telephoneNumber, address);
                 customersList.add(customer);
+
             }
             return customersList;
         } catch (SQLException e) {
@@ -129,12 +136,18 @@ public class CustomerJDBCDaoImpl extends AbstractJDBCDaoImpl<Customer> {
 
     @Nullable
     public Customer getCustomerByLoginAndPassword(String login, String password) throws DaoException {
+
         String sql = getSelectQuery() + " WHERE login = ? AND password = ?";
-        try (PreparedStatement pst = connection.prepareStatement(sql)) {
+
+        try (Connection connection = JDBCConnector.getJDBCConnection();
+             PreparedStatement pst = connection.prepareStatement(sql)) {
+
             pst.setString(1, login);
             pst.setString(2, DigestUtils.md2Hex(password));
             ResultSet rs = pst.executeQuery();
+
             return !(rs.isBeforeFirst()) ? null : parseResultSet(rs).iterator().next();
+
         } catch (SQLException e) {
             throw new DaoException(e);
         }

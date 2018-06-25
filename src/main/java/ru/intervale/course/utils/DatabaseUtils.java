@@ -1,13 +1,5 @@
 package ru.intervale.course.utils;
 
-import liquibase.Contexts;
-import liquibase.LabelExpression;
-import liquibase.Liquibase;
-import liquibase.database.Database;
-import liquibase.database.DatabaseFactory;
-import liquibase.database.jvm.JdbcConnection;
-import liquibase.exception.LiquibaseException;
-import liquibase.resource.ClassLoaderResourceAccessor;
 import ru.intervale.course.dao.DaoException;
 
 import java.sql.Connection;
@@ -21,27 +13,12 @@ public class DatabaseUtils {
     private static final String SELECT_SUM_PAYMENTS_QUERY =
             "SELECT SUM(value) FROM customers.payments WHERE currency = 'byn'";
 
-    private static final String LIQUIBASE_FILE_NAME = "liquibase/db.changelog-master.xml";
-
     private static final String SELECT_PAYMENTS_BY_CUSTOMERS =
             "SELECT customers.id, customers.name, customers.surname, cards.pan, payments.value, payments.currency " +
                     "FROM customers.customers " +
                     "JOIN customers.cards ON customers.id = cards.customerId " +
                     "JOIN customers.payments ON cards.id = payments.cardId " +
                     "ORDER BY id, value DESC";
-
-    public static void runLiquibase(Connection connection) throws DaoException {
-        try {
-            Database database =
-                    DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(connection));
-            Liquibase liquibase = new liquibase.Liquibase(LIQUIBASE_FILE_NAME,
-                    new ClassLoaderResourceAccessor(), database);
-            liquibase.update(new Contexts(), new LabelExpression());
-        } catch (LiquibaseException e) {
-           throw new DaoException(e);
-        }
-
-    }
 
     public static void printTrxSum(Connection cn) throws DaoException {
 
@@ -82,6 +59,5 @@ public class DatabaseUtils {
         }
 
     }
-
 
 }
