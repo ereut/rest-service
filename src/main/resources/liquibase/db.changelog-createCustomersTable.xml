@@ -6,36 +6,38 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-    <changeSet id="1" author="reut">
+    <changeSet id="1" author="Yauheni Reut">
 
         <createTable tableName="customers" schemaName="customers">
+
             <column name="id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
+
+            <column name="login" type="varchar(25)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+
+            <column name="password" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+
             <column name="name" type="varchar(15)">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
             </column>
+
             <column name="surname" type="varchar(15)">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
             </column>
+
             <column name="telephoneNumber" type="varchar(15)">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
             </column>
-            <column name="country" type="varchar(25)">
-                <constraints nullable="false"/>
+
+            <column name="address" type="varchar(50)">
+                <constraints nullable="true"/>
             </column>
-            <column name="city" type="varchar(25)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="street" type="varchar(30)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="homeNumber" type="varchar(15)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="flatNumber" type="varchar(15)">
-                <constraints nullable="false"/>
-            </column>
+
         </createTable>
 
     </changeSet>

@@ -4,109 +4,42 @@ import java.util.Locale;
 
 public class Customer extends AbstractEntity {
 
+    private static final String CUSTOMER_PRINT_FORMAT = "|%-6d|%-15s|%-15s|%-15s|%-20s|%-40s|";
+
+    private String login;
+    private String password;
     private String name;
-
-
-
     private String surname;
     private String telephoneNumber;
-    private Address address;
+    private String address;
 
+    public Customer() {
+        super();
+    }
 
-    public Customer(int id, String name, String surname, String telephoneNumber,
-                    String country, String city, String street, String homeNumber,
-                    String flatNumber) {
+    public Customer(Integer id, String login, String password, String name, String surname,
+                    String telephoneNumber, String address) {
         super(id);
+        this.login = login;
+        this.password = password;
         this.name = name;
         this.surname = surname;
         this.telephoneNumber = telephoneNumber;
-        address = new Address(country, city, street, homeNumber, flatNumber);
+        this.address = address;
+
     }
 
-    public Customer(String name, String surname, String telephoneNumber,
-                    String country, String city, String street, String homeNumber,
-                    String flatNumber) {
-        this(0, name, surname, telephoneNumber, country, city, street, homeNumber,
-                flatNumber);
+    public Customer(String login, String password, String name, String surname,
+                    String telephoneNumber, String address) {
+        this(null, login, password, name, surname, telephoneNumber, address);
     }
 
-    public class Address {
+    public String getLogin() {
+        return login;
+    }
 
-        private String country;
-        private String city;
-        private String street;
-        private String homeNumber;
-        private String flatNumber;
-
-        public Address(String country, String city, String street,
-                       String homeNumber, String flatNumber) {
-            this.country = country;
-            this.city = city;
-            this.street = street;
-            this.homeNumber = homeNumber;
-            this.flatNumber = flatNumber;
-        }
-
-        public String getCountry() {
-            return country;
-        }
-
-        public String getCity() {
-            return city;
-        }
-
-        public String getStreet() {
-            return street;
-        }
-
-        public String getHomeNumber() {
-            return homeNumber;
-        }
-
-        public String getFlatNumber() {
-            return flatNumber;
-        }
-
-        public void setCity(String city) {
-            this.city = city;
-        }
-
-        public void setCountry(String country) {
-            this.country = country;
-        }
-
-        public void setStreet(String street) {
-            this.street = street;
-        }
-
-        public void setFlatNumber(String flatNumber) {
-            this.flatNumber = flatNumber;
-        }
-
-        public void setHomeNumber(String homeNumber) {
-            this.homeNumber = homeNumber;
-        }
-
-        @Override
-        public String toString() {
-            return String.format(Locale.ENGLISH, "%s;%s;%s;%s;%s", country, city,street,
-                    homeNumber,flatNumber);
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-
-            Address address = (Address) o;
-
-            if (country != null ? !country.equals(address.country) : address.country != null) return false;
-            if (city != null ? !city.equals(address.city) : address.city != null) return false;
-            if (street != null ? !street.equals(address.street) : address.street != null) return false;
-            if (homeNumber != null ? !homeNumber.equals(address.homeNumber) : address.homeNumber != null) return false;
-            return flatNumber != null ? flatNumber.equals(address.flatNumber) : address.flatNumber == null;
-        }
-
+    public String getPassword() {
+        return password;
     }
 
     public String getName() {
@@ -121,8 +54,16 @@ public class Customer extends AbstractEntity {
         return telephoneNumber;
     }
 
-    public Address getAddress() {
+    public String getAddress() {
         return address;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public void setName(String name) {
@@ -137,19 +78,14 @@ public class Customer extends AbstractEntity {
         this.telephoneNumber = telephoneNumber;
     }
 
-    public void setAddress(String country, String city, String street,
-                           String homeNumber, String flatNumber) {
-        this.address = new Address(country, city, street, homeNumber, flatNumber);
-    }
-
-    public void setAddress(Address address) {
+    public void setAddress(String address) {
         this.address = address;
     }
 
     @Override
     public String toString() {
-        return String.format(Locale.ENGLISH, "|%-5d|%-10s|%-15s|%-12s|%-45s|",
-                getId(), name, surname, telephoneNumber,address);
+        return String.format(Locale.ENGLISH, CUSTOMER_PRINT_FORMAT, getId(), login, name , surname,
+                telephoneNumber, address);
     }
 
     @Override
@@ -159,9 +95,24 @@ public class Customer extends AbstractEntity {
 
         Customer customer = (Customer) o;
 
-        if (!name.equals(customer.name)) return false;
-        if (!surname.equals(customer.surname)) return false;
-        if (!telephoneNumber.equals(customer.telephoneNumber)) return false;
-        return address.equals(customer.address);
+        if (!login.equals(customer.login)) return false;
+        if (!password.equals(customer.password)) return false;
+        if (name != null ? !name.equals(customer.name) : customer.name != null) return false;
+        if (surname != null ? !surname.equals(customer.surname) : customer.surname != null) return false;
+        if (telephoneNumber != null ? !telephoneNumber.equals(customer.telephoneNumber) : customer.telephoneNumber != null)
+            return false;
+        return address != null ? address.equals(customer.address) : customer.address == null;
     }
+
+    @Override
+    public int hashCode() {
+        int result = login.hashCode();
+        result = 31 * result + password.hashCode();
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (surname != null ? surname.hashCode() : 0);
+        result = 31 * result + (telephoneNumber != null ? telephoneNumber.hashCode() : 0);
+        result = 31 * result + (address != null ? address.hashCode() : 0);
+        return result;
+    }
+
 }
